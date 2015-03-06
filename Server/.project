@@ -16,9 +16,24 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>kryonet-2.21-all.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Shared/lib/kryonet-2.21-all.jar</locationURI>
+		</link>
+		<link>
+			<name>mysql-connector-java-5.1.34-bin.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Shared/lib/mysql-connector-java-5.1.34-bin.jar</locationURI>
+		</link>
+		<link>
+			<name>openjfx-dialogs-1.0.2.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Shared/lib/openjfx-dialogs-1.0.2.jar</locationURI>
+		</link>
+		<link>
 			<name>src-common</name>
 			<type>2</type>
-			<location>/home/chrbarrol/Documents/repos/Fellesprosjekt/Shared/src</location>
+			<locationURI>WORKSPACE_LOC/Shared/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
