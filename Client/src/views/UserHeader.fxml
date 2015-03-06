@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: rgba(0,0,0,0);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserHeaderController">
+   <children>
+      <AnchorPane fx:id="menu_pane" prefHeight="340.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0);" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+		   <children>
+            <Polygon fill="#e1e7ed" scaleY="0.4" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-30.0">
+              <points>
+                <Double fx:value="-50.0" />
+                <Double fx:value="40.0" />
+                <Double fx:value="50.0" />
+                <Double fx:value="40.0" />
+                <Double fx:value="0.0" />
+                <Double fx:value="-60.0" />
+              </points>
+            </Polygon>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e2e8ee" height="305.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="260.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
+		      <VBox alignment="TOP_CENTER" spacing="28.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0">
+		         <children>
+		            <Button fx:id="notification" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="Notifications">
+		               <font>
+		                  <Font size="25.0" />
+		               </font>
+		            </Button>
+		            <Button fx:id="profile" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="Profile">
+		               <font>
+		                  <Font size="25.0" />
+		               </font>
+		            </Button>
+		            <Button fx:id="groups" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="My groups">
+		               <font>
+		                  <Font size="25.0" />
+		               </font>
+		            </Button>
+		            <Button fx:id="logout" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="Log out">
+		               <font>
+		                  <Font size="25.0" />
+		               </font>
+		            </Button>
+		         </children>
+		      </VBox>
+		   </children>
+		   <effect>
+            <DropShadow />
+		   </effect>
+		</AnchorPane>
+      <Pane maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <Button fx:id="menu_button" mnemonicParsing="false" prefHeight="40.0">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../lib/icons/menu.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
+      <HBox prefHeight="75.0" prefWidth="300.0">
+         <children>
+            <Pane maxHeight="40.0" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: white; -fx-border-color: #4CA1FF;" HBox.hgrow="NEVER">
+               <children>
+                  <Pane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: white;">
+                     <children>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../lib/icons/user.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
+            </Pane>
+            <Pane prefHeight="50.0" prefWidth="150.0">
+               <children>
+                  <Text fx:id="header_username" fill="WHITE" layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+                     <font>
+                        <Font name="Helvetica Neue Light" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="25.0" top="25.0" />
+               </HBox.margin>
+            </Pane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
