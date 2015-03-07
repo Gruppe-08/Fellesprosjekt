@@ -44,10 +44,10 @@ public class UserHeaderController {
 				
 				if (menuVisible){
 					// Send header to front if the menu is visible
-					State.getWindowController().myWindow.getChildren().get(0).toFront();
+					menu_pane.toFront();
 				} else {
 					// Else, send header to back.
-					State.getWindowController().myWindow.getChildren().get(1).toBack();
+					menu_pane.toBack();
 				}
 			}
 		});

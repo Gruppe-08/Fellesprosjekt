@@ -36,6 +36,8 @@ public class WindowController implements Initializable {
 		headerController.header_username.setText(State.getUser().getFirstname() +
 				" " + State.getUser().getLastname());
 		loadPage("AlternateDayView.fxml");
+		userHeader.toFront();
+		mainPane.toBack();
 	}
 	
 	public Object loadPage(String pageName) {
