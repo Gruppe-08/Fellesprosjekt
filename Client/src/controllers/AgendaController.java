@@ -31,7 +31,7 @@ public class AgendaController {
 		
 		
 		AppointmentResponse response = (AppointmentResponse) State.getConnectionController().getObject("communication.responses.AppointmentResponse");
-		appointments = response.getAppointments();
+		//appointments = response.getAppointments();
 		
 		AgendaPane pane;
 		for (String appointment : appointments) {
