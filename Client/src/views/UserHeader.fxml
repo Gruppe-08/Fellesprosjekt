@@ -46,9 +46,9 @@
 		</AnchorPane>
       <Pane maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="20.0">
          <children>
-            <Button fx:id="menu_button" mnemonicParsing="false" prefHeight="40.0">
+            <Button fx:id="menu_button" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" text="Menu">
                <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../lib/icons/menu.png" />
                      </image>
@@ -57,36 +57,22 @@
             </Button>
          </children>
       </Pane>
-      <HBox prefHeight="75.0" prefWidth="300.0">
+      <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="300.0" spacing="10.0" AnchorPane.rightAnchor="100.0">
          <children>
-            <Pane maxHeight="40.0" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: white; -fx-border-color: #4CA1FF;" HBox.hgrow="NEVER">
+            <Pane maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: white;">
                <children>
-                  <Pane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: white;">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../lib/icons/user.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </Pane>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../lib/icons/user.png" />
+                     </image>
+                  </ImageView>
                </children>
-               <HBox.margin>
-                  <Insets top="15.0" />
-               </HBox.margin>
             </Pane>
-            <Pane prefHeight="50.0" prefWidth="150.0">
-               <children>
-                  <Text fx:id="header_username" fill="WHITE" layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
-                     <font>
-                        <Font name="Helvetica Neue Light" size="18.0" />
-                     </font>
-                  </Text>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="25.0" top="25.0" />
-               </HBox.margin>
-            </Pane>
+            <Text fx:id="header_username" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+               <font>
+                  <Font name="Helvetica Neue Light" size="18.0" />
+               </font>
+            </Text>
          </children>
       </HBox>
    </children>
