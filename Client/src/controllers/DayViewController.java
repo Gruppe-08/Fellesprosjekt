@@ -31,22 +31,25 @@ public class DayViewController implements Initializable{
 
 			@Override
 			public void handle(ActionEvent event) {
+				System.out.println("handled button press");
 				ArrayList<Appointment> appointments = getAppointments();
 				for (Appointment appointment : appointments) {
-					dayPane.getChildren().add(new AppointmentPane(appointment));
+					AppointmentPane appPane = new AppointmentPane(appointment);
+					dayPane.getChildren().add(appPane);
+					AnchorPane.setTopAnchor(appPane, /*calculateAppointmentPlacement(appointment.getStartTime())*/ 600.0);
 					System.out.println("added appointment");
 				}
 			}
-			
-		});
-		
+		});	
 	}
 	
 	public double calculateAppointmentPlacement(String startTime) {
-		String timeString = startTime.substring(-4);
-		int hour = Integer.valueOf(timeString.substring(0, 2));
-		int minutes = Integer.valueOf(timeString.substring(3));
-		double pixels = (hour * 20 + minutes * 0.333);
+		String hourandminutes = startTime.substring(11);
+		System.out.println(hourandminutes);
+		String[] time = hourandminutes.split(":");
+		int hour = Integer.valueOf(time[0]);
+		int minutes = Integer.valueOf(time[1]);
+		double pixels = (hour * 50 + minutes * 0.833);
 		return pixels;
 	}
 	

@@ -11,70 +11,134 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="668" prefWidth="1024.0" style="-fx-background-color: beige" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers.DayViewController">
+<AnchorPane prefHeight="668" prefWidth="1024.0" style="-fx-background-color: beige" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DayViewController">
 	<children>
-      <AnchorPane fx:id="dayPane" layoutX="175.0" layoutY="105.0" prefHeight="480.0" prefWidth="400.0" style="-fx-background-color: white;">
-         <children>
-            <Text fill="#4ca1ff" text="18.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="360.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="16.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="320.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="14.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="280.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="12.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="240.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="10.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="200.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="08.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="160.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="06.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="120.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="04.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="80.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="02.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="20.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="400.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-            <Text fill="#4ca1ff" text="22.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="440.0">
-               <font>
-                  <Font name="Helvetica" size="12.0" />
-               </font>
-            </Text>
-         </children>
-         <effect>
-            <Blend />
-         </effect>
-      </AnchorPane>
       <Button fx:id="getButton" layoutX="580.0" layoutY="108.0" mnemonicParsing="false" text="Button" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="42.0" layoutY="106.0" pannable="true" prefHeight="400.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="500.0" vbarPolicy="NEVER" vvalue="0.5">
+         <content>
+            <AnchorPane fx:id="dayPane" prefHeight="1200.0" prefWidth="500.0" style="-fx-background-color: white;">
+               <children>
+                  <Text fill="#4ca1ff" text="01.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="04.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="200.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="05.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="250.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="06.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="300.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="07.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="350.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="02.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="100.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="03.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="150.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="08.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="400.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="09.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="450.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="11.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="550.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="20.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="1000.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="19.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="950.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="18.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="900.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="17.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="850.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="16.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="800.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="15.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="750.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="14.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="700.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="12.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="600.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="13.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="650.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="21.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="1050.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="22.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="1100.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="23.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="1150.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4ca1ff" text="10.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="500.0">
+                     <font>
+                        <Font name="Helvetica" size="12.0" />
+                     </font>
+                  </Text>
+               </children>
+               <effect>
+                  <Blend />
+               </effect>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
 	</children>
 </AnchorPane>

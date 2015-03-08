@@ -20,18 +20,19 @@ public class AppointmentPane extends Pane {
 	public AppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
 		this.setPrefWidth(300);
-//		this.setPrefHeight(calculateHeight());
+		this.setPrefHeight(calculateHeight());
 		this.setStyle("-fx-background-color: #0078FF");
 		this.putText();		
 	}
 	
-//	private int calculateHeight() {
-//		LocalDateTime startTime = this.appointment.getStartTime();
-//		LocalDateTime endTime = this.appointment.getEndTime();
-//		Long diff = startTime.until(endTime, ChronoUnit.MINUTES);
-//		int height = (int)(0.333 * diff) + 1;
-//		return height;
-//	}
+	private int calculateHeight() {
+		LocalDateTime startTime = util.DateUtil.deserialize(this.appointment.getStartTime());
+		LocalDateTime endTime = util.DateUtil.deserialize(this.appointment.getEndTime());
+		Long diff = startTime.until(endTime, ChronoUnit.MINUTES);
+		AnchorPane.setLeftAnchor(this, 50.0);
+		int height = (int)(0.85 * diff) + 1;
+		return height;
+	}
 	
 	private double calculateTextPlacement() {
 		double height = this.getHeight();
