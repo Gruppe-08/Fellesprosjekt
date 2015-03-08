@@ -4,15 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-<<<<<<< HEAD
-import calendar.State;
-import util.DateUtil;
-=======
 import util.DateUtil;
 import calendar.State;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.PutAppointmentResponse;
->>>>>>> Add working CreateAppointment controller + view
 import models.Appointment;
 import models.RepetitionType;
 import javafx.event.ActionEvent;

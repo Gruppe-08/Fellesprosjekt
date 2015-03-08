@@ -85,6 +85,7 @@ public class Appointment {
 	}
 
 	public String getStartTime() {
+		
 		return startTime;
 	}
 

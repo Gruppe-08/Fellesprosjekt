@@ -1,5 +1,11 @@
 package calendar;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
+import util.DateUtil;
 import models.Appointment;
 import javafx.geometry.Insets;
 import javafx.scene.effect.DropShadow;
@@ -43,7 +49,8 @@ public class AgendaPane extends VBox{
 		this.description = new Text(description);
 	}
 	
-	public void setTime(String startTime, String endTime){
-		this.time = new Text("From " + startTime + " to " + endTime);
+	public void setTime(String startTime, String endTime){		
+		this.time = new Text(
+				String.format("From %s to %s", DateUtil.presentString(startTime), DateUtil.presentString(endTime)));
 	}
 }

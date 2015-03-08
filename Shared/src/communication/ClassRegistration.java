@@ -13,25 +13,24 @@ public abstract class ClassRegistration {
 	public static void register(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();
 		kryo.register(communication.requests.AuthenticationRequest.class);
-		kryo.register(communication.responses.AuthenticationResponse.class);
-		kryo.register(communication.requests.AppointmentRequest.class);
-		kryo.register(communication.responses.AppointmentResponse.class);
+		kryo.register(communication.requests.PutAppointmentRequest.class);
 		kryo.register(communication.requests.CreateUserRequest.class);
+		kryo.register(communication.requests.AppointmentRequest.class);
+		
+		kryo.register(communication.responses.AuthenticationResponse.class);
+		kryo.register(communication.responses.AppointmentResponse.class);
 		kryo.register(communication.responses.CreateUserResponse.class);
+		kryo.register(communication.responses.BaseResponse.class);
+		kryo.register(communication.responses.PutAppointmentResponse.class);
+		
 		kryo.register(models.User.class);
-		kryo.register(javafx.beans.property.SimpleStringProperty.class);
-		kryo.register(javafx.beans.property.SimpleIntegerProperty.class);
-		kryo.register(javafx.beans.property.SimpleBooleanProperty.class);
-		kryo.register(java.util.ArrayList.class);
-		kryo.register(models.Appointment.class);
-		kryo.register(javafx.beans.property.ObjectPropertyBase.class);
-		kryo.register(javafx.beans.property.Property.class);
-		kryo.register(java.time.LocalDateTime.class);
 		kryo.register(models.RepetitionType.class);
 		kryo.register(models.Room.class);
-		kryo.register(communication.responses.BaseResponse.class);
-		kryo.register(java.time.LocalDate.class);
-		kryo.register(java.time.LocalTime.class);
-
+		kryo.register(models.Appointment.class);
+		
+		kryo.register(java.util.ArrayList.class);
+		kryo.register(java.time.LocalDateTime.class);
+		
+		kryo.register(javafx.beans.property.SimpleStringProperty.class);
 	}
 }

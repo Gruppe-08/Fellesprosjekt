@@ -31,8 +31,8 @@ public class AppointmentPane extends VBox {
 	}
 	
 	private int calculateHeight() {
-		LocalDateTime startTime = util.DateUtil.deserialize(this.appointment.getStartTime());
-		LocalDateTime endTime = util.DateUtil.deserialize(this.appointment.getEndTime());
+		LocalDateTime startTime = util.DateUtil.deserializeDateTime(this.appointment.getStartTime());
+		LocalDateTime endTime = util.DateUtil.deserializeDateTime(this.appointment.getEndTime());
 		Long diff = startTime.until(endTime, ChronoUnit.MINUTES);
 		AnchorPane.setLeftAnchor(this, 75.0);
 		int height = (int)(0.85 * diff) + 1;

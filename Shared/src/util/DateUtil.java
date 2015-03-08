@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class DateUtil {
 	final static private DateTimeFormatter defaultDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -36,5 +38,14 @@ public class DateUtil {
 	
 	public static String serializeDate(LocalDate localDate) {
 		return localDate.format(defaultDateFormatter);
+	}
+	
+	public static String presentString(String dateString){
+		LocalDateTime from = deserializeDateTime(dateString.substring(0, 16));
+		String month = from.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+		String day = Integer.toString(from.getDayOfMonth());
+		String time = String.format("%02d:%02d", from.getHour(), from.getMinute());
+		String result = String.format("%s %s - %s", month, day, time);
+		return result;
 	}
 }
