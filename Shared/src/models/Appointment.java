@@ -3,19 +3,19 @@ package models;
 import java.time.LocalDateTime;
 
 public class Appointment {
-	private int id;
-	private String title;
-	private String description;
+	private Integer id;
+	private String title = "";
+	private String description = "";
 	private String location;
 	private String startTime;
 	private String endTime;
-	private int roomId;
+	private Integer roomId;
 	private RepetitionType repetitionType;
 	private String ownerUsername;
 	
 	
-	public Appointment(int id, String title, String description, String location, String startTime, String endTime,
-			int roomId, RepetitionType repetitionType, String ownerUsername) {
+	public Appointment(Integer id, String title, String description, String location, String startTime, String endTime,
+			Integer roomId, RepetitionType repetitionType, String ownerUsername) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -41,7 +41,7 @@ public class Appointment {
 	}
 	
 
-	public Appointment(int id, String title, String description, String location, String startTime, String endTime) {
+	public Appointment(Integer id, String title, String description, String location, String startTime, String endTime) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -52,11 +52,11 @@ public class Appointment {
 	}
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -100,12 +100,12 @@ public class Appointment {
 		this.endTime = endTime;
 	}
 
-	public int getRoomId() {
+	public Integer getRoomId() {
 		return roomId;
 	}
 
 
-	public void setRoomId(int roomId) {
+	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
 	}
 

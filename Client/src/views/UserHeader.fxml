@@ -14,16 +14,6 @@
    <children>
       <AnchorPane fx:id="menu_pane" prefHeight="340.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0);" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
 		   <children>
-            <Polygon fill="#e1e7ed" scaleY="0.4" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-30.0">
-              <points>
-                <Double fx:value="-50.0" />
-                <Double fx:value="40.0" />
-                <Double fx:value="50.0" />
-                <Double fx:value="40.0" />
-                <Double fx:value="0.0" />
-                <Double fx:value="-60.0" />
-              </points>
-            </Polygon>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e2e8ee" height="305.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="260.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
 		      <VBox alignment="TOP_CENTER" spacing="28.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0">
 		         <children>

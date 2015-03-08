@@ -2,7 +2,10 @@ package controllers;
 
 import java.time.LocalDateTime;
 
+import calendar.State;
+import util.DateUtil;
 import models.Appointment;
+import models.RepetitionType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -46,9 +49,17 @@ public class CreateAppointmentController {
 
     @FXML
     void onOk(ActionEvent event) {
-    	LocalDateTime startTime = date.getValue().atTime(DateUtil.deserializeTime(from_date.getText());
-    	Appointment appointment = new Appointment(title_text.getText(),
-    			description_text.getText(), startTime, endTime);
+    	LocalDateTime startDateTime = date.getValue().atTime(DateUtil.deserializeTime(from_date.getText()));
+    	LocalDateTime endDateTime = date.getValue().atTime(DateUtil.deserializeTime(to_date.getText()));
+    	
+    	Appointment appointment = new Appointment();
+    	appointment.setTitle(title_text.getText());
+    	appointment.setDescription(description_text.getText());
+    	appointment.setStartTime(startDateTime.toString());
+    	appointment.setEndTime(endDateTime.toString());
+    	if(repeat_check.isSelected()) {
+    		
+    	}
     }
 
     @FXML
