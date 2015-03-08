@@ -35,13 +35,12 @@ public class WindowController implements Initializable {
 		UserHeaderController headerController = (UserHeaderController)loadHeader("UserHeader.fxml");
 		headerController.header_username.setText(State.getUser().getFirstname() +
 				" " + State.getUser().getLastname());
-<<<<<<< Updated upstream
+
 		loadPage("AlternateDayView.fxml");
 		userHeader.toFront();
 		mainPane.toBack();
-=======
-		loadPage("Agenda.fxml");
->>>>>>> Stashed changes
+
+
 	}
 	
 	public Object loadPage(String pageName) {
