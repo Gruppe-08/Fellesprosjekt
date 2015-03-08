@@ -50,6 +50,7 @@ public class CalendarServer extends Server {
 					clientConnection.isAuthenticated = response.wasSuccessful();
 					if (clientConnection.isAuthenticated) {
 						response.setUser(UserController.getUser(request.getUsername()));
+						clientConnection.username = request.getUsername();
 					}
 
 	    			clientConnection.sendTCP(response);
