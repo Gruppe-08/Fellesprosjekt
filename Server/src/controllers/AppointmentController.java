@@ -53,7 +53,8 @@ public class AppointmentController {
 	public static PutAppointmentResponse handlePutAppointmentRequest( String clientUsername,
 			PutAppointmentRequest request) {
 		PutAppointmentResponse response = new PutAppointmentResponse();
-		if(clientUsername != request.getAppointment().getOwnerUsername()) {
+		if(!isFromLoggedInUser(clientUsername, request)) {
+			Logger.logMsg(Logger.ERROR, String.format("HandlePutAppointmentRequest : Expected user '%s', got '%s'", clientUsername, request.getAppointment().getOwnerUsername()));
 			response.setSuccessful(false);
 			response.setErrorMessage("You cannot change an appointment you do not own");
 			return response;
@@ -88,6 +89,10 @@ public class AppointmentController {
 		}
 		
 		return response;
+	}
+
+	private static boolean isFromLoggedInUser(String clientUsername, PutAppointmentRequest request) {
+		return clientUsername.equals(request.getAppointment().getOwnerUsername());
 	}
 	
 	private static ArrayList<Appointment> getAppointmentsByGroups(ArrayList<Integer> groupIDs)
@@ -136,11 +141,12 @@ public class AppointmentController {
 
 		Statement statement = db.createStatement();
 
-		String query = "SELECT * FROM  `Appointment` AS a NATURAL LEFT JOIN UserAppointmentRelation AS ua WHERE ";
+		String query = "SELECT * FROM  `Appointment`NATURAL LEFT JOIN UserAppointmentRelation WHERE ";
 
 		for(String username : usernames)
 			query += String.format("(username =  '%s' OR owner_username =  '%s') OR ", username, username);
 		query = query.substring(0, query.length()-4); //Strip last OR
+		query += "ORDER BY start_date ASC";
 		
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
@@ -181,8 +187,8 @@ public class AppointmentController {
 		String query = 
 				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, repetition_type, owner_username)" +
 				"VALUES ( " +
-				"'" + appointment.getStartTime().toString() + "'," +
-				"'" + appointment.getEndTime().toString() + "'," + 
+				"'" + appointment.getStartTime() + "'," +
+				"'" + appointment.getEndTime() + "'," + 
 				"'" + appointment.getTitle() + "'," + 
 				"'" + appointment.getDescription() + "'," + 
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
@@ -264,7 +270,7 @@ public class AppointmentController {
 		appointment.setEndTime(resultSet.getString("end_date").substring(0, 16)); // TODO: Needs a string parser
 		appointment.setTitle(resultSet.getString("title"));
 		appointment.setDescription(resultSet.getString("description"));
-		appointment.setRoomId(resultSet.getInt("room_id")); // TODO: get the correct room from db
+		appointment.setRoomId(resultSet.getInt("room_id"));
 		appointment.setRepetitionType(RepetitionType.fromString(resultSet.getString("repetition_type"))); // TODO: make this match the db value
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
 		return appointment;
