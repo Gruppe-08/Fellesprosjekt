@@ -1,18 +1,15 @@
 package calendar;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import models.Appointment;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class AppointmentPane extends Pane {
+public class AppointmentPane extends VBox {
 	
 	private Appointment appointment;
 	
@@ -21,7 +18,7 @@ public class AppointmentPane extends Pane {
 		this.appointment = appointment;
 		this.setPrefWidth(300);
 		this.setPrefHeight(calculateHeight());
-		this.setStyle("-fx-background-color: #0078FF");
+		this.setStyle("-fx-background-color: red");
 		this.putText();		
 	}
 	
