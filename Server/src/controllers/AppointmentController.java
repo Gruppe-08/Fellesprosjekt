@@ -54,7 +54,7 @@ public class AppointmentController {
 		PutAppointmentResponse response = new PutAppointmentResponse();
 		if(clientUsername != request.getAppointment().getOwnerUsername()) {
 			response.setSuccessful(false);
-			response.setErrorMessage("You cannot change an appointment you do now own");
+			response.setErrorMessage("You cannot change an appointment you do not own");
 			return response;
 		}
 		
@@ -135,16 +135,11 @@ public class AppointmentController {
 
 		Statement statement = db.createStatement();
 
-		String query = "";
-		query += "SELECT * " +
-		"FROM Appointment a, User u, UserAppointmentRelation au";
-		query += " WHERE (";
+		String query = "SELECT * FROM  `Appointment` AS a NATURAL LEFT JOIN UserAppointmentRelation AS ua WHERE ";
+
 		for(String username : usernames)
-			query += "u.username = '" + username + "' OR ";
+			query += String.format("(username =  '%s' OR owner_username =  '%s') OR ", username, username);
 		query = query.substring(0, query.length()-4); //Strip last OR
-		query += ") ";
-		query += "AND a.appointment_id = au.appointment_id " +
-		"AND u.username = au.username";
 		
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
