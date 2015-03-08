@@ -1,65 +1,110 @@
 package controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
+<<<<<<< HEAD
 import calendar.State;
 import util.DateUtil;
+=======
+import util.DateUtil;
+import calendar.State;
+import communication.requests.PutAppointmentRequest;
+import communication.responses.PutAppointmentResponse;
+>>>>>>> Add working CreateAppointment controller + view
 import models.Appointment;
 import models.RepetitionType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class CreateAppointmentController {
+	
+    @FXML
+    private TextField title;
 
     @FXML
-    private DatePicker date;
+    DatePicker from_date;
+    
+    @FXML
+    TextField from_time;
+    
+    @FXML
+    DatePicker to_date;
+    
+    @FXML
+    TextField to_time;
+    
+    @FXML
+    CheckBox repeat_check;
+    
+    @FXML
+    RadioButton repeay_daily;
+    
+    @FXML
+    RadioButton repeay_monthly;
 
     @FXML
-    private RadioButton yearly_check;
+    RadioButton repeat_yearly;
 
     @FXML
-    private TextField from_date;
+    Button cancel_button;
 
     @FXML
-    private TextField to_date;
+    Button ok_button;
 
     @FXML
-    private CheckBox repeat_check;
+    private TextArea description;
+    
+    
+    public void initialize(){
+    	from_date.setValue(LocalDate.now());
+    	to_date.setValue(LocalDate.now());
+    }
 
-    @FXML
-    private TextField title_text;
-
-    @FXML
-    private Button ok_button;
-
-    @FXML
-    private TextArea description_text;
-
-    @FXML
-    private RadioButton monthly_check;
-
-    @FXML
-    private RadioButton daily_check;
+    
 
     @FXML
     void onOk(ActionEvent event) {
-    	LocalDateTime startDateTime = date.getValue().atTime(DateUtil.deserializeTime(from_date.getText()));
-    	LocalDateTime endDateTime = date.getValue().atTime(DateUtil.deserializeTime(to_date.getText()));
+    	LocalTime startTime = LocalTime.parse(from_time.getText());
+    	LocalTime endTime = LocalTime.parse(to_time.getText());
     	
-    	Appointment appointment = new Appointment();
-    	appointment.setTitle(title_text.getText());
-    	appointment.setDescription(description_text.getText());
-    	appointment.setStartTime(startDateTime.toString());
-    	appointment.setEndTime(endDateTime.toString());
-    	if(repeat_check.isSelected()) {
-    		
+    	LocalDateTime startDate = from_date.getValue().atTime(startTime);
+    	LocalDateTime endDate = to_date.getValue().atTime(endTime);
+    	
+    	Appointment appointment = new Appointment(
+    			title.getText(),
+    			description.getText(), 
+    			DateUtil.serializeDateTime(startDate), 
+    			DateUtil.serializeDateTime(endDate)
+    	);
+    	
+    	appointment.setOwnerUsername(State.getUser().getUsername());
+    	
+    	
+    	PutAppointmentRequest request = new PutAppointmentRequest();
+    	request.setAppointment(appointment);
+    	request.setNewAppointment(true);
+    	
+    	State.getConnectionController().sendTCP(request);
+    	PutAppointmentResponse response = (PutAppointmentResponse) State.getConnectionController().getObject("communication.responses.PutAppointmentResponse");
+    	
+    	if(response.getErrorMessage() != null) {
+    		Alert loginAlert = new Alert(AlertType.ERROR, 
+					response.getErrorMessage());
+			loginAlert.showAndWait();
+    	} else {
+    		State.getWindowController().loadPage("Agenda.fxml");
     	}
+    	
     }
 
     @FXML
