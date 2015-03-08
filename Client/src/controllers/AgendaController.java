@@ -44,5 +44,10 @@ public class AgendaController {
 	void onAddAppointment(ActionEvent event){
 		State.getWindowController().loadPage("createAppointment.fxml");
 	}
+	
+	@FXML
+	void onDeleteAppointment(ActionEvent event){
+		
+	}
 
 }

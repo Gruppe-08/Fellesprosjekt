@@ -5,7 +5,7 @@ public class DeleteAppointmentRequest {
 
 	DeleteAppointmentRequest() {}
 	
-	DeleteAppointmentRequest(int appointmentId) {
+	public DeleteAppointmentRequest(int appointmentId) {
 		setAppointmentId(appointmentId);
 	}
 	

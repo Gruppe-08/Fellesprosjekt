@@ -11,15 +11,14 @@ import java.util.ArrayList;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AppointmentRequest;
-import communication.requests.CreateUserRequest;
+import communication.requests.DeleteAppointmentRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
-import communication.responses.CreateUserResponse;
+import communication.responses.BaseResponse;
 import communication.responses.PutAppointmentResponse;
 import server.DatabaseConnector;
 import models.Appointment;
 import models.RepetitionType;
-import models.Room;
 import models.User;
 import util.DateUtil;
 
@@ -50,10 +49,28 @@ public class AppointmentController {
 		return response;
 	}
 	
+	public static BaseResponse handleDeleteAppointment(DeleteAppointmentRequest request){
+		BaseResponse res = new BaseResponse();
+		Logger.logMsg(Logger.DEBUG, "Handeling deleteAppointment: " + request.toString());
+
+		try {
+			deleteAppointment(request.getAppointmentId());
+			res.setSuccessful(true);
+		} catch(SQLException e){
+			res.setErrorMessage("Could not delete this appointment.");
+			res.setSuccessful(false);
+			Logger.logMsg(Logger.WARNING, "Error when deleting an appointment: " + e);
+		}
+		
+		return res;
+	}
+	
 	public static PutAppointmentResponse handlePutAppointmentRequest( String clientUsername,
 			PutAppointmentRequest request) {
 		PutAppointmentResponse response = new PutAppointmentResponse();
-		if(!isFromLoggedInUser(clientUsername, request)) {
+		
+		String requestUsername = request.getAppointment().getOwnerUsername();
+		if(!isEqual(clientUsername, requestUsername)) {
 			Logger.logMsg(Logger.ERROR, String.format("HandlePutAppointmentRequest : Expected user '%s', got '%s'", clientUsername, request.getAppointment().getOwnerUsername()));
 			response.setSuccessful(false);
 			response.setErrorMessage("You cannot change an appointment you do not own");
@@ -91,8 +108,8 @@ public class AppointmentController {
 		return response;
 	}
 
-	private static boolean isFromLoggedInUser(String clientUsername, PutAppointmentRequest request) {
-		return clientUsername.equals(request.getAppointment().getOwnerUsername());
+	private static boolean isEqual(String clientUsername, String requestUsername) {
+		return clientUsername.equals(requestUsername);
 	}
 	
 	private static ArrayList<Appointment> getAppointmentsByGroups(ArrayList<Integer> groupIDs)
@@ -257,7 +274,6 @@ public class AppointmentController {
 	
 	private static void deleteAppointment(int appointmentId) throws SQLException{
 			Statement statement = db.createStatement();
-			
 			String deleteAppointment = String.format("DELETE FROM Appointment WHERE appointment_id='%s'", appointmentId);
 			statement.execute(deleteAppointment);
 	}

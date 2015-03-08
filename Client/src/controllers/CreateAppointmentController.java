@@ -3,6 +3,7 @@ package controllers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 import util.DateUtil;
 import calendar.State;
@@ -13,18 +14,20 @@ import models.RepetitionType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 
 public class CreateAppointmentController {
-	
+	@FXML
+    TextField title;
+    
     @FXML
-    private TextField title;
+    TextArea description;
 
     @FXML
     DatePicker from_date;
@@ -42,10 +45,10 @@ public class CreateAppointmentController {
     CheckBox repeat_check;
     
     @FXML
-    RadioButton repeay_daily;
+    RadioButton repeat_daily;
     
     @FXML
-    RadioButton repeay_monthly;
+    RadioButton repeat_monthly;
 
     @FXML
     RadioButton repeat_yearly;
@@ -55,17 +58,6 @@ public class CreateAppointmentController {
 
     @FXML
     Button ok_button;
-
-    @FXML
-    private TextArea description;
-    
-    
-    public void initialize(){
-    	from_date.setValue(LocalDate.now());
-    	to_date.setValue(LocalDate.now());
-    }
-
-    
 
     @FXML
     void onOk(ActionEvent event) {
@@ -82,8 +74,25 @@ public class CreateAppointmentController {
     			DateUtil.serializeDateTime(endDate)
     	);
     	
+
     	appointment.setOwnerUsername(State.getUser().getUsername());
     	
+    	title.setStyle("");
+    	if(title.getText().equals("")) {
+    		title.setStyle("-fx-border-color: red");
+    	}
+    	else
+        	appointment.setTitle(title.getText());
+    	
+
+    	if(repeat_check.isSelected()) {
+    		if(repeat_daily.selectedProperty().get())
+    			appointment.setRepetitionType(RepetitionType.DAILY);
+    		else if(repeat_monthly.selectedProperty().get())
+    			appointment.setRepetitionType(RepetitionType.MONTHLY);
+    		else if(repeat_yearly.selectedProperty().get())
+    			appointment.setRepetitionType(RepetitionType.YEARLY);
+    	}
     	
     	PutAppointmentRequest request = new PutAppointmentRequest();
     	request.setAppointment(appointment);
@@ -104,6 +113,6 @@ public class CreateAppointmentController {
 
     @FXML
     void onCancel(ActionEvent event) {
-
+    	State.getWindowController().loadPage("Agenda.fxml");
     }
 }

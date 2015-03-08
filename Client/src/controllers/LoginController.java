@@ -1,15 +1,10 @@
 package controllers;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.sun.media.jfxmedia.logging.Logger;
-
 import communication.requests.AuthenticationRequest;
 import communication.responses.AuthenticationResponse;
-import calendar.Calendar;
 import calendar.State;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

@@ -16,6 +16,7 @@ public abstract class ClassRegistration {
 		kryo.register(communication.requests.PutAppointmentRequest.class);
 		kryo.register(communication.requests.CreateUserRequest.class);
 		kryo.register(communication.requests.AppointmentRequest.class);
+		kryo.register(communication.requests.DeleteAppointmentRequest.class);
 		
 		kryo.register(communication.responses.AuthenticationResponse.class);
 		kryo.register(communication.responses.AppointmentResponse.class);
