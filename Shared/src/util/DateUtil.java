@@ -1,16 +1,24 @@
 package util;
 
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.Calendar;
 import java.util.Locale;
+
 
 public class DateUtil {
 	final static private DateTimeFormatter defaultDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	final static private DateTimeFormatter defaultTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	final static private DateTimeFormatter defaultDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	
+	public static String getNow() {
+		return LocalDateTime.now().format(defaultDateTimeFormatter);
+	}
 	
 	public static boolean isAfterToday(LocalDateTime dateTime){
 		return !dateTime.toLocalDate().isBefore(LocalDate.now());
@@ -39,6 +47,19 @@ public class DateUtil {
 	public static String serializeDate(LocalDate localDate) {
 		return localDate.format(defaultDateFormatter);
 	}
+	
+	public static int getDayOfWeek(String dateTimeString) {
+		return deserializeDateTime(dateTimeString).getDayOfWeek().getValue();
+	}
+	
+	public static int getWeekOfYear(String dateTimeString) {
+		LocalDateTime dateTime = deserializeDateTime(dateTimeString);
+		Calendar cal = Calendar.getInstance();
+		cal.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
+		return cal.get(Calendar.WEEK_OF_YEAR);
+	}
+	
+	
 	
 	public static String presentString(String dateString){
 		LocalDateTime from = deserializeDateTime(dateString.substring(0, 16));

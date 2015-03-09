@@ -75,7 +75,7 @@ public class WindowController implements Initializable {
 	public void loginSuccessful() {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
-		loadPage("DayView.fxml");
+		loadPage("WeekView.fxml");
 	}
 	
 	public Object loadPage(String pageName) {
