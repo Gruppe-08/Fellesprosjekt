@@ -9,62 +9,81 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" style="-fx-border-color: black; -fx-border-width: 2px;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateAppointmentController">
    <children>
-      <ImageView fitHeight="48.0" fitWidth="59.0" layoutX="729.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: black; -fx-border-width: 1px;" />
-      <Box layoutX="551.0" layoutY="55.0" />
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="75.0" text="Title">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="title" prefHeight="25.0" prefWidth="220.0" promptText="Title" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="263.0" spacing="25.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="50.0" text="From">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="from_date" prefHeight="25.0" prefWidth="128.0" />
+                  <TextField fx:id="from_time" prefHeight="25.0" prefWidth="68.0" promptText="hh:mm" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="263.0" spacing="25.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="50.0" text="to">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="to_date" prefHeight="25.0" prefWidth="128.0" />
+                  <TextField fx:id="to_time" prefHeight="25.0" prefWidth="68.0" promptText="hh:mm" />
+               </children>
+            </HBox>
+            <VBox prefHeight="100.0" prefWidth="100.0" spacing="5.0">
+               <children>
+                  <Label text="Description">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="description" prefHeight="107.0" prefWidth="263.0" promptText="Appointment description" />
+               </children>
+            </VBox>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="70.0" prefWidth="100.0" spacing="20.0">
+               <children>
+                  <CheckBox fx:id="repeat_check" mnemonicParsing="false" text="Repeat">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </CheckBox>
+                  <HBox disable="true" prefHeight="23.0" prefWidth="219.0" spacing="5.0">
+                     <children>
+                        <RadioButton fx:id="repeat_daily" mnemonicParsing="false" prefHeight="18.0" prefWidth="67.0" text="Daily" />
+                        <RadioButton fx:id="repeat_monthly" mnemonicParsing="false" prefHeight="18.0" prefWidth="84.0" text="Monthly" />
+                        <RadioButton fx:id="repeat_yearly" mnemonicParsing="false" prefHeight="18.0" prefWidth="69.0" text="Yearly" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#onCancel" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
+                  <Button fx:id="ok_button" mnemonicParsing="false" onAction="#onOk" prefHeight="34.0" prefWidth="66.0" text="OK" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
       <Text layoutX="41.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Appointment" wrappingWidth="457.5146484375">
          <font>
             <Font name="Kalinga" size="40.0" />
          </font>
       </Text>
-      <Line endX="502.0" layoutX="149.0" layoutY="85.0" startX="-149.0" />
-      <Label layoutX="41.0" layoutY="128.0" prefHeight="23.0" prefWidth="263.0" style="-fx-border-color: grey;" text="Title">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <padding>
-            <Insets left="10.0" />
-         </padding>
-      </Label>
-      <TextArea layoutX="41.0" layoutY="320.0" prefHeight="107.0" prefWidth="263.0" />
-      <Label layoutX="41.0" layoutY="290.0" text="Description">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <CheckBox layoutX="41.0" layoutY="457.0" mnemonicParsing="false" text="Repeat">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </CheckBox>
-      <HBox layoutX="41.0" layoutY="488.0" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
-         <children>
-            <RadioButton mnemonicParsing="false" text="Daily" />
-            <RadioButton mnemonicParsing="false" text="Monthly" />
-            <RadioButton mnemonicParsing="false" text="Yearly" />
-         </children>
-      </HBox>
-      <HBox layoutX="41.0" layoutY="170.0" prefHeight="34.0" prefWidth="263.0" spacing="25.0">
-         <children>
-            <Label text="From">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <TextField prefHeight="25.0" prefWidth="68.0" />
-            <Label text="to">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <TextField prefHeight="25.0" prefWidth="68.0" />
-         </children>
-      </HBox>
-      <DatePicker layoutX="41.0" layoutY="227.0" prefHeight="25.0" prefWidth="128.0" />
-      <Line endX="549.0" layoutX="102.0" layoutY="538.0" startX="-102.0" />
-      <Button layoutX="552.0" layoutY="552.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="66.0" text="OK" />
-      <Button layoutX="467.0" layoutY="552.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="265.0" layoutX="366.0" layoutY="248.0" stroke="#909090" strokeType="INSIDE" width="252.0" />
       <Label layoutX="439.0" layoutY="252.0" prefHeight="30.0" prefWidth="122.0" text="Invite users">
          <font>
@@ -78,7 +97,7 @@
       <CheckBox layoutX="397.0" layoutY="403.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="189.0" text="Anne-Marie Samuelsen" />
       <CheckBox layoutX="397.0" layoutY="433.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="189.0" text="Hanna Sollie Storaker" />
       <Button layoutX="397.0" layoutY="466.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="66.0" text="Find user" />
-      <Button layoutX="418.0" layoutY="126.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="156.0" text="Find available room">
+      <Button layoutX="418.0" layoutY="126.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="173.0" text="Find available room">
          <font>
             <Font size="15.0" />
          </font>

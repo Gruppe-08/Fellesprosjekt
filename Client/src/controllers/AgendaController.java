@@ -1,15 +1,15 @@
 package controllers;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import calendar.AgendaPane;
 import calendar.State;
+import models.Appointment;
 import models.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import communication.requests.AppointmentRequest;
 import communication.responses.AppointmentResponse;
 
@@ -20,36 +20,34 @@ public class AgendaController {
 	@FXML
 	VBox appointmentPane;
 	
-	ArrayList<String> appointments = null;
+	ArrayList<Appointment> appointments = null;
 
 	public void initialize() {
 		AppointmentRequest request = new AppointmentRequest();
 		User user = State.getUser();
 		
 		request.addUsername(user.getUsername());
+		System.out.println("Sending appointment request");
 		State.getConnectionController().sendTCP(request);
-		
 		
 		AppointmentResponse response = (AppointmentResponse) State.getConnectionController().getObject("communication.responses.AppointmentResponse");
 		appointments = response.getAppointments();
 		
 		AgendaPane pane;
-		for (String appointment : appointments) {
+		for (Appointment appointment : appointments) {
 			pane = new AgendaPane(appointment);
 			appointmentPane.getChildren().add(pane);
 		}
+	}
+	
+	@FXML
+	void onAddAppointment(ActionEvent event){
+		State.getWindowController().loadPage("createAppointment.fxml");
+	}
+	
+	@FXML
+	void onDeleteAppointment(ActionEvent event){
 		
-		//AgendaPane pane = new AgendaPane();
-		
-		
-		
-		
-		/*add_appointment.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("TODO: add appointment");
-			}
-		}); */
 	}
 
 }

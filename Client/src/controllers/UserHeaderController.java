@@ -4,53 +4,26 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 public class UserHeaderController {
-	@FXML
-	Text header_username;
-	
-	@FXML 
-	Button menu_button;
-	
-	@FXML
-	AnchorPane menu_pane;
-	
+    @FXML
+    private MenuItem notification;
 
-	@FXML
-	Button notification;
+    @FXML
+    private MenuItem logout;
 
-	@FXML
-	Button profile;
+    @FXML
+    private Text header_username;
 
-	@FXML
-	Button groups;
-
-	@FXML
-	Button logout;
-	
-	Boolean menuVisible = false;
+    @FXML
+    private MenuItem groups;
 	
 	public void initialize(){
-		
-		menu_button.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				menuVisible = !menuVisible;
-				menu_pane.setVisible(menuVisible);
-				System.out.println(menuVisible);
-				
-				
-				if (menuVisible){
-					// Send header to front if the menu is visible
-					State.getWindowController().myWindow.getChildren().get(0).toFront();
-				} else {
-					// Else, send header to back.
-					State.getWindowController().myWindow.getChildren().get(1).toBack();
-				}
-			}
-		});
+		header_username.setText(State.getUser().getFirstname() +
+				" " + State.getUser().getLastname());
 		
 		notification.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -59,13 +32,6 @@ public class UserHeaderController {
 			}
 		});
 
-		profile.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("Notification");
-
-			}
-		});
 		groups.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
@@ -78,6 +44,5 @@ public class UserHeaderController {
 				System.out.println("Notification");
 			}
 		});
-
 	}
 }

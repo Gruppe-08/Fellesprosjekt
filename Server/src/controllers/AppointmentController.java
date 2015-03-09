@@ -11,15 +11,14 @@ import java.util.ArrayList;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AppointmentRequest;
-import communication.requests.CreateUserRequest;
+import communication.requests.DeleteAppointmentRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
-import communication.responses.CreateUserResponse;
+import communication.responses.BaseResponse;
 import communication.responses.PutAppointmentResponse;
 import server.DatabaseConnector;
 import models.Appointment;
 import models.RepetitionType;
-import models.Room;
 import models.User;
 import util.DateUtil;
 
@@ -50,12 +49,31 @@ public class AppointmentController {
 		return response;
 	}
 	
+	public static BaseResponse handleDeleteAppointment(DeleteAppointmentRequest request){
+		BaseResponse res = new BaseResponse();
+		Logger.logMsg(Logger.DEBUG, "Handeling deleteAppointment: " + request.toString());
+
+		try {
+			deleteAppointment(request.getAppointmentId());
+			res.setSuccessful(true);
+		} catch(SQLException e){
+			res.setErrorMessage("Could not delete this appointment.");
+			res.setSuccessful(false);
+			Logger.logMsg(Logger.WARNING, "Error when deleting an appointment: " + e);
+		}
+		
+		return res;
+	}
+	
 	public static PutAppointmentResponse handlePutAppointmentRequest( String clientUsername,
 			PutAppointmentRequest request) {
 		PutAppointmentResponse response = new PutAppointmentResponse();
-		if(clientUsername != request.getAppointment().getOwnerUsername()) {
+		
+		String requestUsername = request.getAppointment().getOwnerUsername();
+		if(!isEqual(clientUsername, requestUsername)) {
+			Logger.logMsg(Logger.ERROR, String.format("HandlePutAppointmentRequest : Expected user '%s', got '%s'", clientUsername, request.getAppointment().getOwnerUsername()));
 			response.setSuccessful(false);
-			response.setErrorMessage("You cannot change an appointment you do now own");
+			response.setErrorMessage("You cannot change an appointment you do not own");
 			return response;
 		}
 		
@@ -88,6 +106,10 @@ public class AppointmentController {
 		}
 		
 		return response;
+	}
+
+	private static boolean isEqual(String clientUsername, String requestUsername) {
+		return clientUsername.equals(requestUsername);
 	}
 	
 	private static ArrayList<Appointment> getAppointmentsByGroups(ArrayList<Integer> groupIDs)
@@ -136,16 +158,12 @@ public class AppointmentController {
 
 		Statement statement = db.createStatement();
 
-		String query = "";
-		query += "SELECT * " +
-		"FROM Appointment a, User u, UserAppointmentRelation au";
-		query += " WHERE (";
+		String query = "SELECT * FROM  `Appointment`NATURAL LEFT JOIN UserAppointmentRelation WHERE ";
+
 		for(String username : usernames)
-			query += "u.username = '" + username + "' OR ";
+			query += String.format("(username =  '%s' OR owner_username =  '%s') OR ", username, username);
 		query = query.substring(0, query.length()-4); //Strip last OR
-		query += ") ";
-		query += "AND a.appointment_id = au.appointment_id " +
-		"AND u.username = au.username";
+		query += "ORDER BY start_date ASC";
 		
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
@@ -186,8 +204,8 @@ public class AppointmentController {
 		String query = 
 				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, repetition_type, owner_username)" +
 				"VALUES ( " +
-				"'" + appointment.getStartTime().toString() + "'," +
-				"'" + appointment.getEndTime().toString() + "'," + 
+				"'" + appointment.getStartTime() + "'," +
+				"'" + appointment.getEndTime() + "'," + 
 				"'" + appointment.getTitle() + "'," + 
 				"'" + appointment.getDescription() + "'," + 
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
@@ -256,7 +274,6 @@ public class AppointmentController {
 	
 	private static void deleteAppointment(int appointmentId) throws SQLException{
 			Statement statement = db.createStatement();
-			
 			String deleteAppointment = String.format("DELETE FROM Appointment WHERE appointment_id='%s'", appointmentId);
 			statement.execute(deleteAppointment);
 	}
@@ -269,7 +286,7 @@ public class AppointmentController {
 		appointment.setEndTime(resultSet.getString("end_date").substring(0, 16)); // TODO: Needs a string parser
 		appointment.setTitle(resultSet.getString("title"));
 		appointment.setDescription(resultSet.getString("description"));
-		appointment.setRoomId(resultSet.getInt("room_id")); // TODO: get the correct room from db
+		appointment.setRoomId(resultSet.getInt("room_id"));
 		appointment.setRepetitionType(RepetitionType.fromString(resultSet.getString("repetition_type"))); // TODO: make this match the db value
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
 		return appointment;

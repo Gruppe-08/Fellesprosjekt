@@ -4,7 +4,7 @@ public class BaseResponse {
 	private boolean wasSuccessful;
 	private String errorMessage;
 	
-	BaseResponse() {}
+	public BaseResponse() {}
 	
 	public boolean wasSuccessful() {
 		return wasSuccessful;

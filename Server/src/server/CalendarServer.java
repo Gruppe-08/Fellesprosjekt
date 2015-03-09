@@ -14,9 +14,11 @@ import com.sun.media.jfxmedia.logging.Logger;
 import communication.requests.AppointmentRequest;
 import communication.requests.AuthenticationRequest;
 import communication.requests.CreateUserRequest;
+import communication.requests.DeleteAppointmentRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
+import communication.responses.BaseResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.PutAppointmentResponse;
 import controllers.AppointmentController;
@@ -50,6 +52,7 @@ public class CalendarServer extends Server {
 					clientConnection.isAuthenticated = response.wasSuccessful();
 					if (clientConnection.isAuthenticated) {
 						response.setUser(UserController.getUser(request.getUsername()));
+						clientConnection.username = request.getUsername();
 					}
 
 	    			clientConnection.sendTCP(response);
@@ -81,6 +84,13 @@ public class CalendarServer extends Server {
 				
 					PutAppointmentResponse response = AppointmentController.handlePutAppointmentRequest(
 							clientConnection.username, request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof DeleteAppointmentRequest) {
+					Logger.logMsg(Logger.DEBUG, "Got deleteAppointmentRequest");
+					DeleteAppointmentRequest request = (DeleteAppointmentRequest) object;
+				
+					BaseResponse response = AppointmentController.handleDeleteAppointment(request);
 					clientConnection.sendTCP(response);
 				}
 				
