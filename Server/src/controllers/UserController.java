@@ -17,8 +17,10 @@ import com.sun.media.jfxmedia.logging.Logger;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import communication.requests.AuthenticationRequest;
 import communication.requests.CreateUserRequest;
+import communication.requests.GetUsersRequest;
 import communication.responses.AuthenticationResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.UserResponse;
 import server.DatabaseConnector;
 
 public class UserController {
@@ -28,6 +30,23 @@ public class UserController {
 		String hash = getHashForUser(request.getUsername());
 		Boolean status = compareHashes(request.getPassword(), hash);
 		response.setSuccessful(status);
+		
+		return response;
+	}
+	
+	public static UserResponse handleGetUsersResponse(GetUsersRequest request) {
+		UserResponse response = new UserResponse();
+		try {
+			ArrayList<User> users = getUsers();
+			for(User user : users) {
+				response.addUser(user);
+			}
+			response.setSuccessful(true);
+		}
+		catch(SQLException e) {
+			Logger.logMsg(Logger.ERROR, e.getMessage());
+			response.setSuccessful(false);
+		}
 		
 		return response;
 	}
@@ -164,20 +183,16 @@ public class UserController {
 		}
 	}
 	
-	private static void getUsers() {
+	private static ArrayList<User> getUsers() throws SQLException {
 		Connection db = DatabaseConnector.getDB();
 		ArrayList<User> users = new ArrayList<User>();
-		try {
-			Statement stm = db.createStatement();
-			String getUsers = String.format("SELECT username, firstname, lastname FROM users");
-			ResultSet rs = stm.executeQuery(getUsers);
-			while(rs.next()) {
-				users.add(parseResultSetToUser(rs));
-			}
+		Statement stm = db.createStatement();
+		String getUsers = String.format("SELECT username, firstname, lastname FROM users");
+		ResultSet rs = stm.executeQuery(getUsers);
+		while(rs.next()) {
+			users.add(parseResultSetToUser(rs));
 		}
-		catch (SQLException e){
-			System.out.println(e);
-		}
+		return users;
 	}
 	
 	private static User parseResultSetToUser(ResultSet rs) throws SQLException{

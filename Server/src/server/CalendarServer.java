@@ -15,6 +15,7 @@ import communication.requests.AppointmentRequest;
 import communication.requests.AuthenticationRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
+import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
@@ -87,10 +88,15 @@ public class CalendarServer extends Server {
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof DeleteAppointmentRequest) {
-					Logger.logMsg(Logger.DEBUG, "Got deleteAppointmentRequest");
 					DeleteAppointmentRequest request = (DeleteAppointmentRequest) object;
 				
 					BaseResponse response = AppointmentController.handleDeleteAppointment(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof GetUsersRequest) {
+					GetUsersRequest request = (GetUsersRequest) object;
+				
+					BaseResponse response = UserController.handleGetUsersResponse(request);
 					clientConnection.sendTCP(response);
 				}
 				
