@@ -73,7 +73,7 @@
             </VBox>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button fx:id="cancel_button" mnemonicParsing="false" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
+                  <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#onCancel" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
                   <Button fx:id="ok_button" mnemonicParsing="false" onAction="#onOk" prefHeight="34.0" prefWidth="66.0" text="OK" />
                </children>
             </HBox>
