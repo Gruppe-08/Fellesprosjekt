@@ -42,18 +42,6 @@ public class CreateAppointmentController {
     TextField to_time;
     
     @FXML
-    CheckBox repeat_check;
-    
-    @FXML
-    RadioButton repeat_daily;
-    
-    @FXML
-    RadioButton repeat_monthly;
-
-    @FXML
-    RadioButton repeat_yearly;
-
-    @FXML
     Button cancel_button;
 
     @FXML
@@ -78,21 +66,10 @@ public class CreateAppointmentController {
     	appointment.setOwnerUsername(State.getUser().getUsername());
     	
     	title.setStyle("");
-    	if(title.getText().equals("")) {
+    	if(title.getText().equals(""))
     		title.setStyle("-fx-border-color: red");
-    	}
     	else
         	appointment.setTitle(title.getText());
-    	
-
-    	if(repeat_check.isSelected()) {
-    		if(repeat_daily.selectedProperty().get())
-    			appointment.setRepetitionType(RepetitionType.DAILY);
-    		else if(repeat_monthly.selectedProperty().get())
-    			appointment.setRepetitionType(RepetitionType.MONTHLY);
-    		else if(repeat_yearly.selectedProperty().get())
-    			appointment.setRepetitionType(RepetitionType.YEARLY);
-    	}
     	
     	PutAppointmentRequest request = new PutAppointmentRequest();
     	request.setAppointment(appointment);
