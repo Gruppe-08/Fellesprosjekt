@@ -12,51 +12,6 @@
 
 <AnchorPane prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: rgba(0,0,0,0);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserHeaderController">
    <children>
-      <AnchorPane fx:id="menu_pane" prefHeight="340.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0);" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-		   <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e2e8ee" height="305.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="260.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
-		      <VBox alignment="TOP_CENTER" spacing="28.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0">
-		         <children>
-		            <Button fx:id="notification" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="Notifications">
-		               <font>
-		                  <Font size="25.0" />
-		               </font>
-		            </Button>
-		            <Button fx:id="profile" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="Profile">
-		               <font>
-		                  <Font size="25.0" />
-		               </font>
-		            </Button>
-		            <Button fx:id="groups" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="My groups">
-		               <font>
-		                  <Font size="25.0" />
-		               </font>
-		            </Button>
-		            <Button fx:id="logout" mnemonicParsing="false" prefHeight="48.0" prefWidth="238.0" text="Log out">
-		               <font>
-		                  <Font size="25.0" />
-		               </font>
-		            </Button>
-		         </children>
-		      </VBox>
-		   </children>
-		   <effect>
-            <DropShadow />
-		   </effect>
-		</AnchorPane>
-      <Pane maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="20.0">
-         <children>
-            <Button fx:id="menu_button" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" text="Menu">
-               <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../lib/icons/menu.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </Pane>
       <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="300.0" spacing="10.0" AnchorPane.rightAnchor="100.0">
          <children>
             <Pane maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: white;">
@@ -75,5 +30,12 @@
             </Text>
          </children>
       </HBox>
+      <MenuButton layoutX="306.0" layoutY="25.0" mnemonicParsing="false" text="Menu">
+        <items>
+          <MenuItem fx:id="notification" mnemonicParsing="false" text="Notifications" />
+            <MenuItem fx:id="groups" mnemonicParsing="false" text="Groups" />
+          <MenuItem fx:id="logout" mnemonicParsing="false" text="Sign out" />
+        </items>
+      </MenuButton>
    </children>
 </AnchorPane>
