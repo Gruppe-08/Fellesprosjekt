@@ -1,7 +1,6 @@
 package calendar;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import models.Appointment;
@@ -11,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
@@ -25,7 +23,7 @@ public class AppointmentPane extends VBox {
 		this.setPrefWidth(300);
 		this.setPrefHeight(calculateHeight());
 		this.setPadding(new Insets(5,5,5,5));
-		this.setStyle("-fx-background-color: #4ca1ff");
+		this.setStyle("-fx-background-color: #A7F0F0");
 		this.putText();
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.web("#38597F", 1.0));
