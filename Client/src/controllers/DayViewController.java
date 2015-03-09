@@ -3,12 +3,14 @@ package controllers;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import util.DateUtil;
 import communication.requests.AppointmentRequest;
 import communication.responses.AppointmentResponse;
 import calendar.AppointmentPane;
@@ -32,7 +34,7 @@ public class DayViewController implements Initializable{
 	@FXML private Button nextDay;
 	private String currentDay;
 	
-	Map<String, ArrayList<Appointment>> cachedAppointments = new HashMap<String, ArrayList<Appointment>>();
+	private Map<String, ArrayList<Appointment>> cachedAppointments = new HashMap<String, ArrayList<Appointment>>();
 	private final static DateTimeFormatter defaultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	private static ArrayList<Node> blankDayPane = new ArrayList<Node>();
 	
@@ -112,12 +114,8 @@ public class DayViewController implements Initializable{
 	}
 		
 	private double calculateAppointmentPlacement(String startTime) {
-		String hourandminutes = startTime.substring(11);
-		System.out.println(hourandminutes);
-		String[] time = hourandminutes.split(":");
-		int hour = Integer.valueOf(time[0]);
-		int minutes = Integer.valueOf(time[1]);
-		double pixels = (hour * 50 + minutes * 0.833);
+		LocalTime dateTime = DateUtil.deserializeTime(startTime);
+		double pixels = (dateTime.getHour() * 50 + dateTime.getMinute() * 0.833);
 		return pixels;
 	}
 	
