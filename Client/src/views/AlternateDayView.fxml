@@ -13,7 +13,6 @@
 
 <AnchorPane prefHeight="668" prefWidth="1024.0" style="-fx-background-color: beige" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DayViewController">
 	<children>
-      <Button fx:id="getButton" layoutX="580.0" layoutY="108.0" mnemonicParsing="false" text="Button" />
       <ScrollPane hbarPolicy="NEVER" layoutX="42.0" layoutY="106.0" pannable="true" prefHeight="400.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="500.0" vbarPolicy="NEVER" vvalue="0.5">
          <content>
             <AnchorPane fx:id="dayPane" prefHeight="1200.0" prefWidth="500.0" style="-fx-background-color: white;">
@@ -140,5 +139,20 @@
             </AnchorPane>
          </content>
       </ScrollPane>
+      <Text fx:id="dayLabel" layoutX="220.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="145.0">
+         <font>
+            <Font name="Helvetica Light" size="21.0" />
+         </font>
+      </Text>
+      <Button fx:id="nextDay" layoutX="365.0" layoutY="50.0" mnemonicParsing="false" text="Tomorrow" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="prevDay" layoutX="136.0" layoutY="50.0" mnemonicParsing="false" text="Yesterday" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica" size="14.0" />
+         </font>
+      </Button>
 	</children>
 </AnchorPane>
