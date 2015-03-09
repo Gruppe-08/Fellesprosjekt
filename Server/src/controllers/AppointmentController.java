@@ -21,6 +21,7 @@ import models.Appointment;
 import models.RepetitionType;
 import models.Room;
 import models.User;
+import util.DateUtil;
 
 public class AppointmentController {
 	private static Connection db = DatabaseConnector.getDB();
@@ -264,8 +265,8 @@ public class AppointmentController {
 			throws SQLException {
 		Appointment appointment = new Appointment();
 		appointment.setId(resultSet.getInt("appointment_id"));
-		appointment.setStartTime(LocalDateTime.now().toString()); // TODO: Needs a string parser
-		appointment.setEndTime(LocalDateTime.now().toString()); // TODO: Needs a string parser
+		appointment.setStartTime(resultSet.getString("start_date").substring(0, 16));
+		appointment.setEndTime(resultSet.getString("end_date").substring(0, 16)); // TODO: Needs a string parser
 		appointment.setTitle(resultSet.getString("title"));
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id")); // TODO: get the correct room from db

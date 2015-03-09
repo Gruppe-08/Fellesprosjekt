@@ -1,18 +1,19 @@
 package calendar;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import models.Appointment;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class AppointmentPane extends Pane {
+public class AppointmentPane extends VBox {
 	
 	private Appointment appointment;
 	
@@ -20,43 +21,27 @@ public class AppointmentPane extends Pane {
 	public AppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
 		this.setPrefWidth(300);
-//		this.setPrefHeight(calculateHeight());
-		this.setStyle("-fx-background-color: #0078FF");
-		this.putText();		
+		this.setPrefHeight(calculateHeight());
+		this.setPadding(new Insets(5,5,5,5));
+		this.setStyle("-fx-background-color: #A7F0F0");
+		this.putText();
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setColor(Color.web("#38597F", 1.0));
+		this.setEffect(dropShadow);
 	}
 	
-//	private int calculateHeight() {
-//		LocalDateTime startTime = this.appointment.getStartTime();
-//		LocalDateTime endTime = this.appointment.getEndTime();
-//		Long diff = startTime.until(endTime, ChronoUnit.MINUTES);
-//		int height = (int)(0.333 * diff) + 1;
-//		return height;
-//	}
-	
-	private double calculateTextPlacement() {
-		double height = this.getHeight();
-		if (height >= 30.0) {
-			return 24.0;
-		}
-		else {
-			return height * 0.4;
-		}
+	private int calculateHeight() {
+		LocalDateTime startTime = util.DateUtil.deserialize(this.appointment.getStartTime());
+		LocalDateTime endTime = util.DateUtil.deserialize(this.appointment.getEndTime());
+		Long diff = startTime.until(endTime, ChronoUnit.MINUTES);
+		AnchorPane.setLeftAnchor(this, 75.0);
+		int height = (int)(0.85 * diff) + 1;
+		return height;
 	}
 	
 	private void putText() {
 		Text titleText = new Text(appointment.getTitle());
-		titleText.setStyle("-fx-font-family: 'Helvetica';");
-		titleText.setStyle("-fx-font-size: 15px;");
-		titleText.setStyle("-fx-font-style: italic");
-		titleText.setStyle("-fx-font-weight: lighter");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");		
+		titleText.setFont(Font.font("Helvetica", FontWeight.THIN, 20));
 		this.getChildren().addAll(titleText);
-	}
-	
-	@Override
-	protected void layoutChildren() {
-		Text titleText = (Text)this.getChildren().get(0);
-		titleText.setLayoutX(10.0);
-		titleText.setLayoutY(calculateTextPlacement());
 	}
 }
