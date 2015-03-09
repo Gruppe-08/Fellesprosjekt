@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="668" prefWidth="1024.0" style="-fx-background-color: beige" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DayViewController">
+<AnchorPane prefHeight="668" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-      <ScrollPane hbarPolicy="NEVER" layoutX="42.0" layoutY="106.0" pannable="true" prefHeight="400.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="500.0" vbarPolicy="NEVER" vvalue="0.5">
+      <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="130.0" pannable="true" prefHeight="515.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="1001.0" vbarPolicy="NEVER" vvalue="0.5">
          <content>
-            <AnchorPane fx:id="dayPane" prefHeight="1200.0" prefWidth="500.0" style="-fx-background-color: white;">
+            <AnchorPane fx:id="weekPane" prefHeight="1200.0" prefWidth="1001.0" style="-fx-background-color: white;">
                <children>
                   <Text fill="#4ca1ff" text="01.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
                      <font>
@@ -132,27 +129,75 @@
                         <Font name="Helvetica" size="12.0" />
                      </font>
                   </Text>
+                  <Line endX="603.0" endY="1200.0" startX="603.0" stroke="#00000017" />
+                  <Line endX="207.0" endY="1200.0" startX="207.0" stroke="#00000017" />
+                  <Line endX="867.0" endY="1200.0" startX="867.0" stroke="#00000017" />
+                  <Line endX="339.0" endY="1200.0" startX="339.0" stroke="#00000017" />
+                  <Line endX="471.0" endY="1200.0" startX="471.0" stroke="#00000017" />
+                  <Line endX="735.0" endY="1200.0" startX="735.0" stroke="#00000017" />
+                  <Line endX="75.0" endY="1200.0" startX="75.0" stroke="#00000017" />
                </children>
                <effect>
                   <Blend />
                </effect>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Text fx:id="dayLabel" layoutX="220.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="145.0">
+      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="431.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Week 1" textAlignment="CENTER" wrappingWidth="145.0">
          <font>
-            <Font name="Helvetica Light" size="21.0" />
+            <Font name="Helvetica Light" size="36.0" />
          </font>
       </Text>
-      <Button fx:id="nextDay" layoutX="365.0" layoutY="50.0" mnemonicParsing="false" text="Tomorrow" textAlignment="CENTER">
+      <Button fx:id="nextWeek" contentDisplay="CENTER" layoutX="576.0" layoutY="32.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
          <font>
-            <Font name="Helvetica" size="14.0" />
+            <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Button fx:id="prevDay" layoutX="136.0" layoutY="50.0" mnemonicParsing="false" text="Yesterday" textAlignment="CENTER">
+      <Button fx:id="prevWeek" contentDisplay="CENTER" layoutX="369.0" layoutY="32.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
          <font>
-            <Font name="Helvetica" size="14.0" />
+            <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
+      <Text fill="#1d93c6" layoutX="111.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#1d93c6" layoutX="238.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#1d93c6" layoutX="357.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#1d93c6" layoutX="502.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thurs" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#1d93c6" layoutX="650.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#1d93c6" layoutX="768.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#1d93c6" layoutX="905.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
 	</children>
+   <opaqueInsets>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </opaqueInsets>
 </AnchorPane>
