@@ -188,7 +188,6 @@ public class AppointmentController {
 				"description = '" + appointment.getDescription() + "'," + 
 				"location = " + (appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
 				"room_id = " + appointment.getRoomId() + ", " +
-				"repetition_type = " + (appointment.getRepetitionType() == null ? "null," : "'" + appointment.getRepetitionType().toString() + "',") + // TODO: run update script on server database to make the repetition type models mattch
 				"owner_username = '" + appointment.getOwnerUsername() + "' " +
 				"WHERE appointment_id=" + appointment.getId() + ";";
 		System.out.println(query);
@@ -210,7 +209,6 @@ public class AppointmentController {
 				"'" + appointment.getDescription() + "'," + 
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
 				appointment.getRoomId() + ", " +
-				(appointment.getRepetitionType() == null ? "null," : "'" + appointment.getRepetitionType().toString() + "',") + // TODO: run update script on server database to make the repetition type models mattch
 				"'" + appointment.getOwnerUsername() + "');";
 		
 		statement = db.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);
@@ -287,7 +285,6 @@ public class AppointmentController {
 		appointment.setTitle(resultSet.getString("title"));
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id"));
-		appointment.setRepetitionType(RepetitionType.fromString(resultSet.getString("repetition_type"))); // TODO: make this match the db value
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
 		return appointment;
 	}

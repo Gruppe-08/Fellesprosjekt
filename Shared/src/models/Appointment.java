@@ -10,12 +10,11 @@ public class Appointment {
 	private String startTime;
 	private String endTime;
 	private Integer roomId;
-	private RepetitionType repetitionType;
 	private String ownerUsername;
 	
 	
 	public Appointment(Integer id, String title, String description, String location, String startTime, String endTime,
-			Integer roomId, RepetitionType repetitionType, String ownerUsername) {
+			Integer roomId, String ownerUsername) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -24,7 +23,6 @@ public class Appointment {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.roomId = roomId;
-		this.repetitionType = repetitionType;
 		this.ownerUsername = ownerUsername;
 	}
 	
@@ -110,17 +108,6 @@ public class Appointment {
 		this.roomId = roomId;
 	}
 
-
-	public RepetitionType getRepetitionType() {
-		return repetitionType;
-	}
-
-
-	public void setRepetitionType(RepetitionType repetitionType) {
-		this.repetitionType = repetitionType;
-	}
-
-
 	public String getOwnerUsername() {
 		return ownerUsername;
 	}
@@ -135,8 +122,7 @@ public class Appointment {
 		return "Appointment [id=" + id + ", title=" + title + ", description="
 				+ description + ", location=" + location + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", roomId=" + roomId
-				+ ", repetitionType=" + repetitionType + ", ownerUsername="
-				+ ownerUsername + "]";
+				+ ", ownerUsername=" + ownerUsername + "]";
 	}
 
 }
