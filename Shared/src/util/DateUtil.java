@@ -54,9 +54,38 @@ public class DateUtil {
 	
 	public static int getWeekOfYear(String dateTimeString) {
 		LocalDateTime dateTime = deserializeDateTime(dateTimeString);
-		Calendar cal = Calendar.getInstance();
-		cal.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
+		Calendar cal = Calendar.getInstance(Locale.GERMANY);
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		cal.set(dateTime.getYear(), dateTime.getMonthValue()-1, dateTime.getDayOfMonth());	//Subtract 1 for different definition of first month in year
 		return cal.get(Calendar.WEEK_OF_YEAR);
+	}
+	
+	public static int getYear(String dateTimeString) {
+		LocalDateTime dateTime = deserializeDateTime(dateTimeString);
+		return dateTime.getYear();
+	}
+	
+	public static LocalDate getDateOfDayInWeek(int year, int week, int day) {
+		Calendar cal = Calendar.getInstance();
+		cal.setWeekDate(year, week, day);
+		String calYear = String.valueOf(cal.get(Calendar.YEAR));
+		String calMonth = String.valueOf(cal.get(Calendar.MONTH)+1);
+		String calDay = String.valueOf(cal.get(Calendar.DATE));
+		if (Integer.valueOf(calMonth) < 10) {
+			calMonth = "0" + calMonth;
+		}
+		if (Integer.valueOf(calDay) < 10) {
+			calDay = "0" + calDay;
+		}
+		
+		return deserializeDate(String.format("%s-%s-%s", calYear, calMonth, calDay));
+	}
+	
+	public static int[] datesInSameMonth(LocalDate dateTime1, LocalDate dateTime2) {
+		int[] months = new int[2];
+		months[0] = dateTime1.getMonth().getValue();
+		months[1] = dateTime2.getMonth().getValue();
+		return months;
 	}
 	
 	
