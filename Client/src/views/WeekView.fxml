@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -146,54 +147,59 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="431.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Week 1" textAlignment="CENTER" wrappingWidth="145.0">
+      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="403.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="204.54608154296875">
          <font>
             <Font name="Helvetica Light" size="36.0" />
          </font>
       </Text>
-      <Button fx:id="nextWeek" contentDisplay="CENTER" layoutX="576.0" layoutY="32.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
+      <Button fx:id="nextWeekButton" contentDisplay="CENTER" layoutX="607.0" layoutY="36.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
          <font>
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Button fx:id="prevWeek" contentDisplay="CENTER" layoutX="369.0" layoutY="32.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
+      <Button fx:id="prevWeekButton" contentDisplay="CENTER" layoutX="334.0" layoutY="33.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
          <font>
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Text fill="#1d93c6" layoutX="111.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER">
+      <Text fx:id="mondayLabel" fill="#1d93c6" layoutX="111.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
          </font>
       </Text>
-      <Text fill="#1d93c6" layoutX="238.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER">
+      <Text fx:id="tuesdayLabel" fill="#1d93c6" layoutX="238.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
          </font>
       </Text>
-      <Text fill="#1d93c6" layoutX="357.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER">
+      <Text fx:id="wednesdayLabel" fill="#1d93c6" layoutX="357.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
          </font>
       </Text>
-      <Text fill="#1d93c6" layoutX="502.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thurs" textAlignment="CENTER">
+      <Text fx:id="thursdayLabel" fill="#1d93c6" layoutX="502.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thurs" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
          </font>
       </Text>
-      <Text fill="#1d93c6" layoutX="650.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER">
+      <Text fx:id="fridayLabel" fill="#1d93c6" layoutX="650.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
          </font>
       </Text>
-      <Text fill="#1d93c6" layoutX="768.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER">
+      <Text fx:id="saturdayLabel" fill="#1d93c6" layoutX="768.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
          </font>
       </Text>
-      <Text fill="#1d93c6" layoutX="905.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER">
+      <Text fx:id="sundayLabel" fill="#1d93c6" layoutX="905.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER">
          <font>
             <Font name="Helvetica Light" size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="monthLabel" layoutX="24.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="317.8736114501953">
+         <font>
+            <Font name="Helvetica Neue Thin" size="30.0" />
          </font>
       </Text>
 	</children>
