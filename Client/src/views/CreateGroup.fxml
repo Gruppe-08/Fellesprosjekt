@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="114.0" layoutY="99.0" prefHeight="26.0" prefWidth="153.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="333.0" />
+      <TextArea layoutX="114.0" layoutY="166.0" prefHeight="200.0" prefWidth="153.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="333.0" />
+      <AnchorPane layoutX="400.0" layoutY="148.0" prefHeight="219.0" prefWidth="190.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="199.0" layoutX="1.0" layoutY="20.0" stroke="#bfbcbc" strokeType="INSIDE" width="179.0" />
+            <CheckBox alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="18.0" prefWidth="59.0" text="Anne" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="121.0" AnchorPane.topAnchor="30.0" />
+            <CheckBox alignment="TOP_CENTER" mnemonicParsing="false" text="Eirik" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="120.0" />
+            <CheckBox alignment="TOP_CENTER" mnemonicParsing="false" text="Kristian" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="150.0" />
+            <CheckBox alignment="TOP_CENTER" layoutY="52.0" mnemonicParsing="false" text="Hanna" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="90.0" />
+            <CheckBox alignment="TOP_CENTER" mnemonicParsing="false" text="Christian" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0" />
+            <ScrollBar layoutX="162.0" layoutY="21.0" orientation="VERTICAL" prefHeight="197.0" prefWidth="17.0" />
+         </children>
+      </AnchorPane>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1d93c6" height="59.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
+      <Text fill="WHITE" layoutX="54.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Group">
+         <font>
+            <Font name="Helvetica Neue" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="25.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
+      <Text layoutX="26.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
+      <Text layoutX="332.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members:" />
+   </children>
+</AnchorPane>
