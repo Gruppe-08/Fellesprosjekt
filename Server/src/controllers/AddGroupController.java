@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
+import communication.requests.CreateGroupRequest;
+import communication.responses.BaseResponse;
 import server.DatabaseConnector;
 import models.Group;
 import models.User;
@@ -17,24 +21,33 @@ public class AddGroupController {
 	
 	private static String addUserGroupRelation = "INSERT INTO UserGroupRelation(group_id, username)";
 	
-	public static void addGroup(Group group){
+	public static void addGroup(Group group) throws SQLException{
 		db = DatabaseConnector.getDB();
 
 		String addGroup = String.format("INSERT INTO UserGroup(title) VALUES('%s')", group.getName());	
-		try {
-			statement = db.prepareStatement(addGroup,  Statement.RETURN_GENERATED_KEYS);
-			statement.execute();
-			res = statement.getGeneratedKeys();
-			
-			if(returnedGroupId()){
-				// get generated groupId
-				int groupId = res.getInt(1);
-				addUsers(group, groupId);
-			}	
-		} catch (SQLException e) {
-			System.out.println("Add group failed.");
-			e.printStackTrace();
+		statement = db.prepareStatement(addGroup,  Statement.RETURN_GENERATED_KEYS);
+		statement.execute();
+		res = statement.getGeneratedKeys();
+		
+		if(returnedGroupId()){
+			// get generated groupId
+			int groupId = res.getInt(1);
+			addUsers(group, groupId);
 		}
+}
+	
+	public static BaseResponse handleCreateGroupRequest(CreateGroupRequest request) {
+		Group group = request.getGroup();
+		BaseResponse res = new BaseResponse();
+		try{
+			AddGroupController.addGroup(group);
+			res.setSuccessful(true);
+		} catch(SQLException e){
+			res.setErrorMessage("Could not create group.");
+			Logger.logMsg(Logger.ERROR, "Failed to create group: " + e);
+			res.setSuccessful(false);
+		}
+		return res;
 	}
 
 

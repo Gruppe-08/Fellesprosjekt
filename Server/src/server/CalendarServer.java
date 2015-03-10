@@ -13,6 +13,7 @@ import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AppointmentRequest;
 import communication.requests.AuthenticationRequest;
+import communication.requests.CreateGroupRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.PutAppointmentRequest;
@@ -21,6 +22,7 @@ import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.PutAppointmentResponse;
+import controllers.AddGroupController;
 import controllers.AppointmentController;
 import controllers.UserController;
 import communication.ClassRegistration;
@@ -87,10 +89,13 @@ public class CalendarServer extends Server {
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof DeleteAppointmentRequest) {
-					Logger.logMsg(Logger.DEBUG, "Got deleteAppointmentRequest");
 					DeleteAppointmentRequest request = (DeleteAppointmentRequest) object;
-				
 					BaseResponse response = AppointmentController.handleDeleteAppointment(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof CreateGroupRequest){
+					CreateGroupRequest request = (CreateGroupRequest) object;
+					BaseResponse response = AddGroupController.handleCreateGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				
