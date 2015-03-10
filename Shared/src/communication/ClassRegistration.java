@@ -17,12 +17,14 @@ public abstract class ClassRegistration {
 		kryo.register(communication.requests.CreateUserRequest.class);
 		kryo.register(communication.requests.AppointmentRequest.class);
 		kryo.register(communication.requests.DeleteAppointmentRequest.class);
+		kryo.register(communication.requests.GetUsersRequest.class);
 		
 		kryo.register(communication.responses.AuthenticationResponse.class);
 		kryo.register(communication.responses.AppointmentResponse.class);
 		kryo.register(communication.responses.CreateUserResponse.class);
 		kryo.register(communication.responses.BaseResponse.class);
 		kryo.register(communication.responses.PutAppointmentResponse.class);
+		kryo.register(communication.responses.UserResponse.class);
 		
 		kryo.register(models.User.class);
 		kryo.register(models.RepetitionType.class);

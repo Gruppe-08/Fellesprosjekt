@@ -36,7 +36,7 @@ public class WindowController implements Initializable {
 	public void loginSuccessful() {
 		UserHeaderController headerController = (UserHeaderController)loadHeader("UserHeader.fxml");
 
-		loadPage("AlternateDayView.fxml");
+		loadPage("createAppointment.fxml");
 	}
 	
 	public Object loadPage(String pageName) {

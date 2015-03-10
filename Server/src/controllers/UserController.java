@@ -30,7 +30,7 @@ public class UserController {
 		String hash = getHashForUser(request.getUsername());
 		Boolean status = compareHashes(request.getPassword(), hash);
 		response.setSuccessful(status);
-		
+		response.setUser(getUser(request.getUsername()));
 		return response;
 	}
 	
@@ -147,6 +147,7 @@ public class UserController {
 			Statement stm = db.createStatement();
 			String getUser = String.format("SELECT * FROM User WHERE username = '%s'", username);
 			ResultSet rs = stm.executeQuery(getUser);
+			rs.next();
 			user = parseResultSetToUser(rs);
 		}
 		catch (SQLException e){
@@ -187,8 +188,7 @@ public class UserController {
 		Connection db = DatabaseConnector.getDB();
 		ArrayList<User> users = new ArrayList<User>();
 		Statement stm = db.createStatement();
-		String getUsers = String.format("SELECT username, firstname, lastname FROM users");
-		ResultSet rs = stm.executeQuery(getUsers);
+		ResultSet rs = stm.executeQuery("SELECT * FROM User WHERE 1");
 		while(rs.next()) {
 			users.add(parseResultSetToUser(rs));
 		}
@@ -197,11 +197,9 @@ public class UserController {
 	
 	private static User parseResultSetToUser(ResultSet rs) throws SQLException{
 		User user = new User();
-		while (rs.next()) {
-			user.setUsername(rs.getString("username"));
-			user.setFirstname(rs.getString("firstname"));
-			user.setLastname(rs.getString("lastname"));
-		}
+		user.setUsername(rs.getString("username"));
+		user.setFirstname(rs.getString("firstname"));
+		user.setLastname(rs.getString("lastname"));
 		return user;
 	}	
 }
