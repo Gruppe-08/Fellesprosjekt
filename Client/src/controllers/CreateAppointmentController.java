@@ -155,8 +155,6 @@ public class CreateAppointmentController implements Initializable {
         added_column.setCellFactory(new Callback<TableColumn<Pair<BooleanProperty, User>,BooleanProperty>, TableCell<Pair<BooleanProperty, User>,BooleanProperty>>() {
 			@Override
 			public TableCell<Pair<BooleanProperty, User>, BooleanProperty> call(TableColumn<Pair<BooleanProperty, User>, BooleanProperty> param) {
-				CheckBoxTableCell cell = new CheckBoxTableCell();
-				System.out.println(param);
 				return new CheckBoxTableCell();
 			}
 		});
