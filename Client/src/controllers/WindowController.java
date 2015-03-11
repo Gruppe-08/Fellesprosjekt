@@ -80,14 +80,13 @@ public class WindowController implements Initializable {
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("dayView.fxml");
+						loadPage("DayView.fxml");
 						viewToggle.selectToggle(dayToggle);
 					}
 				});
 				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						
 						loadPage("weekView.fxml");
 						viewToggle.selectToggle(weekToggle);
 					}
@@ -101,7 +100,8 @@ public class WindowController implements Initializable {
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("agendaToggle");
+						loadPage("Agenda.fxml");
+						viewToggle.selectToggle(agendaToggle);
 					}
 				});	
 			}
