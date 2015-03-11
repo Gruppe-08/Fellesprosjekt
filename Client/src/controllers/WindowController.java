@@ -2,8 +2,12 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import models.Notification;
+import communication.requests.NotificationRequest;
+import communication.responses.NotificationResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -112,6 +116,18 @@ public class WindowController implements Initializable {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage("WeekView.fxml");
+		
+		NotificationRequest req = new NotificationRequest();
+		State.getConnectionController().sendTCP(req);
+		NotificationResponse res = (NotificationResponse) State.getConnectionController().getObject("communication.responses.NotificationResponse");
+		
+		
+		ArrayList<Notification> notifications = res.getNotifications();
+		
+		System.out.println("Notifications: \n");
+		for (Notification notification : notifications) {
+			System.out.println(notification.getMessage() + " " + notification.getTriggerDate());
+		}
 	}
 	
 	public Object loadPage(String pageName) {

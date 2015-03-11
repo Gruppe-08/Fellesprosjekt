@@ -1,16 +1,23 @@
 package communication.responses;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import models.Notification;
 
 public class NotificationResponse {
-	private List<Notification> notifications;
+	private ArrayList<Notification> notifications;
 	
 	public NotificationResponse() { }
 	
-	public NotificationResponse(List<Notification> notifications){
+	public NotificationResponse(ArrayList<Notification> notifications){
 		this.notifications = notifications;
+	}
+	
+	public void setNotifications(ArrayList<Notification> notifications){
+		this.notifications = notifications;
+	}
+	
+	public ArrayList<Notification> getNotifications(){
+		return notifications;
 	}
 
 }

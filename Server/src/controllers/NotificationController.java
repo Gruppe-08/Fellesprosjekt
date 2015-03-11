@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.media.jfxmedia.logging.Logger;
+import communication.responses.NotificationResponse;
 
 import models.Appointment;
 import models.Notification;
@@ -18,14 +19,15 @@ public class NotificationController {
 	private static PreparedStatement statement;
 	private static ResultSet res;
 	
-	public static ArrayList<Notification> handleGetNotifications(String username){
-		ArrayList<Notification> notifications = null;
+	public static NotificationResponse getNotificationResponse(String username){
+		NotificationResponse response = new NotificationResponse();
 		try {
-			notifications = getNotifications(username);
+			response.setNotifications(getNotifications(username));
 		} catch (SQLException e){
 			Logger.logMsg(Logger.ERROR, "HandleAppointmentRequest generated exception: " + e.getMessage());
 		}
-		return notifications;
+		
+		return response;
 	}
 	
 	private static void addNotification(Notification not) throws SQLException{
