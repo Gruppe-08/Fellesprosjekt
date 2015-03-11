@@ -16,6 +16,7 @@ import communication.requests.AuthenticationRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
+import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
@@ -96,6 +97,11 @@ public class CalendarServer extends Server {
 				else if(object instanceof CreateGroupRequest){
 					CreateGroupRequest request = (CreateGroupRequest) object;
 					BaseResponse response = AddGroupController.handleCreateGroupRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof GetUsersRequest){
+					GetUsersRequest request = (GetUsersRequest) object;
+					BaseResponse response = UserController.handleGetUsersRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				

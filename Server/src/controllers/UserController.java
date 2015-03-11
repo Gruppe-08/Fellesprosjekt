@@ -1,6 +1,6 @@
 package controllers;
 
-import models.Appointment;
+
 import models.User;
 
 import java.security.MessageDigest;
@@ -11,14 +11,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.sun.glass.ui.Window.Level;
 import com.sun.media.jfxmedia.logging.Logger;
 
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import communication.requests.AuthenticationRequest;
 import communication.requests.CreateUserRequest;
+import communication.requests.GetUsersRequest;
 import communication.responses.AuthenticationResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GetUsersResponse;
 import server.DatabaseConnector;
 
 public class UserController {
@@ -40,6 +40,20 @@ public class UserController {
 			response.setSuccessful(true);
 		}
 		catch(Exception e) {
+			response.setSuccessful(false);
+			response.setErrorMessage(e.getMessage());
+		}
+		return response;
+	}
+	
+	public static GetUsersResponse handleGetUsersRequest(
+			GetUsersRequest request){
+		GetUsersResponse response = new GetUsersResponse();
+		try {
+			response.setUserList(getUsers());
+			response.setSuccessful(true);
+		}
+		catch(Exception e){
 			response.setSuccessful(false);
 			response.setErrorMessage(e.getMessage());
 		}
@@ -164,12 +178,12 @@ public class UserController {
 		}
 	}
 	
-	private static void getUsers() {
+	private static ArrayList<User> getUsers() {
 		Connection db = DatabaseConnector.getDB();
 		ArrayList<User> users = new ArrayList<User>();
 		try {
 			Statement stm = db.createStatement();
-			String getUsers = String.format("SELECT username, firstname, lastname FROM users");
+			String getUsers = String.format("SELECT username, firstname, lastname FROM User WHERE 1");
 			ResultSet rs = stm.executeQuery(getUsers);
 			while(rs.next()) {
 				users.add(parseResultSetToUser(rs));
@@ -178,15 +192,14 @@ public class UserController {
 		catch (SQLException e){
 			System.out.println(e);
 		}
+		return users;
 	}
 	
 	private static User parseResultSetToUser(ResultSet rs) throws SQLException{
 		User user = new User();
-		while (rs.next()) {
-			user.setUsername(rs.getString("username"));
-			user.setFirstname(rs.getString("firstname"));
-			user.setLastname(rs.getString("lastname"));
-		}
+		user.setUsername(rs.getString("username"));
+		user.setFirstname(rs.getString("firstname"));
+		user.setLastname(rs.getString("lastname"));
 		return user;
 	}	
 }
