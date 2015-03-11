@@ -147,17 +147,17 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="394.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="204.54608154296875">
+      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="410.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="204.54608154296875">
          <font>
-            <Font name="Helvetica Neue Light" size="36.0" />
+            <Font name="Helvetica Neue Thin" size="36.0" />
          </font>
       </Text>
-      <Button fx:id="nextWeekButton" contentDisplay="CENTER" layoutX="607.0" layoutY="22.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
+      <Button fx:id="nextWeekButton" contentDisplay="CENTER" layoutX="615.0" layoutY="26.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
          <font>
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Button fx:id="prevWeekButton" contentDisplay="CENTER" layoutX="335.0" layoutY="22.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
+      <Button fx:id="prevWeekButton" contentDisplay="CENTER" layoutX="348.0" layoutY="26.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
          <font>
             <Font name="Helvetica" size="30.0" />
          </font>
@@ -220,7 +220,7 @@
       </GridPane>
       <Text fx:id="yearLabel" fill="#1d93c6" layoutX="884.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="122.82177734375">
          <font>
-            <Font name="Helvetica Neue Light" size="33.0" />
+            <Font name="Helvetica Neue Thin" size="33.0" />
          </font>
       </Text>
 	</children>

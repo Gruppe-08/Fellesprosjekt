@@ -20,7 +20,7 @@ public class AppointmentPane extends VBox {
 	
 	public AppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
-		this.setPrefWidth(300);
+		this.setPrefWidth(900);
 		this.setPrefHeight(calculateHeight());
 		this.setPadding(new Insets(5,5,5,5));
 		this.setStyle("-fx-background-color: #A7F0F0");

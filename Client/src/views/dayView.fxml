@@ -13,9 +13,9 @@
 
 <AnchorPane prefHeight="668" prefWidth="1024.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DayViewController">
 	<children>
-      <ScrollPane hbarPolicy="NEVER" layoutX="42.0" layoutY="106.0" pannable="true" prefHeight="400.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="500.0" vbarPolicy="NEVER" vvalue="0.5">
+      <ScrollPane hbarPolicy="NEVER" layoutX="42.0" layoutY="156.0" pannable="true" prefHeight="495.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="1004.0" vbarPolicy="NEVER" vvalue="0.5" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <content>
-            <AnchorPane fx:id="dayPane" prefHeight="1200.0" prefWidth="500.0" style="-fx-background-color: white;">
+            <AnchorPane fx:id="dayPane" prefHeight="1200.0" prefWidth="1000.0" style="-fx-background-color: white;">
                <children>
                   <Text fill="#4ca1ff" text="01.00" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
                      <font>
@@ -139,19 +139,19 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Text fx:id="dayLabel" layoutX="220.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="145.0">
+      <Text fx:id="dayLabel" fill="#1d93c6" layoutX="253.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="517.5894470214844">
          <font>
-            <Font name="Helvetica Light" size="21.0" />
+            <Font name="Helvetica Light" size="36.0" />
          </font>
       </Text>
-      <Button fx:id="nextDay" layoutX="365.0" layoutY="50.0" mnemonicParsing="false" text="Tomorrow" textAlignment="CENTER">
+      <Button fx:id="nextDay" layoutX="771.0" layoutY="68.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
          <font>
-            <Font name="Helvetica" size="14.0" />
+            <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Button fx:id="prevDay" layoutX="136.0" layoutY="50.0" mnemonicParsing="false" text="Yesterday" textAlignment="CENTER">
+      <Button fx:id="prevDay" layoutX="191.0" layoutY="68.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
          <font>
-            <Font name="Helvetica" size="14.0" />
+            <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
 	</children>

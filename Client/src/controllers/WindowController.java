@@ -15,6 +15,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -39,11 +40,17 @@ public class WindowController implements Initializable {
     @FXML private ToggleButton monthToggle;
     @FXML private ToggleButton agendaToggle;
     
+    @FXML private ToggleGroup viewToggle;
+    
     @FXML private Text username;
     
     @FXML private MenuItem notification;
     @FXML private MenuItem logout;
     @FXML private MenuItem groups;
+    
+    private int currentYear;
+    private int currentWeek;
+    private int currentDate;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -70,6 +77,33 @@ public class WindowController implements Initializable {
 						System.out.println("Notification");
 					}
 				});
+				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						loadPage("DayView.fxml");
+						viewToggle.selectToggle(dayToggle);
+					}
+				});
+				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						loadPage("weekView.fxml");
+						viewToggle.selectToggle(weekToggle);
+					}
+				});
+				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("monthToggle");
+					}
+				});
+				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						loadPage("Agenda.fxml");
+						viewToggle.selectToggle(agendaToggle);
+					}
+				});	
 			}
 		});
 	}
