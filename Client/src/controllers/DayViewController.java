@@ -114,7 +114,7 @@ public class DayViewController implements Initializable{
 	}
 		
 	private double calculateAppointmentPlacement(String startTime) {
-		LocalTime dateTime = DateUtil.deserializeTime(startTime);
+		LocalTime dateTime = DateUtil.deserializeDateTime(startTime).toLocalTime();
 		double pixels = (dateTime.getHour() * 50 + dateTime.getMinute() * 0.833);
 		return pixels;
 	}

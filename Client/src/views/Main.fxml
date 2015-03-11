@@ -37,10 +37,13 @@
                      </image></ImageView>
                </children>
             </AnchorPane>
-            <ToggleButton fx:id="dayToggle" layoutX="232.0" layoutY="74.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" />
-            <ToggleButton fx:id="monthToggle" layoutX="390.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Month" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="330.0" />
-            <ToggleButton fx:id="weekToggle" layoutX="275.0" layoutY="80.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Week" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="275.0" />
-            <ToggleButton fx:id="agendaToggle" layoutX="504.0" layoutY="73.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Agenda" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="389.0" />
+            <ToggleButton fx:id="dayToggle" layoutX="232.0" layoutY="74.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0">
+               <toggleGroup>
+                  <ToggleGroup fx:id="viewToggle" />
+               </toggleGroup></ToggleButton>
+            <ToggleButton fx:id="monthToggle" layoutX="390.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Month" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="330.0" />
+            <ToggleButton fx:id="weekToggle" layoutX="275.0" layoutY="80.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Week" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="275.0" />
+            <ToggleButton fx:id="agendaToggle" layoutX="504.0" layoutY="73.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Agenda" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="389.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainPane" layoutX="27.0" layoutY="116.0" maxHeight="668.0" maxWidth="1006.0" prefHeight="668.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
