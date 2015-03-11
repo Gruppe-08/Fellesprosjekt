@@ -1,7 +1,12 @@
 package calendar;
 
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.EndPoint;
+import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+
 import javafx.stage.Stage;
 import controllers.ConnectionController;
+import controllers.NotificationController;
 import controllers.WindowController;
 import models.User;
 
@@ -11,6 +16,10 @@ public class State {
 	public static Calendar myCalendar = null;
 	public static User user = null;
 	public static Stage stage = null;
+	public static NotificationController notificationController = null;
+	public static Connection connecton = null;
+	public static ObjectSpace objectSpace = null;
+	public static Connection connection;
 	
 	public static Stage getStage() {
 		return stage;

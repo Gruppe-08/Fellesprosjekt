@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
+import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.esotericsoftware.minlog.Log;
 
 import communication.ClassRegistration;
@@ -34,10 +35,14 @@ public class Calendar extends Application {
 
 		//Connect to server
 		try {
-			State.setConnectionController(
-					new ConnectionController("localhost", 5437));
+			ConnectionController connectionCtrl = new ConnectionController("localhost", 5437);
+			
+			State.setConnectionController(connectionCtrl);
 			//Register class
-			ClassRegistration.register(State.getConnectionController());
+			ClassRegistration.register(connectionCtrl);
+			
+			//RMI
+			ObjectSpace.registerClasses(connectionCtrl.getKryo());
 		}
 		catch(IOException e) {
 			root.setDisable(true);

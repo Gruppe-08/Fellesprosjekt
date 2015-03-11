@@ -1,7 +1,8 @@
 package communication;
-
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.esotericsoftware.kryonet.rmi.ObjectSpace.InvokeMethod;
+
 
 /* This class is responsible for registering all classes that can be serialized
  * through Kryo and subsequently sent over a connection. This class MUST be identical in
@@ -9,7 +10,6 @@ import com.esotericsoftware.kryonet.EndPoint;
  */
 
 public abstract class ClassRegistration {
-
 	public static void register(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();
 		kryo.register(communication.requests.AuthenticationRequest.class);
@@ -29,9 +29,13 @@ public abstract class ClassRegistration {
 		kryo.register(models.Room.class);
 		kryo.register(models.Appointment.class);
 		
+		kryo.register(rmi.NotificationCtrl.class);
+		
 		kryo.register(java.util.ArrayList.class);
 		kryo.register(java.time.LocalDateTime.class);
 		
 		kryo.register(javafx.beans.property.SimpleStringProperty.class);
+		
+		kryo.register(InvokeMethod.class);
 	}
 }

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,8 +37,13 @@ public class WindowController implements Initializable {
 	
 	public void loginSuccessful() {
 		UserHeaderController headerController = (UserHeaderController)loadHeader("UserHeader.fxml");
+		
+		State.objectSpace = new ObjectSpace();
+		State.objectSpace.addConnection(State.connection);
+		State.notificationController = new NotificationController();
+		State.objectSpace.register(1, State.notificationController);
 
-		loadPage("AlternateDayView.fxml");
+		loadPage("Agenda.fxml");
 	}
 	
 	public Object loadPage(String pageName) {

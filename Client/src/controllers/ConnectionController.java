@@ -10,26 +10,28 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
+import communication.responses.AuthenticationResponse;
 
 public class ConnectionController extends Client {
+	public final static short NOTIFICATION = 1;
 	ArrayList<Object> messageStack = new ArrayList<Object>();
 	
 	public ConnectionController(String host, int port) throws IOException {
 		this.start();
 		this.connect(5000, host, port);
-		
-		this.addListener(new ConnectionListener());
-	}
-	
-	class ConnectionListener extends Listener {
-		public void received (Connection connection, Object object) {
-			if (object instanceof FrameworkMessage) {
-				
-			}
-			else {
-				addObject(object);
-			}
-		}
+		this.addListener(new Listener(){
+					public void received (Connection connection, Object object) {
+						if(object instanceof AuthenticationResponse && State.connection == null){
+							State.connection = connection;
+							addObject(object);
+						} else if (object instanceof FrameworkMessage) {
+							
+						}
+						else {
+							addObject(object);
+						}
+					}
+		});
 	}
 	
 	public synchronized void addObject(Object object) {

@@ -48,7 +48,6 @@ public class AppointmentController {
 		
 		return response;
 	}
-	
 	public static BaseResponse handleDeleteAppointment(DeleteAppointmentRequest request){
 		BaseResponse res = new BaseResponse();
 		Logger.logMsg(Logger.DEBUG, "Handeling deleteAppointment: " + request.toString());
@@ -78,11 +77,16 @@ public class AppointmentController {
 		}
 		
 		if(request.isNewAppointment()) {
+			Appointment appointment = request.getAppointment();
 			try {
-				int apppointmentId = addAppointment(request.getAppointment());
+				int apppointmentId = addAppointment(appointment);
 				request.getAppointment().setId(apppointmentId);
 				response.setAppointment(request.getAppointment());
 				response.setSuccessful(true);
+				
+				// For testing: Send a notification to the user who creates an appointment
+				NotificationController.notify(requestUsername, appointment);
+				
 			} catch (SQLException e) {
 				Logger.logMsg(Logger.ERROR, "handlePutAppointmentRequest generated exception: " + e.getMessage());
 				response.setSuccessful(false);
@@ -93,7 +97,7 @@ public class AppointmentController {
 			try {
 				changeAppointment(request.getAppointment()); 
 				response.setSuccessful(true);
-				}
+			}
 			catch (IllegalArgumentException e) {
 				response.setSuccessful(false);
 				response.setErrorMessage("The appointment no longer exists");
@@ -201,13 +205,13 @@ public class AppointmentController {
 		ResultSet res;
 		
 		String query = 
-				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, repetition_type, owner_username)" +
+				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, owner_username)" +
 				"VALUES ( " +
 				"'" + appointment.getStartTime() + "'," +
 				"'" + appointment.getEndTime() + "'," + 
 				"'" + appointment.getTitle() + "'," + 
 				"'" + appointment.getDescription() + "'," + 
-				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
+				(appointment.getLocation() == null ? "null," : "'" + appointment.getLocation() + "',") + 
 				appointment.getRoomId() + ", " +
 				"'" + appointment.getOwnerUsername() + "');";
 		

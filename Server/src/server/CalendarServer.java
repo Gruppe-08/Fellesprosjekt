@@ -53,6 +53,7 @@ public class CalendarServer extends Server {
 					if (clientConnection.isAuthenticated) {
 						response.setUser(UserController.getUser(request.getUsername()));
 						clientConnection.username = request.getUsername();
+						Connections.addConnection(clientConnection);
 					}
 
 	    			clientConnection.sendTCP(response);
@@ -122,10 +123,10 @@ public class CalendarServer extends Server {
 		
 		DatabaseConnector.initializeDatabase();
 		CalendarServer srv = new CalendarServer();
-		srv.start();
+		new Thread(srv).start();
 		int port = 5437;
 		try {
-			srv.bind(port);			
+			srv.bind(port);
 		}
 		catch(IOException e) {
 			Logger.logMsg(Logger.ERROR, e.getMessage());
