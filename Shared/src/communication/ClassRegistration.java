@@ -24,6 +24,7 @@ public abstract class ClassRegistration {
 		kryo.register(communication.responses.CreateUserResponse.class);
 		kryo.register(communication.responses.BaseResponse.class);
 		kryo.register(communication.responses.PutAppointmentResponse.class);
+		kryo.register(communication.responses.NotificationResponse.class);
 		
 		kryo.register(models.User.class);
 		kryo.register(models.RepetitionType.class);

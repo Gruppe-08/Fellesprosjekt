@@ -1,17 +1,24 @@
 package models;
 public class Notification {
 
+	private String message;
+	private String created;
+	private String triggerDate;
+	private NotificationType notificationType;
+	private boolean isAlarm;
+	private Appointment appointment;
+	private String username;
+	
 	public Notification(NotificationType type, String message, String timeCreated) {
 		setType(type);
 		setMessage(message);
 		setCreated(timeCreated);
 		
 	}
-
-	public Notification() {
-		
-	}
 	
+	public Notification() {
+	}
+
 	public NotificationType getType() {
 		return type;
 	}
@@ -84,12 +91,4 @@ public class Notification {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	private String message;
-	private String created;
-	private String triggerDate;
-	private NotificationType notificationType;
-	private boolean isAlarm;
-	private Appointment appointment;
-	private String username;
 }

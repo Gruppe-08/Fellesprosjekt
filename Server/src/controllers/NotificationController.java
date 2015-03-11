@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import models.Appointment;
 import models.Notification;
 import server.DatabaseConnector;
@@ -16,7 +18,17 @@ public class NotificationController {
 	private static PreparedStatement statement;
 	private static ResultSet res;
 	
-	public static void addNotification(Notification not) throws SQLException{
+	public static ArrayList<Notification> handleGetNotifications(String username){
+		ArrayList<Notification> notifications = null;
+		try {
+			notifications = getNotifications(username);
+		} catch (SQLException e){
+			Logger.logMsg(Logger.ERROR, "HandleAppointmentRequest generated exception: " + e.getMessage());
+		}
+		return notifications;
+	}
+	
+	private static void addNotification(Notification not) throws SQLException{
 		db = DatabaseConnector.getDB();
 		
 		String isAlarm = not.isAlarm() ? "1" : "0";
@@ -29,7 +41,7 @@ public class NotificationController {
 		statement.execute();
 	}
 	
-	public static List<Notification> getNotifications(String username) throws SQLException{
+	private static ArrayList<Notification> getNotifications(String username) throws SQLException{
 		db = DatabaseConnector.getDB();
 		ArrayList<Notification> notifications = new ArrayList<>();
 		
@@ -51,6 +63,11 @@ public class NotificationController {
 			
 			System.out.println(app.toString() +  " " + not.toString());
 		}
+		
+		String deleteNotifications = String.format("DELETE FROM Notification WHERE username='%s'", username);
+		statement = db.prepareStatement(deleteNotifications);
+		statement.execute();
+		
 		return notifications;
 	}
 	
