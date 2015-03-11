@@ -65,7 +65,7 @@ public class DateUtil {
 		return dateTime.getYear();
 	}
 	
-	public static LocalDate getDateOfDayInWeek(int year, int week, int day) {
+	public static LocalDateTime getDateOfDayInWeek(int year, int week, int day) {
 		Calendar cal = Calendar.getInstance();
 		cal.setWeekDate(year, week, day);
 		String calYear = String.valueOf(cal.get(Calendar.YEAR));
@@ -78,17 +78,35 @@ public class DateUtil {
 			calDay = "0" + calDay;
 		}
 		
-		return deserializeDate(String.format("%s-%s-%s", calYear, calMonth, calDay));
+		return deserializeDateTime(String.format("%s-%s-%s 12:00", calYear, calMonth, calDay));
 	}
 	
-	public static int[] datesInSameMonth(LocalDate dateTime1, LocalDate dateTime2) {
+	public static int[] datesInSameMonth(LocalDateTime dateTime1, LocalDateTime dateTime2) {
 		int[] months = new int[2];
 		months[0] = dateTime1.getMonth().getValue();
 		months[1] = dateTime2.getMonth().getValue();
 		return months;
 	}
 	
+	public static int getFirstDayOfYear(int year) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, 0, 1);
+		return cal.get(Calendar.DAY_OF_WEEK);
+	}
 	
+	public static Boolean isLeapYear(int year) {
+		return (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
+	}
+	
+	public static int getNumberOfWeeksInYear(int year) {
+		if (getFirstDayOfYear(year) == 5) {
+			return 53;
+		}
+		else if (isLeapYear(year) && (getFirstDayOfYear(year) == 4 || getFirstDayOfYear(year) == 5)) {
+			return 53;
+		}
+		else return 52;
+	}
 	
 	public static String presentString(String dateString){
 		LocalDateTime from = deserializeDateTime(dateString.substring(0, 16));

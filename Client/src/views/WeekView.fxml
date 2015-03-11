@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="668" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WeekViewController">
 	<children>
-      <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="130.0" pannable="true" prefHeight="515.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="1001.0" vbarPolicy="NEVER" vvalue="0.5">
+      <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="130.0" prefHeight="515.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="1001.0" vbarPolicy="NEVER" vvalue="0.5">
          <content>
             <AnchorPane fx:id="weekPane" prefHeight="1200.0" prefWidth="1001.0" style="-fx-background-color: white;">
                <children>
@@ -147,59 +147,80 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="403.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="204.54608154296875">
+      <Text fx:id="weekLabel" fill="#1d93c6" layoutX="394.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="204.54608154296875">
          <font>
-            <Font name="Helvetica Light" size="36.0" />
+            <Font name="Helvetica Neue Light" size="36.0" />
          </font>
       </Text>
-      <Button fx:id="nextWeekButton" contentDisplay="CENTER" layoutX="607.0" layoutY="36.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
+      <Button fx:id="nextWeekButton" contentDisplay="CENTER" layoutX="607.0" layoutY="22.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
          <font>
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Button fx:id="prevWeekButton" contentDisplay="CENTER" layoutX="334.0" layoutY="33.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
+      <Button fx:id="prevWeekButton" contentDisplay="CENTER" layoutX="335.0" layoutY="22.0" mnemonicParsing="false" style="-fx-background-color: white;" text="←" textAlignment="CENTER" textFill="#1d93c6">
          <font>
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
-      <Text fx:id="mondayLabel" fill="#1d93c6" layoutX="111.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER">
+      <Text fx:id="monthLabel" fill="#1d93c6" layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="317.8736114501953">
          <font>
-            <Font name="Helvetica Light" size="22.0" />
+            <Font name="Helvetica Neue Thin" size="33.0" />
          </font>
       </Text>
-      <Text fx:id="tuesdayLabel" fill="#1d93c6" layoutX="238.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER">
+      <GridPane hgap="5.0" layoutX="87.0" layoutY="92.0" prefWidth="920.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fx:id="tuesdayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" wrappingWidth="131.80221557617188" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="mondayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" wrappingWidth="130.72530364990234" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="wednesdayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" wrappingWidth="128.027099609375" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="thursdayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Thu" wrappingWidth="132.40087890625" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="fridayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" wrappingWidth="129.9610710144043" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="saturdayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" wrappingWidth="122.82177734375" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="sundayLabel" fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" wrappingWidth="128.0582504272461" GridPane.columnIndex="6" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Light" size="25.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <Text fx:id="yearLabel" fill="#1d93c6" layoutX="884.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="122.82177734375">
          <font>
-            <Font name="Helvetica Light" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="wednesdayLabel" fill="#1d93c6" layoutX="357.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica Light" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="thursdayLabel" fill="#1d93c6" layoutX="502.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thurs" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica Light" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="fridayLabel" fill="#1d93c6" layoutX="650.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica Light" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="saturdayLabel" fill="#1d93c6" layoutX="768.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica Light" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="sundayLabel" fill="#1d93c6" layoutX="905.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica Light" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="monthLabel" layoutX="24.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="317.8736114501953">
-         <font>
-            <Font name="Helvetica Neue Thin" size="30.0" />
+            <Font name="Helvetica Neue Light" size="33.0" />
          </font>
       </Text>
 	</children>

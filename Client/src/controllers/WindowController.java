@@ -15,6 +15,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,7 @@ public class WindowController implements Initializable {
 	@FXML private Pane userHeader;
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane main_window;
+	@FXML private ImageView profilepic;
 	
 	@FXML private MenuButton menu;
     @FXML private ToggleButton dayToggle;
@@ -120,6 +122,7 @@ public class WindowController implements Initializable {
 	}
 	
 	private void enableAndShowButtons() {
+		profilepic.setVisible(true);
 		username.setVisible(true);
 		menu.setVisible(true);
 		dayToggle.setVisible(true);

@@ -31,7 +31,10 @@
                         <Font name="Helvetica Neue Light" size="25.0" />
                      </font>
                   </Text>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="11.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="300.0" />
+                  <ImageView fx:id="profilepic" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="300.0">
+                     <image>
+                        <Image url="@../../../Shared/lib/profilepic.png" />
+                     </image></ImageView>
                </children>
             </AnchorPane>
             <ToggleButton fx:id="dayToggle" layoutX="232.0" layoutY="74.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" />
