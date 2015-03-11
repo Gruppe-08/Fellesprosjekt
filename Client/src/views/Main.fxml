@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -7,31 +8,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WindowController">
+<AnchorPane fx:id="main_window" maxHeight="0.0" maxWidth="0.0" minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WindowController">
    <children>
-      <BorderPane fx:id="main_window" layoutX="10.0" layoutY="10.0" prefHeight="768.0" prefWidth="1024.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <center>
-            
-         </center>
-         <top>
-            <AnchorPane maxHeight="100.0" maxWidth="1024.0" prefHeight="100.0" prefWidth="1024.0" style="-fx-background-color: #38597F;" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="100.0" maxWidth="1024.0" prefHeight="100.0" prefWidth="1024.0" style="-fx-background-color: #1d93c6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text fill="WHITE" layoutX="54.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calendar" AnchorPane.leftAnchor="20.0">
+               <font>
+                  <Font name="Helvetica Neue Light" size="48.0" />
+               </font>
+            </Text>
+            <AnchorPane layoutX="656.0" layoutY="6.0" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Pane prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="50.0">
-                     <children>
-                        <Text fill="WHITE" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calendar">
-                           <font>
-                              <Font name="Helvetica Neue Light" size="36.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Pane>
-                  <Pane fx:id="userHeader" maxHeight="75.0" minWidth="400.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="400.0" AnchorPane.bottomAnchor="12.5" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="12.5" />
+                  <MenuButton fx:id="menu" layoutX="194.0" layoutY="37.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Menu" visible="false" AnchorPane.rightAnchor="0.0">
+                    <items>
+                      <MenuItem fx:id="notification" mnemonicParsing="false" text="Notifications" />
+                      <MenuItem fx:id="groups" mnemonicParsing="false" text="Groups" />
+                        <MenuItem fx:id="logout" mnemonicParsing="false" text="Sign out" />
+                    </items>
+                  </MenuButton>
+                  <Text fx:id="username" fill="WHITE" layoutX="99.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" visible="false" AnchorPane.rightAnchor="140.0">
+                     <font>
+                        <Font name="Helvetica Neue Light" size="25.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="profilepic" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="300.0">
+                     <image>
+                        <Image url="@../../../Shared/lib/profilepic.png" />
+                     </image></ImageView>
                </children>
             </AnchorPane>
-         </top>
-         <center>
-            <AnchorPane fx:id="mainPane" maxHeight="568.0" maxWidth="924.0" prefHeight="568.0" prefWidth="924.0" BorderPane.alignment="CENTER" />
-         </center>
-      </BorderPane>
+            <ToggleButton fx:id="dayToggle" layoutX="232.0" layoutY="74.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" />
+            <ToggleButton fx:id="monthToggle" layoutX="390.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Month" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="330.0" />
+            <ToggleButton fx:id="weekToggle" layoutX="275.0" layoutY="80.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Week" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="275.0" />
+            <ToggleButton fx:id="agendaToggle" layoutX="504.0" layoutY="73.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Agenda" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="389.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="mainPane" layoutX="27.0" layoutY="116.0" maxHeight="668.0" maxWidth="1006.0" prefHeight="668.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
    </children>
 </AnchorPane>
