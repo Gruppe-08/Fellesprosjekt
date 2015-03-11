@@ -276,7 +276,7 @@ public class AppointmentController {
 			statement.execute(deleteAppointment);
 	}
 	
-	private static Appointment parseResultSetToAppointment(ResultSet resultSet)
+	public static Appointment parseResultSetToAppointment(ResultSet resultSet)
 			throws SQLException {
 		Appointment appointment = new Appointment();
 		appointment.setId(resultSet.getInt("appointment_id"));
