@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import models.Appointment;
@@ -24,6 +25,7 @@ import communication.responses.CreateUserResponse;
 import communication.responses.PutAppointmentResponse;
 import controllers.AddGroupController;
 import controllers.AppointmentController;
+import controllers.NotificationController;
 import controllers.UserController;
 import communication.ClassRegistration;
 
@@ -137,5 +139,12 @@ public class CalendarServer extends Server {
 			System.exit(1);
 		}
 		Logger.logMsg(Logger.INFO, "Server running at port " + port);
+		
+		try {
+			NotificationController.getNotifications("kristian");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
