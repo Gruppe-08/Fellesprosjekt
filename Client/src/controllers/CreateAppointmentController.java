@@ -1,10 +1,14 @@
 package controllers;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
+
+import com.sun.media.jfxmedia.logging.Logger;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -27,18 +31,24 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Pair;
 import models.Appointment;
 import models.User;
 import util.DateUtil;
 import calendar.State;
+import communication.requests.BusyCheckRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
+import communication.responses.BusyCheckResponse;
 import communication.responses.PutAppointmentResponse;
 import communication.responses.UserResponse;
 
 public class CreateAppointmentController implements Initializable {
+	Appointment appointment = new Appointment();
+	boolean isValid = false;
+	
 	@FXML
     TextField title;
     
@@ -77,30 +87,16 @@ public class CreateAppointmentController implements Initializable {
 
     @FXML
     void onOk(ActionEvent event) {
-    	LocalTime startTime = LocalTime.parse(from_time.getText());
-    	LocalTime endTime = LocalTime.parse(to_time.getText());
-    	
-    	LocalDateTime startDate = from_date.getValue().atTime(startTime);
-    	LocalDateTime endDate = to_date.getValue().atTime(endTime);
-    	
-    	Appointment appointment = new Appointment(
-    			title.getText(),
-    			description.getText(), 
-    			DateUtil.serializeDateTime(startDate), 
-    			DateUtil.serializeDateTime(endDate)
-    	);
-    	
-
-    	appointment.setOwnerUsername(State.getUser().getUsername());
-    	
-    	title.setStyle("");
-    	if(title.getText().equals(""))
-    		title.setStyle("-fx-border-color: red");
-    	else
-        	appointment.setTitle(title.getText());
-    	
     	PutAppointmentRequest request = new PutAppointmentRequest();
     	request.setAppointment(appointment);
+    	for(int i =  0; i < invite_user_list.getItems().size(); i++) {
+    		System.out.println(i);
+    		if(added_column.getCellData(i).get()) {
+    			appointment.getUserRelations().add(invite_user_list.getItems().get(i).getValue().getUsername());
+    			System.out.println("added " + invite_user_list.getItems().get(i).getValue().getUsername());
+    		}
+    		
+    	}
     	request.setNewAppointment(true);
     	
     	State.getConnectionController().sendTCP(request);
@@ -121,10 +117,44 @@ public class CreateAppointmentController implements Initializable {
     	State.getWindowController().loadPage("Agenda.fxml");
     }
     
+    @FXML
+    void onFieldChanged() {
+    	System.out.println("ei");
+    	title.setStyle("");
+    	if(title.getText().equals(""))
+    		title.setStyle("-fx-border-color: red");
+    	else
+        	appointment.setTitle(title.getText());
+    	
+    	boolean dateTimeValid = true;
+    	try {
+    		from_time.setStyle("");
+    		from_date.setStyle("");
+    		LocalTime startTime = LocalTime.parse(from_time.getText());
+    		LocalDateTime startDate = from_date.getValue().atTime(startTime);
+    		appointment.setStartTime(DateUtil.serializeDateTime(startDate));
+    	} catch(DateTimeParseException e) {
+    		from_time.setStyle("-fx-border-color: red");
+    		from_date.setStyle("-fx-border-color: red");
+    		dateTimeValid = false;
+    	}
+    	
+    	try {
+    		to_time.setStyle("");
+    		to_date.setStyle("");
+    		LocalTime endTime = LocalTime.parse(to_time.getText());
+    		LocalDateTime endDate = from_date.getValue().atTime(endTime);
+    		appointment.setEndTime(DateUtil.serializeDateTime(endDate));
+    	} catch(DateTimeParseException e) {
+    		to_time.setStyle("-fx-border-color: red");
+    		to_date.setStyle("-fx-border-color: red");
+    		dateTimeValid = false;
+    	}
+    	if(dateTimeValid)
+    		updateAvailableUsers();
+    };
+    
     private void initalizeInviteTable() {
-    	System.out.println("gee");
-
-
         name_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pair<BooleanProperty, User>,String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(CellDataFeatures<Pair<BooleanProperty, User>, String> param) {
@@ -139,25 +169,23 @@ public class CreateAppointmentController implements Initializable {
 			@Override
 			public ObservableValue<String> call(
 					CellDataFeatures<Pair<BooleanProperty, User>, String> param) {
-				return Bindings.createStringBinding(new Callable<String>() {
-					public BooleanProperty property = param.getValue().getKey();
-					@Override
-					public String call() throws Exception {
-						if(property.getValue())
-							return "Yes";
-						else
-							return "No";
-					}
-				} );
+				return Bindings.createStringBinding(
+						new Callable<String>() {
+							@Override
+							public String call() throws Exception {
+								if(param.getValue().getKey().getValue()) {
+									return "Yes";
+								}
+								else
+									return "No";
+							}
+							
+						}, param.getValue().getKey());
 			}
 		});
 
-        added_column.setCellFactory(new Callback<TableColumn<Pair<BooleanProperty, User>,BooleanProperty>, TableCell<Pair<BooleanProperty, User>,BooleanProperty>>() {
-			@Override
-			public TableCell<Pair<BooleanProperty, User>, BooleanProperty> call(TableColumn<Pair<BooleanProperty, User>, BooleanProperty> param) {
-				return new CheckBoxTableCell();
-			}
-		});
+        add.setCellValueFactory( f -> f.getValue().getCompleted());
+        loadedColumn.setCellFactory( tc -> new CheckBoxTableCell<>());
         
     	GetUsersRequest request = new GetUsersRequest();
     	State.getConnectionController().sendTCP(request);
@@ -168,18 +196,74 @@ public class CreateAppointmentController implements Initializable {
     			invite_user_list.getItems().add(new Pair<BooleanProperty, User>(new SimpleBooleanProperty(true), user));
     		}
     	}
+    	
+    	
     }
+
     
     private void updateAvailableUsers() {
+    	BusyCheckRequest request = new BusyCheckRequest();
     	
+    	Appointment a = new Appointment();
+    	LocalTime startTime = LocalTime.parse(from_time.getText());
+    	LocalTime endTime = LocalTime.parse(to_time.getText());
+    	
+    	LocalDateTime startDate = from_date.getValue().atTime(startTime);
+    	LocalDateTime endDate = to_date.getValue().atTime(endTime);
+    	
+    	a.setStartTime(DateUtil.serializeDateTime(startDate));
+		a.setEndTime(DateUtil.serializeDateTime(endDate));
+		
+    	request.setAppointment(a);
+    	for(Pair<BooleanProperty, User> item : invite_user_list.getItems()) {
+    		request.getUsernames().add(item.getValue().getUsername());
+    	}
+    	
+    	State.getConnectionController().sendTCP(request);
+    	BusyCheckResponse response = (BusyCheckResponse) State.getConnectionController().getObject("communication.responses.BusyCheckResponse");
+    	
+    	if(response.getErrorMessage() != null) {
+    		Alert loginAlert = new Alert(AlertType.ERROR, 
+					"Internal error");
+			loginAlert.showAndWait();
+    	} else {
+        	for(Pair<BooleanProperty, User> item : invite_user_list.getItems()) {
+        		if(response.getUsernames().contains(item.getValue().getUsername())) {
+        			item.getKey().set(false);
+        		}
+        		else item.getKey().set(true);
+        			
+        	}
+    	}    	
     }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-    	System.out.println("sad");
-    	
+	   	appointment.setOwnerUsername(State.getUser().getUsername());
+	   	
+	   	ChangeListener<String> stringChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				onFieldChanged();
+			}
+	   	};
+	   	ChangeListener<LocalDate> dateChangeListener = new ChangeListener<LocalDate>() {
+			@Override
+			public void changed(ObservableValue<? extends LocalDate> observable,
+					LocalDate oldValue, LocalDate newValue) {
+				onFieldChanged();
+			}
+	   	};
+	   	
+	   	title.textProperty().addListener(f -> onFieldChanged());
+	   	from_time.textProperty().addListener(stringChangeListener);
+	   	to_time.textProperty().addListener(stringChangeListener);
+	   	from_date.valueProperty().addListener(dateChangeListener);
+	   	to_date.valueProperty().addListener(dateChangeListener);
+    
     	initalizeInviteTable();
-		
+    	onFieldChanged();
 	}
 
 }

@@ -220,8 +220,13 @@ public class AppointmentController {
 			appointmentId = res.getInt(1);
 			
 			query = String.format(
-					"INSERT INTO UserAppointmentRelation(appointment_id, username) VALUES('%s', '%s')",
+					"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'attending')",
 					appointmentId, appointment.getOwnerUsername());
+			for(String username : appointment.getUserRelations()) {
+				String.format(
+						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
+						appointmentId, username);
+			}
 			
 			statement = db.prepareStatement(query);
 			
@@ -286,6 +291,15 @@ public class AppointmentController {
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id"));
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
+		
+		//Get attending users
+		ResultSet users = db.createStatement().executeQuery(
+				"SELECT ua.username FROM UserAppointmentRelation ua, Appointment a "
+				+ "WHERE a.appointment_id = ua.appointment_id AND ua.status = 'attending' AND "
+				+ "a.appointment_id = ");
+		while(users.next()) {
+			appointment.getUserRelations().add(users.getString("username"));
+		}
 		return appointment;
 	}
 }

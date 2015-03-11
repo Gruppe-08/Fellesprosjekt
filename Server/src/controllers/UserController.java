@@ -16,12 +16,15 @@ import com.sun.media.jfxmedia.logging.Logger;
 
 import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import communication.requests.AuthenticationRequest;
+import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.GetUsersRequest;
 import communication.responses.AuthenticationResponse;
+import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.UserResponse;
 import server.DatabaseConnector;
+import util.DateUtil;
 
 public class UserController {
 	
@@ -64,6 +67,24 @@ public class UserController {
 		}
 		return response;
 	}
+	
+	public static BusyCheckResponse handleBusyCheck(BusyCheckRequest request) {
+		BusyCheckResponse response = new BusyCheckResponse();
+		
+		for(String username : request.getUsernames()) {
+			try {
+				if(isUserBusy(request.getAppointment(), username)) {
+					response.getUsernames().add(username);
+				}
+				
+				response.setSuccessful(true);
+			} catch (SQLException e) {
+				response.setSuccessful(false);
+			}
+		}
+		
+		return response;
+	}	
 	
 	//Retrieves password hash of the specified user from the server
 	private static String getHashForUser(String username) {
@@ -183,6 +204,19 @@ public class UserController {
 			System.out.println(e);
 		}
 	}
+
+	private static boolean isUserBusy(Appointment a, String username) throws SQLException {
+		Connection db = DatabaseConnector.getDB();
+		String query = 
+				"Select * FROM Appointment a, UserAppointmentRelation ua, User u "
+				+ "WHERE a.appointment_id = ua.appointment_id AND "
+				+ "u.username = ua.username AND u.username = '" + username + "' AND ("
+				+ "a.start_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime()
+				+ "' OR a.end_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime() + "')";
+		ResultSet res = db.createStatement().executeQuery(query);
+		
+		return res.next(); //Returns false if there was no matching appointments
+	}
 	
 	private static ArrayList<User> getUsers() throws SQLException {
 		Connection db = DatabaseConnector.getDB();
@@ -201,5 +235,6 @@ public class UserController {
 		user.setFirstname(rs.getString("firstname"));
 		user.setLastname(rs.getString("lastname"));
 		return user;
-	}	
+	}
+
 }

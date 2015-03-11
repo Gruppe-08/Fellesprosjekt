@@ -1,6 +1,11 @@
 package models;
 
 public class UserAppointmentRelation {
+	public UserAppointmentRelation(String username, int appointmentID) {
+		super();
+		this.username = username;
+		this.appointmentID = appointmentID;
+	}
 	private String username;
 	private int appointmentID;
 	

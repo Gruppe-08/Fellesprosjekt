@@ -55,7 +55,8 @@
                   <TextArea fx:id="description" prefHeight="107.0" prefWidth="263.0" promptText="Appointment description" />
                </children>
             </VBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="161.0" prefWidth="320.0" spacing="10.0">
+            <VBox alignment="BOTTOM_LEFT" prefHeight="70.0" prefWidth="100.0" spacing="20.0" />
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="76.0" prefWidth="320.0" spacing="10.0">
                <children>
                   <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#onCancel" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
                   <Button fx:id="ok_button" mnemonicParsing="false" onAction="#onOk" prefHeight="34.0" prefWidth="66.0" text="OK" />
@@ -68,27 +69,24 @@
             <Font name="Kalinga" size="40.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="271.0" layoutX="366.0" layoutY="248.0" stroke="#909090" strokeType="INSIDE" width="252.0" />
-      <Label layoutX="442.0" layoutY="252.0" prefHeight="30.0" prefWidth="119.0" text="Invite users">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="265.0" layoutX="366.0" layoutY="248.0" stroke="#909090" strokeType="INSIDE" width="252.0" />
+      <Label layoutX="431.0" layoutY="253.0" prefHeight="30.0" prefWidth="122.0" text="Invite users">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Line endX="100.0" layoutX="497.0" layoutY="282.0" startX="-100.0" stroke="#909090" />
+      <Line endX="100.0" layoutX="497.0" layoutY="282.0" startX="-110.0" stroke="#909090" />
       <Button layoutX="418.0" layoutY="126.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="173.0" text="Find available room">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <TableView fx:id="invite_user_list" editable="true" layoutX="372.0" layoutY="291.0" maxHeight="-Infinity" maxWidth="240.0" minHeight="-Infinity" minWidth="240.0" prefHeight="220.0" prefWidth="240.0" snapToPixel="false">
-         <columns>
-            <TableColumn fx:id="added_column" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" />
-            <TableColumn fx:id="name_column" editable="false" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Name" />
-            <TableColumn fx:id="available_column" editable="false" maxWidth="70.0" minWidth="80.0" prefWidth="70.0" resizable="false" sortable="false" text="Available" />
-         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
+      <TableView fx:id="invite_user_list" editable="true" layoutX="373.0" layoutY="291.0" prefHeight="216.0" prefWidth="239.0">
+        <columns>
+          <TableColumn fx:id="added_column" prefWidth="27.0" />
+          <TableColumn fx:id="name_column" prefWidth="123.0" text="Name" />
+            <TableColumn fx:id="available_column" prefWidth="75.0" text="available" />
+        </columns>
       </TableView>
    </children>
 </AnchorPane>
