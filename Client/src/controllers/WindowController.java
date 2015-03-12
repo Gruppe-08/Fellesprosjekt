@@ -116,18 +116,6 @@ public class WindowController implements Initializable {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage("WeekView.fxml");
-		
-		NotificationRequest req = new NotificationRequest();
-		State.getConnectionController().sendTCP(req);
-		NotificationResponse res = (NotificationResponse) State.getConnectionController().getObject("communication.responses.NotificationResponse");
-		
-		
-		ArrayList<Notification> notifications = res.getNotifications();
-		
-		System.out.println("Notifications: \n");
-		for (Notification notification : notifications) {
-			System.out.println(notification.getMessage() + " " + notification.getTriggerDate());
-		}
 	}
 	
 	public Object loadPage(String pageName) {

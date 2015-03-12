@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.management.remote.NotificationResult;
+
 import models.Appointment;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -17,11 +19,13 @@ import communication.requests.AuthenticationRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
+import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
 import controllers.AddGroupController;
 import controllers.AppointmentController;
@@ -77,6 +81,11 @@ public class CalendarServer extends Server {
 	    		/* TODO: Provide more cases for different models, we need to create some model 
 	    		 * to send that allows the server to know what models the client requested.
 	    		 */
+				else if(object instanceof NotificationRequest){
+					String username = clientConnection.username;
+					NotificationResponse response = NotificationController.getNotificationResponse(username);
+					clientConnection.sendTCP(response);
+				}
 				else if(object instanceof AppointmentRequest) {
 					AppointmentRequest request = (AppointmentRequest)object;
 					AppointmentResponse response = AppointmentController.handleAppointmentRequest(
@@ -139,12 +148,5 @@ public class CalendarServer extends Server {
 			System.exit(1);
 		}
 		Logger.logMsg(Logger.INFO, "Server running at port " + port);
-		
-		try {
-			NotificationController.getNotifications("kristian");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
