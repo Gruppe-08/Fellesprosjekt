@@ -14,6 +14,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -44,10 +46,12 @@ import communication.requests.PutAppointmentRequest;
 import communication.responses.BusyCheckResponse;
 import communication.responses.PutAppointmentResponse;
 import communication.responses.UserResponse;
+import controllers.CreateAppointmentController.Invitable;
 
 public class CreateAppointmentController implements Initializable {
 	Appointment appointment = new Appointment();
-	boolean isValid = false;
+	boolean datesValid = false;
+	boolean titleValid = false;
 	
 	@FXML
     TextField title;
@@ -74,40 +78,42 @@ public class CreateAppointmentController implements Initializable {
     Button ok_button;
     
     @FXML
-    TableView<Pair<BooleanProperty, User>> invite_user_list;
+    TableView<Invitable> invite_user_list;
     
     @FXML
-    private TableColumn<Pair<BooleanProperty, User>, String> available_column;
+    private TableColumn<Invitable, String> available_column;
     
     @FXML
-    private TableColumn<Pair<BooleanProperty, User>, BooleanProperty> added_column;
+    private TableColumn<Invitable, Boolean> added_column;
 
     @FXML
-    private TableColumn<Pair<BooleanProperty, User>, String> name_column;
+    private TableColumn<Invitable, String> name_column;
 
     @FXML
     void onOk(ActionEvent event) {
-    	PutAppointmentRequest request = new PutAppointmentRequest();
-    	request.setAppointment(appointment);
-    	for(int i =  0; i < invite_user_list.getItems().size(); i++) {
-    		System.out.println(i);
-    		if(added_column.getCellData(i).get()) {
-    			appointment.getUserRelations().add(invite_user_list.getItems().get(i).getValue().getUsername());
-    			System.out.println("added " + invite_user_list.getItems().get(i).getValue().getUsername());
-    		}
-    		
-    	}
-    	request.setNewAppointment(true);
-    	
-    	State.getConnectionController().sendTCP(request);
-    	PutAppointmentResponse response = (PutAppointmentResponse) State.getConnectionController().getObject("communication.responses.PutAppointmentResponse");
-    	
-    	if(response.getErrorMessage() != null) {
-    		Alert loginAlert = new Alert(AlertType.ERROR, 
-					response.getErrorMessage());
-			loginAlert.showAndWait();
-    	} else {
-    		State.getWindowController().loadPage("Agenda.fxml");
+    	if(titleValid && datesValid) {
+	    	PutAppointmentRequest request = new PutAppointmentRequest();
+	    	
+	    	appointment.setDescription(description.getText());
+	    	request.setAppointment(appointment);
+	    	for(Invitable user : invite_user_list.getItems()) {
+	    		if(user.selected.getValue())
+	    			request.getAppointment().getUserRelations().add(
+	    					user.user.getUsername());
+	    		
+	    	}
+	    	request.setNewAppointment(true);
+	    	
+	    	State.getConnectionController().sendTCP(request);
+	    	PutAppointmentResponse response = (PutAppointmentResponse) State.getConnectionController().getObject("communication.responses.PutAppointmentResponse");
+	    	
+	    	if(response.getErrorMessage() != null) {
+	    		Alert loginAlert = new Alert(AlertType.ERROR, 
+						response.getErrorMessage());
+				loginAlert.showAndWait();
+	    	} else {
+	    		State.getWindowController().loadPage("Agenda.fxml");
+	    	}
     	}
     	
     }
@@ -117,16 +123,20 @@ public class CreateAppointmentController implements Initializable {
     	State.getWindowController().loadPage("Agenda.fxml");
     }
     
-    @FXML
-    void onFieldChanged() {
-    	System.out.println("ei");
+    void validateTitleField() {
     	title.setStyle("");
-    	if(title.getText().equals(""))
+    	if(title.getText().equals("")) {
     		title.setStyle("-fx-border-color: red");
-    	else
+    		titleValid = false;
+    	}
+    	else {
         	appointment.setTitle(title.getText());
-    	
-    	boolean dateTimeValid = true;
+        	titleValid = true;
+    	}
+    }
+    
+    void onChronoFieldChanged() {
+    	datesValid = true;
     	try {
     		from_time.setStyle("");
     		from_date.setStyle("");
@@ -136,7 +146,7 @@ public class CreateAppointmentController implements Initializable {
     	} catch(DateTimeParseException e) {
     		from_time.setStyle("-fx-border-color: red");
     		from_date.setStyle("-fx-border-color: red");
-    		dateTimeValid = false;
+    		datesValid = false;
     	}
     	
     	try {
@@ -148,52 +158,55 @@ public class CreateAppointmentController implements Initializable {
     	} catch(DateTimeParseException e) {
     		to_time.setStyle("-fx-border-color: red");
     		to_date.setStyle("-fx-border-color: red");
-    		dateTimeValid = false;
+    		datesValid = false;
     	}
-    	if(dateTimeValid)
+    	if(datesValid)
     		updateAvailableUsers();
     };
     
     private void initalizeInviteTable() {
-        name_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pair<BooleanProperty, User>,String>, ObservableValue<String>>() {
+        name_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Invitable,String>, ObservableValue<String>>() {
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<Pair<BooleanProperty, User>, String> param) {
-				return new ReadOnlyObjectWrapper<String>(
-						param.getValue().getValue().getFirstname() +
-						" " +
-						param.getValue().getValue().getLastname());
+			public ObservableValue<String> call(CellDataFeatures<Invitable, String> param) {
+				return param.getValue().nameProperty;
 			}
 		});
-        //WTF am I even doing
-        available_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pair<BooleanProperty, User>,String>, ObservableValue<String>>() {
+        added_column.setCellFactory(new Callback<TableColumn<Invitable,Boolean>, TableCell<Invitable,Boolean>>() {		
+			@Override
+			public TableCell<Invitable, Boolean> call(
+					TableColumn<Invitable, Boolean> param) {
+				return new CheckBoxTableCell<Invitable, Boolean>();
+			}
+		});
+		added_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Invitable,Boolean>, ObservableValue<Boolean>>() {
+			@Override
+			public ObservableValue<Boolean> call(
+					CellDataFeatures<Invitable, Boolean> param) {
+				return param.getValue().selected;
+			}
+		});
+        available_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Invitable,String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(
-					CellDataFeatures<Pair<BooleanProperty, User>, String> param) {
-				return Bindings.createStringBinding(
-						new Callable<String>() {
-							@Override
-							public String call() throws Exception {
-								if(param.getValue().getKey().getValue()) {
-									return "Yes";
-								}
-								else
-									return "No";
-							}
-							
-						}, param.getValue().getKey());
+					CellDataFeatures<Invitable, String> param) {
+				return Bindings.createStringBinding(new Callable<String>() {
+					@Override
+					public String call() throws Exception {
+						if(param.getValue().available.get())
+							return "Yes";
+						else
+							return "No";
+					}
+				}, param.getValue().available);
 			}
 		});
-
-        add.setCellValueFactory( f -> f.getValue().getCompleted());
-        loadedColumn.setCellFactory( tc -> new CheckBoxTableCell<>());
-        
     	GetUsersRequest request = new GetUsersRequest();
     	State.getConnectionController().sendTCP(request);
     	UserResponse response = (UserResponse)State.getConnectionController().getObject(
     			"communication.responses.UserResponse");
     	if(response.wasSuccessful()) {
     		for(User user : response.getUsers()) {
-    			invite_user_list.getItems().add(new Pair<BooleanProperty, User>(new SimpleBooleanProperty(true), user));
+    			invite_user_list.getItems().add(new Invitable(user));
     		}
     	}
     	
@@ -215,8 +228,8 @@ public class CreateAppointmentController implements Initializable {
 		a.setEndTime(DateUtil.serializeDateTime(endDate));
 		
     	request.setAppointment(a);
-    	for(Pair<BooleanProperty, User> item : invite_user_list.getItems()) {
-    		request.getUsernames().add(item.getValue().getUsername());
+    	for(Invitable item : invite_user_list.getItems()) {
+    		request.getUsernames().add(item.user.getUsername());
     	}
     	
     	State.getConnectionController().sendTCP(request);
@@ -227,12 +240,11 @@ public class CreateAppointmentController implements Initializable {
 					"Internal error");
 			loginAlert.showAndWait();
     	} else {
-        	for(Pair<BooleanProperty, User> item : invite_user_list.getItems()) {
-        		if(response.getUsernames().contains(item.getValue().getUsername())) {
-        			item.getKey().set(false);
+        	for(Invitable item : invite_user_list.getItems()) {
+        		if(response.getUsernames().contains(item.user.getUsername())) {
+        			item.available.setValue(false);
         		}
-        		else item.getKey().set(true);
-        			
+        		else item.available.setValue(true);
         	}
     	}    	
     }
@@ -241,29 +253,26 @@ public class CreateAppointmentController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	   	appointment.setOwnerUsername(State.getUser().getUsername());
 	   	
-	   	ChangeListener<String> stringChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
-				onFieldChanged();
-			}
-	   	};
-	   	ChangeListener<LocalDate> dateChangeListener = new ChangeListener<LocalDate>() {
-			@Override
-			public void changed(ObservableValue<? extends LocalDate> observable,
-					LocalDate oldValue, LocalDate newValue) {
-				onFieldChanged();
-			}
-	   	};
+	   	title.textProperty().addListener(f -> validateTitleField());
+	   	from_time.textProperty().addListener(f -> onChronoFieldChanged());
+	   	to_time.textProperty().addListener(f -> onChronoFieldChanged());
+	   	from_date.valueProperty().addListener(f -> onChronoFieldChanged());
+	   	to_date.valueProperty().addListener(f -> onChronoFieldChanged());
 	   	
-	   	title.textProperty().addListener(f -> onFieldChanged());
-	   	from_time.textProperty().addListener(stringChangeListener);
-	   	to_time.textProperty().addListener(stringChangeListener);
-	   	from_date.valueProperty().addListener(dateChangeListener);
-	   	to_date.valueProperty().addListener(dateChangeListener);
-    
     	initalizeInviteTable();
-    	onFieldChanged();
+    	onChronoFieldChanged();
 	}
-
+	
+	class Invitable {
+		public User user;
+		public StringProperty nameProperty;
+		public BooleanProperty available = new SimpleBooleanProperty(true);
+		public BooleanProperty selected = new SimpleBooleanProperty();
+		
+		public Invitable(User user) {
+			this.user = user;
+			nameProperty = new SimpleStringProperty(
+					user.getFirstname() + " " + user.getLastname());
+		}
+	}
 }

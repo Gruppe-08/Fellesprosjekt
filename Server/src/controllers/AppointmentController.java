@@ -201,7 +201,7 @@ public class AppointmentController {
 		ResultSet res;
 		
 		String query = 
-				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, repetition_type, owner_username)" +
+				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, owner_username)" +
 				"VALUES ( " +
 				"'" + appointment.getStartTime() + "'," +
 				"'" + appointment.getEndTime() + "'," + 
@@ -210,7 +210,7 @@ public class AppointmentController {
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
 				appointment.getRoomId() + ", " +
 				"'" + appointment.getOwnerUsername() + "');";
-		
+		System.out.println(query);
 		statement = db.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);
 		statement.execute();
 		res = statement.getGeneratedKeys();
@@ -219,18 +219,15 @@ public class AppointmentController {
 		if (res.next()) {
 			appointmentId = res.getInt(1);
 			
-			query = String.format(
-					"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'attending')",
-					appointmentId, appointment.getOwnerUsername());
 			for(String username : appointment.getUserRelations()) {
-				String.format(
+				query = String.format(
 						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
 						appointmentId, username);
+				System.out.println(query);
+				statement = db.prepareStatement(query);
+				statement.execute();
+				
 			}
-			
-			statement = db.prepareStatement(query);
-			
-			statement.execute();
 		}
 		else
 			throw new SQLException("Unable to get id of generated object");
