@@ -164,7 +164,7 @@ public class AppointmentController {
 			query += String.format("(username =  '%s' OR owner_username =  '%s') OR ", username, username);
 		query = query.substring(0, query.length()-4); //Strip last OR
 		query += "ORDER BY start_date ASC";
-		
+		System.out.println(query);
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
 		while(resultSet.next()){
@@ -293,7 +293,7 @@ public class AppointmentController {
 		ResultSet users = db.createStatement().executeQuery(
 				"SELECT ua.username FROM UserAppointmentRelation ua, Appointment a "
 				+ "WHERE a.appointment_id = ua.appointment_id AND ua.status = 'attending' AND "
-				+ "a.appointment_id = ");
+				+ "a.appointment_id = " + appointment.getId() + ";");
 		while(users.next()) {
 			appointment.getUserRelations().add(users.getString("username"));
 		}
