@@ -2,41 +2,120 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import models.Notification;
+import communication.requests.NotificationRequest;
+import communication.responses.NotificationResponse;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
 import calendar.State;
 
 public class WindowController implements Initializable {
 	Calendar myCalendar = null;
-	BorderPane myWindow = null;
+	AnchorPane myWindow = null;
 	
-	@FXML
-	private Pane userHeader;
+	@FXML private Pane userHeader;
+	@FXML private AnchorPane mainPane;
+	@FXML private AnchorPane main_window;
+	@FXML private ImageView profilepic;
 	
-	@FXML
-	private AnchorPane mainPane;
-	
-	@FXML
-	private BorderPane main_window;
+	@FXML private MenuButton menu;
+    @FXML private ToggleButton dayToggle;
+    @FXML private ToggleButton weekToggle;
+    @FXML private ToggleButton monthToggle;
+    @FXML private ToggleButton agendaToggle;
+    
+    @FXML private ToggleGroup viewToggle;
+    
+    @FXML private Text username;
+    
+    @FXML private MenuItem notification;
+    @FXML private MenuItem logout;
+    @FXML private MenuItem groups;
+    
+    private int currentYear;
+    private int currentWeek;
+    private int currentDate;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		LoginController loginController = (LoginController)loadPage("Login.fxml");
+		
+		Platform.runLater(new Runnable() {
+			@Override public void run() {
+				notification.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("Notification");
+					}
+				});
+
+				groups.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("Notification");
+					}
+				});
+				logout.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("Notification");
+					}
+				});
+				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						loadPage("DayView.fxml");
+						viewToggle.selectToggle(dayToggle);
+					}
+				});
+				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						loadPage("weekView.fxml");
+						viewToggle.selectToggle(weekToggle);
+					}
+				});
+				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("monthToggle");
+					}
+				});
+				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						loadPage("Agenda.fxml");
+						viewToggle.selectToggle(agendaToggle);
+					}
+				});	
+			}
+		});
 	}
 	
 	public void loginSuccessful() {
-		UserHeaderController headerController = (UserHeaderController)loadHeader("UserHeader.fxml");
-
-		loadPage("createAppointment.fxml");
+		enableAndShowButtons();
+		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
+		loadPage("WeekView.fxml");
 	}
 	
 	public Object loadPage(String pageName) {
@@ -78,5 +157,16 @@ public class WindowController implements Initializable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void enableAndShowButtons() {
+		profilepic.setVisible(true);
+		username.setVisible(true);
+		menu.setVisible(true);
+		dayToggle.setVisible(true);
+		weekToggle.setVisible(true);
+		monthToggle.setVisible(true);
+		agendaToggle.setVisible(true);
+		dayToggle.setSelected(true);
 	}
 }

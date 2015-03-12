@@ -1,7 +1,10 @@
 package server;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.management.remote.NotificationResult;
 
 import models.Appointment;
 
@@ -17,14 +20,21 @@ import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.GetUsersRequest;
+import communication.requests.CreateGroupRequest;
+import communication.requests.CreateUserRequest;
+import communication.requests.DeleteAppointmentRequest;
+import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
+import controllers.AddGroupController;
 import controllers.AppointmentController;
+import controllers.NotificationController;
 import controllers.UserController;
 import communication.ClassRegistration;
 
@@ -76,6 +86,11 @@ public class CalendarServer extends Server {
 	    		/* TODO: Provide more cases for different models, we need to create some model 
 	    		 * to send that allows the server to know what models the client requested.
 	    		 */
+				else if(object instanceof NotificationRequest){
+					String username = clientConnection.username;
+					NotificationResponse response = NotificationController.getNotificationResponse(username);
+					clientConnection.sendTCP(response);
+				}
 				else if(object instanceof AppointmentRequest) {
 					AppointmentRequest request = (AppointmentRequest)object;
 					AppointmentResponse response = AppointmentController.handleAppointmentRequest(
@@ -91,7 +106,6 @@ public class CalendarServer extends Server {
 				}
 				else if(object instanceof DeleteAppointmentRequest) {
 					DeleteAppointmentRequest request = (DeleteAppointmentRequest) object;
-				
 					BaseResponse response = AppointmentController.handleDeleteAppointment(request);
 					clientConnection.sendTCP(response);
 				}
@@ -105,6 +119,10 @@ public class CalendarServer extends Server {
 					BusyCheckRequest request = (BusyCheckRequest) object;
 					
 					BusyCheckResponse response = UserController.handleBusyCheck(request);
+				}
+				else if(object instanceof CreateGroupRequest){
+					CreateGroupRequest request = (CreateGroupRequest) object;
+					BaseResponse response = AddGroupController.handleCreateGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				

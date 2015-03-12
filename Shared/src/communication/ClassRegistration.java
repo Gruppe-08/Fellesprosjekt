@@ -19,6 +19,8 @@ public abstract class ClassRegistration {
 		kryo.register(communication.requests.DeleteAppointmentRequest.class);
 		kryo.register(communication.requests.GetUsersRequest.class);
 		kryo.register(communication.requests.BusyCheckRequest.class);
+		kryo.register(communication.requests.CreateGroupRequest.class);
+		kryo.register(communication.requests.NotificationRequest.class);
 		
 		kryo.register(communication.responses.AuthenticationResponse.class);
 		kryo.register(communication.responses.AppointmentResponse.class);
@@ -27,11 +29,15 @@ public abstract class ClassRegistration {
 		kryo.register(communication.responses.PutAppointmentResponse.class);
 		kryo.register(communication.responses.UserResponse.class);
 		kryo.register(communication.responses.BusyCheckResponse.class);
+		kryo.register(communication.responses.NotificationResponse.class);
 		
 		kryo.register(models.User.class);
 		kryo.register(models.RepetitionType.class);
 		kryo.register(models.Room.class);
 		kryo.register(models.Appointment.class);
+		kryo.register(models.Group.class);
+		kryo.register(models.Notification.class);
+		kryo.register(models.NotificationType.class);
 		
 		kryo.register(java.util.ArrayList.class);
 		kryo.register(java.time.LocalDateTime.class);

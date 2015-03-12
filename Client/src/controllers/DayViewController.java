@@ -3,12 +3,16 @@ package controllers;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import util.DateUtil;
 import communication.requests.AppointmentRequest;
 import communication.responses.AppointmentResponse;
 import calendar.AppointmentPane;
@@ -32,7 +36,7 @@ public class DayViewController implements Initializable{
 	@FXML private Button nextDay;
 	private String currentDay;
 	
-	Map<String, ArrayList<Appointment>> cachedAppointments = new HashMap<String, ArrayList<Appointment>>();
+	private Map<String, ArrayList<Appointment>> cachedAppointments = new HashMap<String, ArrayList<Appointment>>();
 	private final static DateTimeFormatter defaultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	private static ArrayList<Node> blankDayPane = new ArrayList<Node>();
 	
@@ -49,7 +53,7 @@ public class DayViewController implements Initializable{
 					blankDayPane.add(child);
 				}
 				currentDay = getToday();
-				dayLabel.setText(currentDay);	//Needs more beautiful text 
+				dayLabel.setText(getDayInfo(currentDay));	//Needs more beautiful text 
 				
 				//Caches the appointments
 				for (Appointment appointment : getAppointments()) {
@@ -94,16 +98,25 @@ public class DayViewController implements Initializable{
 		}
 	}
 	
+	private String getDayInfo(String currentDay) {
+		LocalDate date = DateUtil.deserializeDate(currentDay);
+		String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+		String month = date.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
+		String dayOfMonth = String.valueOf(date.getDayOfMonth());
+		return String.format("%s, %s. of %s", dayOfWeek, dayOfMonth, month);
+		
+	}
+	
 	private void incrementDay() {
 		LocalDate today = LocalDate.parse(currentDay, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		currentDay = today.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		dayLabel.setText(currentDay);
+		dayLabel.setText(getDayInfo(currentDay));
 	}
 	
 	private void decrementDay() {
 		LocalDate today = LocalDate.parse(currentDay, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		currentDay = today.minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		dayLabel.setText(currentDay);
+		dayLabel.setText(getDayInfo(currentDay));
 	}
 	
 	private String getToday() {
@@ -112,12 +125,8 @@ public class DayViewController implements Initializable{
 	}
 		
 	private double calculateAppointmentPlacement(String startTime) {
-		String hourandminutes = startTime.substring(11);
-		System.out.println(hourandminutes);
-		String[] time = hourandminutes.split(":");
-		int hour = Integer.valueOf(time[0]);
-		int minutes = Integer.valueOf(time[1]);
-		double pixels = (hour * 50 + minutes * 0.833);
+		LocalTime dateTime = DateUtil.deserializeDateTime(startTime).toLocalTime();
+		double pixels = (dateTime.getHour() * 50 + dateTime.getMinute() * 0.833);
 		return pixels;
 	}
 	
