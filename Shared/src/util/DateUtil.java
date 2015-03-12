@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Locale;
@@ -24,27 +25,27 @@ public class DateUtil {
 		return !dateTime.toLocalDate().isBefore(LocalDate.now());
 	}
 
-	public static LocalDateTime deserializeDateTime(String str) {
+	public static LocalDateTime deserializeDateTime(String str)  throws DateTimeParseException {
 		return LocalDateTime.parse(str, defaultDateTimeFormatter);
 	}
 	
-	public static String serializeDateTime(LocalDateTime localDateTime) {
+	public static String serializeDateTime(LocalDateTime localDateTime)  throws DateTimeParseException {
 		return localDateTime.format(defaultDateTimeFormatter);
 	}
 
-	public static LocalTime deserializeTime(String str) {
+	public static LocalTime deserializeTime(String str)  throws DateTimeParseException {
 		return LocalTime.parse(str, defaultTimeFormatter);
 	}
 	
-	public static String serializeTime(LocalTime localTime) {
+	public static String serializeTime(LocalTime localTime)  throws DateTimeParseException {
 		return localTime.format(defaultTimeFormatter);
 	}
 	
-	public static LocalDate deserializeDate(String str) {
+	public static LocalDate deserializeDate(String str) throws DateTimeParseException {
 		return LocalDate.parse(str, defaultDateFormatter);
 	}
 	
-	public static String serializeDate(LocalDate localDate) {
+	public static String serializeDate(LocalDate localDate) throws DateTimeParseException {
 		return localDate.format(defaultDateFormatter);
 	}
 	

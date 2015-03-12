@@ -48,6 +48,7 @@ public class LoginController implements Initializable {
 				AuthenticationResponse auth = (AuthenticationResponse) object;
 				if (auth.wasSuccessful()) {
 					State.setUser(auth.getUser());
+					System.out.println(auth.getUser());
 					State.myWindowController.loginSuccessful();
 				}
 				else {

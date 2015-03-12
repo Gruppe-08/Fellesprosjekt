@@ -201,7 +201,7 @@ public class AppointmentController {
 		ResultSet res;
 		
 		String query = 
-				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, repetition_type, owner_username)" +
+				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, owner_username)" +
 				"VALUES ( " +
 				"'" + appointment.getStartTime() + "'," +
 				"'" + appointment.getEndTime() + "'," + 
@@ -210,7 +210,7 @@ public class AppointmentController {
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
 				appointment.getRoomId() + ", " +
 				"'" + appointment.getOwnerUsername() + "');";
-		
+		System.out.println(query);
 		statement = db.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);
 		statement.execute();
 		res = statement.getGeneratedKeys();
@@ -219,13 +219,15 @@ public class AppointmentController {
 		if (res.next()) {
 			appointmentId = res.getInt(1);
 			
-			query = String.format(
-					"INSERT INTO UserAppointmentRelation(appointment_id, username) VALUES('%s', '%s')",
-					appointmentId, appointment.getOwnerUsername());
-			
-			statement = db.prepareStatement(query);
-			
-			statement.execute();
+			for(String username : appointment.getUserRelations()) {
+				query = String.format(
+						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
+						appointmentId, username);
+				System.out.println(query);
+				statement = db.prepareStatement(query);
+				statement.execute();
+				
+			}
 		}
 		else
 			throw new SQLException("Unable to get id of generated object");
@@ -286,6 +288,15 @@ public class AppointmentController {
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id"));
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
+		
+		//Get attending users
+		ResultSet users = db.createStatement().executeQuery(
+				"SELECT ua.username FROM UserAppointmentRelation ua, Appointment a "
+				+ "WHERE a.appointment_id = ua.appointment_id AND ua.status = 'attending' AND "
+				+ "a.appointment_id = ");
+		while(users.next()) {
+			appointment.getUserRelations().add(users.getString("username"));
+		}
 		return appointment;
 	}
 }
