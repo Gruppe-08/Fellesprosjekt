@@ -24,9 +24,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
+import calendar.NotificationService;
 import calendar.State;
 
 public class WindowController implements Initializable {
@@ -52,9 +54,7 @@ public class WindowController implements Initializable {
     @FXML private MenuItem logout;
     @FXML private MenuItem groups;
     
-    private int currentYear;
-    private int currentWeek;
-    private int currentDate;
+    private ArrayList<Notification> notifications = new ArrayList<Notification>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -116,6 +116,7 @@ public class WindowController implements Initializable {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage("WeekView.fxml");
+		NotificationService handler = new NotificationService(State.getConnectionController(), State.getWindowController());
 	}
 	
 	public Object loadPage(String pageName) {
@@ -168,5 +169,11 @@ public class WindowController implements Initializable {
 		monthToggle.setVisible(true);
 		agendaToggle.setVisible(true);
 		dayToggle.setSelected(true);
+	}
+	
+	public void flashNotification(Notification notification) {
+		VBox box = new VBox();
+		box.getChildren().add(new Text(notification.getMessage()));
+		mainPane.getChildren().add(box);
 	}
 }

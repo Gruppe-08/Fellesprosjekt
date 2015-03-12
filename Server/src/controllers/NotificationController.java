@@ -24,7 +24,7 @@ public class NotificationController {
 		try {
 			response.setNotifications(getNotifications(username));
 		} catch (SQLException e){
-			Logger.logMsg(Logger.ERROR, "HandleAppointmentRequest generated exception: " + e.getMessage());
+			Logger.logMsg(Logger.ERROR, "getNotificationResponse generated exception: " + e.getMessage());
 		}
 		
 		return response;
@@ -62,13 +62,11 @@ public class NotificationController {
 			not.setAppointment(app);
 			
 			notifications.add(not);
-			
-			System.out.println(app.toString() +  " " + not.toString());
 		}
 		
-		String deleteNotifications = String.format("DELETE FROM Notification WHERE username='%s'", username);
-		statement = db.prepareStatement(deleteNotifications);
-		statement.execute();
+//		String deleteNotifications = String.format("DELETE FROM Notification WHERE username='%s'", username);
+//		statement = db.prepareStatement(deleteNotifications);
+//		statement.execute();
 		
 		return notifications;
 	}
@@ -76,7 +74,7 @@ public class NotificationController {
 	public static Notification parseResultSetToNotification(ResultSet res) throws SQLException{
 		Notification not = new Notification();
 		not.setMessage(res.getString("message"));
-		not.setCreated(res.getString("created"));
+		not.setCreated(res.getString("created").substring(0,16));
 		not.setAlarm(res.getInt("is_alarm"));
 		not.setTriggerDate(res.getString("trigger_date"));
 		not.setNotificationType(res.getString("type"));
