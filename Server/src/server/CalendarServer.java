@@ -119,6 +119,8 @@ public class CalendarServer extends Server {
 					BusyCheckRequest request = (BusyCheckRequest) object;
 					
 					BusyCheckResponse response = UserController.handleBusyCheck(request);
+					clientConnection.sendTCP(response);
+					
 				}
 				else if(object instanceof CreateGroupRequest){
 					CreateGroupRequest request = (CreateGroupRequest) object;

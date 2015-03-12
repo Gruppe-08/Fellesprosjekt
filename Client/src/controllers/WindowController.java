@@ -78,27 +78,28 @@ public class WindowController implements Initializable {
 				logout.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						logout();
 					}
 				});
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("DayView.fxml");
+						loadPage("dayView.fxml");
 						viewToggle.selectToggle(dayToggle);
 					}
 				});
 				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("weekView.fxml");
+						loadPage("WeekView.fxml");
 						viewToggle.selectToggle(weekToggle);
 					}
 				});
 				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("monthToggle");
+						loadPage("monthView.fxml");
+						viewToggle.selectToggle(monthToggle);
 					}
 				});
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
@@ -112,6 +113,11 @@ public class WindowController implements Initializable {
 		});
 	}
 	
+	protected void logout() {
+		State.getConnectionController().close();
+		State.getStage().close();
+	}
+
 	public void loginSuccessful() {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());

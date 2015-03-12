@@ -164,7 +164,6 @@ public class AppointmentController {
 			query += String.format("(username =  '%s' OR owner_username =  '%s') OR ", username, username);
 		query = query.substring(0, query.length()-4); //Strip last OR
 		query += "ORDER BY start_date ASC";
-		System.out.println(query);
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
 		while(resultSet.next()){
@@ -190,7 +189,6 @@ public class AppointmentController {
 				"room_id = " + appointment.getRoomId() + ", " +
 				"owner_username = '" + appointment.getOwnerUsername() + "' " +
 				"WHERE appointment_id=" + appointment.getId() + ";";
-		System.out.println(query);
 		
 		PreparedStatement statement = db.prepareStatement(query);
 		statement.execute();		
@@ -210,7 +208,6 @@ public class AppointmentController {
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
 				appointment.getRoomId() + ", " +
 				"'" + appointment.getOwnerUsername() + "');";
-		System.out.println(query);
 		statement = db.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);
 		statement.execute();
 		res = statement.getGeneratedKeys();
@@ -223,7 +220,6 @@ public class AppointmentController {
 				query = String.format(
 						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
 						appointmentId, username);
-				System.out.println(query);
 				statement = db.prepareStatement(query);
 				statement.execute();
 				
