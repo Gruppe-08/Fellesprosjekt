@@ -28,7 +28,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
-import calendar.NotificationService;
 import calendar.State;
 
 public class WindowController implements Initializable {
@@ -116,11 +115,19 @@ public class WindowController implements Initializable {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage("WeekView.fxml");
-		NotificationService handler = new NotificationService(State.getConnectionController(), State.getWindowController());
+		//NotificationService handler = new NotificationService(State.getConnectionController(), State.getWindowController());
 	}
 	
 	public Object loadPage(String pageName) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
+       return loadPage(pageName, null);
+	}
+	
+	public Object loadPage(String pageName, Object controller){
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
+		
+		if(controller != null) {
+			loader.setController(controller);
+		}
 		try {
 			Pane root = loader.load();
 	        mainPane.getChildren().clear();
