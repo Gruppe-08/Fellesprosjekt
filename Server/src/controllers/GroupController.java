@@ -5,22 +5,49 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.CreateGroupRequest;
+import communication.requests.GetGroupsRequest;
 import communication.responses.BaseResponse;
+import communication.responses.GroupResponse;
 import server.DatabaseConnector;
 import models.Group;
 import models.User;
 
-public class AddGroupController {
+public class GroupController {
 	private static Connection db;
 	private static PreparedStatement statement;
 	private static ResultSet res;
 	
-	private static String addUserGroupRelation = "INSERT INTO UserGroupRelation(group_id, username)";
+	public static GroupResponse handleGetGroupsRequest(GetGroupsRequest request) {
+		db = DatabaseConnector.getDB();
+		GroupResponse response = new GroupResponse();
+		try {
+			statement = db.prepareStatement("SELECT * FROM UserGroup");
+			res = statement.executeQuery();
+			while(res.next())
+				response.addGroup(parseGroupFromResultset(res));
+			response.setSuccessful(true);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setSuccessful(false);
+		}
+		
+		return response;
+	}
 	
+	private static Group parseGroupFromResultset(ResultSet res) throws SQLException {
+		Group group = new Group();
+		group.setGroupID(res.getInt("group_id"));
+		group.setName(res.getString("title"));
+		
+		return group;
+	}
+
 	public static void addGroup(Group group) throws SQLException{
 		db = DatabaseConnector.getDB();
 
@@ -40,7 +67,7 @@ public class AddGroupController {
 		Group group = request.getGroup();
 		BaseResponse res = new BaseResponse();
 		try{
-			AddGroupController.addGroup(group);
+			addGroup(group);
 			res.setSuccessful(true);
 		} catch(SQLException e){
 			res.setErrorMessage("Could not create group.");
@@ -66,7 +93,7 @@ public class AddGroupController {
 	private static void addUserToGroup(int groupId, User user) throws SQLException {
 		try {
 			statement = db.prepareStatement(
-					addUserGroupRelation + 
+					"INSERT INTO UserGroupRelation(group_id, username)" + 
 					String.format("VALUES ('%s','%s')", groupId, user.getUsername())
 			);
 			statement.execute();

@@ -19,6 +19,7 @@ import communication.requests.AuthenticationRequest;
 import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
+import communication.requests.GetGroupsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.CreateUserRequest;
@@ -30,9 +31,10 @@ import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GroupResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
-import controllers.AddGroupController;
+import controllers.GroupController;
 import controllers.AppointmentController;
 import controllers.NotificationController;
 import controllers.UserController;
@@ -124,10 +126,14 @@ public class CalendarServer extends Server {
 				}
 				else if(object instanceof CreateGroupRequest){
 					CreateGroupRequest request = (CreateGroupRequest) object;
-					BaseResponse response = AddGroupController.handleCreateGroupRequest(request);
+					BaseResponse response = GroupController.handleCreateGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
-				
+				else if(object instanceof GetGroupsRequest){
+					GetGroupsRequest request = (GetGroupsRequest) object;
+					GroupResponse response = GroupController.handleGetGroupsRequest(request);
+					clientConnection.sendTCP(response);
+				}
 			}
 
 			public void connected(Connection connection) {

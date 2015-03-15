@@ -37,19 +37,23 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Pair;
 import models.Appointment;
+import models.Group;
 import models.User;
 import util.DateUtil;
 import calendar.State;
 import communication.requests.BusyCheckRequest;
+import communication.requests.GetGroupsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.BusyCheckResponse;
+import communication.responses.GroupResponse;
 import communication.responses.PutAppointmentResponse;
 import communication.responses.UserResponse;
 import controllers.CreateAppointmentController.Invitable;
 
 public class CreateAppointmentController implements Initializable {
 	Appointment appointment = new Appointment();
+	boolean isNew = false;
 	boolean datesValid = false;
 	boolean titleValid = false;
 	
@@ -88,6 +92,18 @@ public class CreateAppointmentController implements Initializable {
 
     @FXML
     private TableColumn<Invitable, String> name_column;
+    
+    @FXML
+    TableView<InvitableGroup> invite_group_list;
+    
+    @FXML
+    private TableColumn<InvitableGroup, Boolean> group_added_column;
+
+    @FXML
+    private TableColumn<InvitableGroup, String> title_column;
+    
+    @FXML
+    private TableColumn<InvitableGroup, String> group_available_column;
 
     @FXML
     void onOk(ActionEvent event) {
@@ -99,9 +115,14 @@ public class CreateAppointmentController implements Initializable {
 	    	for(Invitable user : invite_user_list.getItems()) {
 	    		if(user.selected.getValue())
 	    			request.getAppointment().getUserRelations().add(
-	    					user.user.getUsername());
-	    		
+	    					user.user.getUsername());		
 	    	}
+	    	for(InvitableGroup group : invite_group_list.getItems()) {
+	    		if(group.selected.getValue())
+	    			request.getAppointment().getUserRelations().add(
+	    					group.group.getGroupID());		
+	    	}
+	    	
 	    	request.setNewAppointment(true);
 	    	
 	    	State.getConnectionController().sendTCP(request);
@@ -115,7 +136,6 @@ public class CreateAppointmentController implements Initializable {
 	    		State.getWindowController().loadPage("Agenda.fxml");
 	    	}
     	}
-    	
     }
 
     @FXML
@@ -200,6 +220,43 @@ public class CreateAppointmentController implements Initializable {
 				}, param.getValue().available);
 			}
 		});
+        group_available_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<InvitableGroup,String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(
+					CellDataFeatures<InvitableGroup, String> param) {
+				return Bindings.createStringBinding(new Callable<String>() {
+					@Override
+					public String call() throws Exception {
+						if(param.getValue().available.get())
+							return "Yes";
+						else
+							return "No";
+					}
+				}, param.getValue().available);
+			}
+		});
+        group_added_column.setCellFactory(new Callback<TableColumn<InvitableGroup,Boolean>, TableCell<InvitableGroup,Boolean>>() {		
+			@Override
+			public TableCell<InvitableGroup, Boolean> call(
+					TableColumn<InvitableGroup, Boolean> param) {
+				return new CheckBoxTableCell<InvitableGroup, Boolean>();
+			}
+		});
+		group_added_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<InvitableGroup,Boolean>, ObservableValue<Boolean>>() {
+			@Override
+			public ObservableValue<Boolean> call(
+					CellDataFeatures<InvitableGroup, Boolean> param) {
+				return param.getValue().selected;
+			}
+		});
+        title_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<InvitableGroup,String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<InvitableGroup, String> param) {
+				return param.getValue().titleProperty;
+			}
+		});
+        
+        //Fill user invite list with users
     	GetUsersRequest request = new GetUsersRequest();
     	State.getConnectionController().sendTCP(request);
     	UserResponse response = (UserResponse)State.getConnectionController().getObject(
@@ -210,7 +267,16 @@ public class CreateAppointmentController implements Initializable {
     		}
     	}
     	
-    	
+    	//Fill group invite list with groups
+    	GetGroupsRequest group_request = new GetGroupsRequest();
+    	State.getConnectionController().sendTCP(group_request);
+    	GroupResponse group_response = (GroupResponse)State.getConnectionController().getObject(
+    			"communication.responses.GroupResponse");
+    	if(group_response.wasSuccessful()) {
+    		for(Group group : group_response.getGroups()) {
+    			invite_group_list.getItems().add(new InvitableGroup(group));
+    		}
+    	}
     }
 
     
@@ -260,6 +326,7 @@ public class CreateAppointmentController implements Initializable {
 	   	to_date.valueProperty().addListener(f -> onChronoFieldChanged());
 	   	
     	initalizeInviteTable();
+    	validateTitleField();
     	onChronoFieldChanged();
 	}
 	
@@ -273,6 +340,19 @@ public class CreateAppointmentController implements Initializable {
 			this.user = user;
 			nameProperty = new SimpleStringProperty(
 					user.getFirstname() + " " + user.getLastname());
+		}
+	}
+	
+	class InvitableGroup {
+		public Group group;
+		public StringProperty titleProperty;
+		public BooleanProperty available = new SimpleBooleanProperty(true);
+		public BooleanProperty selected = new SimpleBooleanProperty();
+		
+		public InvitableGroup(Group group) {
+			this.group = group;
+			titleProperty = new SimpleStringProperty(
+					group.getName());
 		}
 	}
 }

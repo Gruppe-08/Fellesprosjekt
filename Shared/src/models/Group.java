@@ -3,19 +3,25 @@ package models;
 import java.util.ArrayList;
 
 public class Group {
+	private int groupID;
+	public int getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(int groupID) {
+		this.groupID = groupID;
+	}
+
 	private String name;
-	private String description;
 	private ArrayList<User> members;
 	
 	public Group(){
 		name = "";
-		description = "";
 		members = new ArrayList<User>();
 	}
 	
-	public Group(String name, String description, ArrayList<User> members){
+	public Group(String name, ArrayList<User> members){
 		this.name = name;
-		this.description = description;
 		this.members = members;
 	}
 	
@@ -26,15 +32,6 @@ public class Group {
 	public String getName(){
 		return name;
 	}
-	
-	public void setDescription(String description){
-		this.description = description;
-	}
-	
-	public String getDescription(){
-		return this.description;
-	}
-	
 	
 	public void addUser(User user){
 		members.add(user);

@@ -84,7 +84,22 @@ public class UserController {
 		}
 		
 		return response;
-	}	
+	}
+	
+	public static ArrayList<String> getUsersByGroup(int groupID) throws SQLException {
+		Connection db = DatabaseConnector.getDB();
+		ArrayList<String> usernames = new ArrayList<String>();
+		String query = 
+				"SELECT * FROM UserGroupRelation ug, User u WHERE ug.username = u.username AND ug.group_id = " +
+				groupID;
+		ResultSet res = db.prepareStatement(query).executeQuery();
+		
+		while(res.next()) {
+			usernames.add(res.getString("username"));
+		}
+		
+		return usernames;
+	}
 	
 	//Retrieves password hash of the specified user from the server
 	private static String getHashForUser(String username) {
@@ -99,7 +114,7 @@ public class UserController {
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
 		return hash;
 	}
 	
