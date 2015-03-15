@@ -16,6 +16,10 @@ public class DateUtil {
 	final static private DateTimeFormatter defaultTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	final static private DateTimeFormatter defaultDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
+	private static final int TIME_START = 11;
+	private static final int DATE_START = 0;
+	private static final int DATE_END = 10;
+	
 	public static String getNow() {
 		return LocalDateTime.now().format(defaultDateTimeFormatter);
 	}
@@ -33,7 +37,7 @@ public class DateUtil {
 	}
 
 	public static LocalTime deserializeTime(String str) {
-		return LocalTime.parse(str, defaultTimeFormatter);
+		return LocalTime.parse(str.substring(TIME_START), defaultTimeFormatter);
 	}
 	
 	public static String serializeTime(LocalTime localTime) {
@@ -41,7 +45,7 @@ public class DateUtil {
 	}
 	
 	public static LocalDate deserializeDate(String str) {
-		return LocalDate.parse(str, defaultDateFormatter);
+		return LocalDate.parse(str.substring(DATE_START,DATE_END), defaultDateFormatter);
 	}
 	
 	public static String serializeDate(LocalDate localDate) {

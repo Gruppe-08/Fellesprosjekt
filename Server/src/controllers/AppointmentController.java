@@ -177,6 +177,7 @@ public class AppointmentController {
 	
 	private static void changeAppointment(Appointment appointment)
 			throws IllegalArgumentException, SQLException {
+		Logger.logMsg(Logger.DEBUG, "Updating appointment " + appointment.getTitle());
 		getAppointment(appointment.getId()); // This will throw IllegalArgumentException if non-existent id
 
 		String query = 
@@ -197,11 +198,12 @@ public class AppointmentController {
 	}
 	
 	private static int addAppointment(Appointment appointment) throws SQLException {
+		Logger.logMsg(Logger.DEBUG, "Adding appointment " + appointment.getTitle());
 		PreparedStatement statement;
 		ResultSet res;
 		
 		String query = 
-				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, repetition_type, owner_username)" +
+				"INSERT INTO Appointment(start_date, end_date, title, description, location, room_id, owner_username)" +
 				"VALUES ( " +
 				"'" + appointment.getStartTime() + "'," +
 				"'" + appointment.getEndTime() + "'," + 
