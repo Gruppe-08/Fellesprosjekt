@@ -40,7 +40,7 @@ public class AppointmentPane extends VBox {
 			@Override
 			public void handle(Event event) {
 				AppointmentController controller = new AppointmentController(appointment);	
-				State.getWindowController().loadPage("Appointment.fxml", controller);
+				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
 
 			}
 		});

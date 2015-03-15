@@ -29,10 +29,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
 import calendar.State;
+import calendar.Window;
 
 public class WindowController implements Initializable {
 	Calendar myCalendar = null;
 	AnchorPane myWindow = null;
+	public static Window previous_window = null;
 	
 	@FXML private Pane userHeader;
 	@FXML private AnchorPane mainPane;
@@ -57,7 +59,7 @@ public class WindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		LoginController loginController = (LoginController)loadPage("Login.fxml");
+		LoginController loginController = (LoginController)loadPage(Window.LOGIN);
 		
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
@@ -83,14 +85,14 @@ public class WindowController implements Initializable {
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("DayView.fxml");
+						loadPage(Window.DAY);
 						viewToggle.selectToggle(dayToggle);
 					}
 				});
 				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("weekView.fxml");
+						loadPage(Window.WEEK);
 						viewToggle.selectToggle(weekToggle);
 					}
 				});
@@ -103,7 +105,7 @@ public class WindowController implements Initializable {
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("Agenda.fxml");
+						loadPage(Window.AGENDA);
 						viewToggle.selectToggle(agendaToggle);
 					}
 				});	
@@ -114,16 +116,16 @@ public class WindowController implements Initializable {
 	public void loginSuccessful() {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
-		loadPage("WeekView.fxml");
+		loadPage(Window.WEEK);
 		//NotificationService handler = new NotificationService(State.getConnectionController(), State.getWindowController());
 	}
 	
-	public Object loadPage(String pageName) {
-       return loadPage(pageName, null);
+	public Object loadPage(Window window) {
+       return loadPage(window, null);
 	}
 	
-	public Object loadPage(String pageName, Object controller){
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
+	public Object loadPage(Window window, Object controller){				
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + window));
 		
 		if(controller != null) {
 			loader.setController(controller);

@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 
 import util.DateUtil;
 import calendar.State;
+import calendar.Window;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.PutAppointmentResponse;
 import models.Appointment;
@@ -34,13 +35,10 @@ public class AppointmentController {
     TextArea description;
 
     @FXML
-    DatePicker from_date;
+    DatePicker date;
     
     @FXML
     TextField from_time;
-    
-    @FXML
-    DatePicker to_date;
     
     @FXML
     TextField to_time;
@@ -63,8 +61,7 @@ public class AppointmentController {
     		title.setText(appointment.getTitle()); 
         	description.setText(appointment.getDescription());
         	
-        	from_date.setValue( DateUtil.deserializeDate(appointment.getStartTime()) );
-        	to_date.setValue( DateUtil.deserializeDate(appointment.getEndTime()) );
+        	date.setValue( DateUtil.deserializeDate(appointment.getStartTime()) );
         	
         	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
         	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
@@ -80,8 +77,8 @@ public class AppointmentController {
     	LocalTime startTime = LocalTime.parse(from_time.getText());
     	LocalTime endTime = LocalTime.parse(to_time.getText());
     	
-    	LocalDateTime startDate = from_date.getValue().atTime(startTime);
-    	LocalDateTime endDate = to_date.getValue().atTime(endTime);
+    	LocalDateTime startDate = date.getValue().atTime(startTime);
+    	LocalDateTime endDate = date.getValue().atTime(endTime);
     	
     	appointment.setTitle(title.getText());
     	appointment.setDescription(description.getText());
@@ -109,13 +106,13 @@ public class AppointmentController {
 					response.getErrorMessage());
 			loginAlert.showAndWait();
     	} else {
-    		State.getWindowController().loadPage("Agenda.fxml");
+    		State.getWindowController().loadPage(Window.AGENDA);
     	}
     	
     }
 
     @FXML
     void onCancel(ActionEvent event) {
-    	State.getWindowController().loadPage("Agenda.fxml");
+    	State.getWindowController().loadPage(Window.AGENDA);
     }
 }

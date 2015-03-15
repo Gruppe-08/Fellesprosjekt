@@ -38,10 +38,8 @@ public class WeekAppointmentPane extends VBox {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				System.out.println("Test 2");
 				AppointmentController controller = new AppointmentController(appointment);	
-				State.getWindowController().loadPage("Appointment.fxml", controller);
-
+				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
 			}
 		});
  	}

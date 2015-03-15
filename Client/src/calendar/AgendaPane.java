@@ -1,5 +1,7 @@
 package calendar;
 
+import java.time.LocalDateTime;
+
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.DeleteAppointmentRequest;
@@ -64,7 +66,7 @@ public class AgendaPane extends AnchorPane{
 				
 				if(response.wasSuccessful()){
 					Logger.logMsg(Logger.DEBUG, "Delete appointment successfull");
-					State.getWindowController().loadPage("Agenda.fxml");
+					State.getWindowController().loadPage(Window.AGENDA);
 				} else {
 					Alert loginAlert = new Alert(AlertType.ERROR, 
 							"Could not delete appointment.");
@@ -92,8 +94,14 @@ public class AgendaPane extends AnchorPane{
 		this.description = new Text(description);
 	}
 	
-	public void setTime(String startTime, String endTime){		
+	public void setTime(String startTime, String endTime){
+		LocalDateTime start = DateUtil.deserializeDateTime(startTime);
+		LocalDateTime end = DateUtil.deserializeDateTime(endTime);
+		String date = start.getMonth().toString().toLowerCase() + " " + start.getDayOfMonth();
+		String start_time = start.getHour() + ":" + start.getMinute();
+		String end_time = end.getHour() + ":" + end.getMinute();
+		
 		this.time = new Text(
-				String.format("From %s to %s", DateUtil.presentString(startTime), DateUtil.presentString(endTime)));
+				String.format("%s, from %s to %s", date, start_time, end_time));
 	}
 }
