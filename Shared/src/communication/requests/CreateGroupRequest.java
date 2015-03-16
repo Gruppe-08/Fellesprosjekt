@@ -17,14 +17,14 @@ public class CreateGroupRequest {
 	}
 
 	
-	public void addMember(User user){
-		group.addUser(user);
+	public void addMember(String username){
+		group.addUser(username);
 	}
 	
-	public void addMembers(ArrayList<User> members){
-		for (User member : members) {
-			if(!group.getMembers().contains(member)){
-				group.addUser(member);
+	public void addMembers(ArrayList<String> usernames){
+		for (String username : usernames) {
+			if(!group.getMembers().contains(username)){
+				group.addUser(username);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class CreateGroupRequest {
 		return group;
 	}
 	
-	public ArrayList<User> getMembers(){
+	public ArrayList<String> getMembers(){
 		return group.getMembers();
 	}
 	

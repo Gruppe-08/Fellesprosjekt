@@ -64,10 +64,9 @@ public class GroupController implements Initializable {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ArrayList<User> members = addUsers();
+				ArrayList<String> members = addUsers();
 				String nameString = name.getText();
-				String descriptionString = description.getText();
-				Group group = new Group (nameString, descriptionString, members);
+				Group group = new Group (nameString, members);
 				createGroup(group);
 			}
 		});
@@ -80,8 +79,8 @@ public class GroupController implements Initializable {
 		
 	}
 
-	private ArrayList<User> addUsers(){
-		ArrayList<User> members = new ArrayList<User>();
+	private ArrayList<String> addUsers(){
+		ArrayList<String> members = new ArrayList<String>();
 		ArrayList<CheckBox> checkboxes = new ArrayList<CheckBox>();
 		for (Node node : listPane.getChildren()) {
 			checkboxes.add((CheckBox)node);
@@ -90,7 +89,7 @@ public class GroupController implements Initializable {
 			if (checkbox.isSelected()){
 				for (User user : users) {
 					if (user.getUsername() == checkbox.getText()) {
-						members.add(user);
+						members.add(user.getUsername());
 					}
 				}
 			}
