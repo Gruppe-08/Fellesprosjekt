@@ -19,15 +19,14 @@ import models.User;
 
 public class GroupController {
 	private static Connection db;
-	private static PreparedStatement statement;
-	private static ResultSet res;
 	
 	public static GroupResponse handleGetGroupsRequest(GetGroupsRequest request) {
 		db = DatabaseConnector.getDB();
+		
 		GroupResponse response = new GroupResponse();
 		try {
-			statement = db.prepareStatement("SELECT * FROM UserGroup");
-			res = statement.executeQuery();
+			PreparedStatement statement = db.prepareStatement("SELECT * FROM UserGroup");
+			ResultSet res = statement.executeQuery();
 			while(res.next())
 				response.addGroup(parseGroupFromResultset(res));
 			response.setSuccessful(true);
@@ -40,11 +39,30 @@ public class GroupController {
 		return response;
 	}
 	
+	public static Group getGroup(int groupID) throws SQLException {
+		PreparedStatement statement = db.prepareStatement(
+				"SELECT * FROM UserGroup g WHERE g.group_id = " + groupID);
+		ResultSet res = statement.executeQuery();
+		if(res.next()) {
+			return parseGroupFromResultset(res);
+		}
+		else
+			throw new SQLException();
+	}
+	
 	private static Group parseGroupFromResultset(ResultSet res) throws SQLException {
 		Group group = new Group();
 		group.setGroupID(res.getInt("group_id"));
 		group.setName(res.getString("title"));
 		
+		PreparedStatement statement = db.prepareStatement(
+				"SELECT * FROM UserGroupRelation ug WHERE ug.group_id = " + group.getGroupID());
+		ResultSet userRes = statement.executeQuery();
+		
+		while(userRes.next()) {
+			group.addUser(userRes.getString("username"));
+		}
+
 		return group;
 	}
 
@@ -52,11 +70,11 @@ public class GroupController {
 		db = DatabaseConnector.getDB();
 
 		String addGroup = String.format("INSERT INTO UserGroup(title) VALUES('%s')", group.getName());	
-		statement = db.prepareStatement(addGroup,  Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement statement = db.prepareStatement(addGroup,  Statement.RETURN_GENERATED_KEYS);
 		statement.execute();
-		res = statement.getGeneratedKeys();
+		ResultSet res = statement.getGeneratedKeys();
 		
-		if(returnedGroupId()){
+		if(res.next()){
 			// get generated groupId
 			int groupId = res.getInt(1);
 			addUsers(group, groupId);
@@ -79,22 +97,16 @@ public class GroupController {
 
 
 	private static void addUsers(Group group, int groupId) throws SQLException {
-		for (User user : group.getMembers()) {
-			addUserToGroup(groupId, user);
+		for (String username : group.getMembers()) {
+			addUserToGroup(groupId, username);
 		}
 	}
 
-
-	private static boolean returnedGroupId() throws SQLException {
-		return res.next();
-	}
-
-
-	private static void addUserToGroup(int groupId, User user) throws SQLException {
+	private static void addUserToGroup(int groupId, String username) throws SQLException {
 		try {
-			statement = db.prepareStatement(
+			PreparedStatement statement = db.prepareStatement(
 					"INSERT INTO UserGroupRelation(group_id, username)" + 
-					String.format("VALUES ('%s','%s')", groupId, user.getUsername())
+					String.format("VALUES ('%s','%s')", groupId, username)
 			);
 			statement.execute();
 			

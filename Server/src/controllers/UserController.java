@@ -258,7 +258,7 @@ public class UserController {
 		return users;
 	}
 	
-	private static User parseResultSetToUser(ResultSet rs) throws SQLException{
+	public static User parseResultSetToUser(ResultSet rs) throws SQLException{
 		User user = new User();
 		user.setUsername(rs.getString("username"));
 		user.setFirstname(rs.getString("firstname"));

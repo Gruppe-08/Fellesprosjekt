@@ -148,7 +148,7 @@ public class AppointmentController implements Initializable {
 	    					group.group.getGroupID());		
 	    	}
 	    	
-	    	request.setNewAppointment(true);
+	    	request.setNewAppointment(isNew);
 	    	
 	    	State.getConnectionController().sendTCP(request);
 	    	PutAppointmentResponse response = (PutAppointmentResponse) State.getConnectionController().getObject("communication.responses.PutAppointmentResponse");

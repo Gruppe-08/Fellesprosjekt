@@ -13,19 +13,19 @@ public class Group {
 		this.groupID = groupID;
 	}
 
-	private ArrayList<User> members;
-	public void setMembers(ArrayList<User> members) {
-		this.members = members;
+	private ArrayList<String> usernames;
+	public void setMembers(ArrayList<String> usernames) {
+		this.usernames = usernames;
 	}
 	
 	public Group(){
 		name = "";
-		members = new ArrayList<User>();
+		usernames = new ArrayList<String>();
 	}
 	
-	public Group(String name, ArrayList<User> members){
+	public Group(String name, ArrayList<String> usernames){
 		this.name = name;
-		this.members = members;
+		this.usernames = usernames;
 	}
 	
 	public void setName(String name){
@@ -36,21 +36,21 @@ public class Group {
 		return name;
 	}
 	
-	public void addUser(User user){
-		members.add(user);
+	public void addUser(String username){
+		usernames.add(username);
 	}
 	
-	public void removeUser(User user){
+	public void removeUser(String username){
 		try{
-			members.remove(user);
+			usernames.remove(username);
 		} catch(Exception e){
 			throw new IllegalArgumentException("This user could not be deleted.");
 		}
 
 	}
 
-	public ArrayList<User> getMembers() {
-		return this.members;
+	public ArrayList<String> getMembers() {
+		return this.usernames;
 	}
 
 }
