@@ -45,35 +45,32 @@ public class GroupController implements Initializable {
 		
 		GetUsersRequest request = new GetUsersRequest();
 		State.getConnectionController().sendTCP(request);
-		System.out.println("sent request");
 		GetUsersResponse response = (GetUsersResponse)State.getConnectionController().getObject("communication.responses.GetUsersResponse");
-		System.out.println(response.getUserList().size());
 		double offset = 0;
-		for (User user : response.getUserList()){
-			System.out.println(user.getUsername());
+		users = response.getUserList();
+		for (User user : users){
+			
+			users.add(user);
 			CheckBox checkbox = addCheckbox(user);
 			listPane.getChildren().add(checkbox);
 			
 			AnchorPane.setTopAnchor(checkbox, offset);
 			AnchorPane.setLeftAnchor(checkbox, 5.0);
 			offset += 25;
-			
 		}
 		
 		
-//		create.setOnAction(new EventHandler<ActionEvent>() {
+		create.setOnAction(new EventHandler<ActionEvent>() {
 
-//			@Override
-//			public void handle(ActionEvent event) {
-////				addUsers();
-//				String nameString = name.getText();
-//				String descriptionString = description.getText();
-//				Group group = new Group (nameString, descriptionString, users);
-//				createGroup(group);
-//			}
-//
-//		});
-
+			@Override
+			public void handle(ActionEvent event) {
+				ArrayList<User> members = addUsers();
+				String nameString = name.getText();
+				String descriptionString = description.getText();
+				Group group = new Group (nameString, descriptionString, members);
+				createGroup(group);
+			}
+		});
 	}
 	
 	private CheckBox addCheckbox(User user){
@@ -83,17 +80,23 @@ public class GroupController implements Initializable {
 		
 	}
 
-//	private void addUsers(){
-//		ArrayList<CheckBox> checkboxes = new ArrayList<CheckBox>();
-//		for (Node node : listPane.getChildren()) {
-//			checkboxes.add((CheckBox)node);
-//		}
-//		for ( CheckBox checkbox : checkboxes){
-//			if (checkbox.isSelected()){
-//				users.add(new User(checkbox.getText()));
-//			}
-//		}
-//	}
+	private ArrayList<User> addUsers(){
+		ArrayList<User> members = new ArrayList<User>();
+		ArrayList<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		for (Node node : listPane.getChildren()) {
+			checkboxes.add((CheckBox)node);
+		}
+		for ( CheckBox checkbox : checkboxes){
+			if (checkbox.isSelected()){
+				for (User user : users) {
+					if (user.getUsername() == checkbox.getText()) {
+						members.add(user);
+					}
+				}
+			}
+		}
+		return members;
+	}
 	
 	public static void createGroup(Group group){
 		CreateGroupRequest req = new CreateGroupRequest(group);
