@@ -1,9 +1,7 @@
 package controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import calendar.State;
+import calendar.Window;
 import communication.requests.CreateUserRequest;
 import communication.responses.CreateUserResponse;
 import models.User;
@@ -77,7 +75,7 @@ public class CreateUserController {
 				CreateUserResponse res = (CreateUserResponse) object;
 				
 				if (res.wasSuccessful()) {
-					State.myWindowController.loadPage("Login.fxml");
+					State.myWindowController.loadPage(Window.LOGIN);
 				}
 				else {
 					// TODO: Flash error message to show that login failed.

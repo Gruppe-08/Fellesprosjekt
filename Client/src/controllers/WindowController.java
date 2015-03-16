@@ -26,10 +26,12 @@ import javafx.stage.Stage;
 import calendar.Calendar;
 import calendar.NotificationService;
 import calendar.State;
+import calendar.Window;
 
 public class WindowController implements Initializable {
 	Calendar myCalendar = null;
 	AnchorPane myWindow = null;
+	public static Window previous_window = null;
 	
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane main_window;
@@ -54,21 +56,21 @@ public class WindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		LoginController loginController = (LoginController)loadPage("Login.fxml");
+		LoginController loginController = (LoginController)loadPage(Window.LOGIN);
 		
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
 				notification.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("NotificationView.fxml");
+						loadPage(Window.NOTIFICATIONS);
 					}
 				});
 
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("CreateGroup.fxml");
+						loadPage(Window.CREATE_GROUP);
 					}
 				});
 				logout.setOnAction(new EventHandler<ActionEvent>(){
@@ -80,28 +82,29 @@ public class WindowController implements Initializable {
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("dayView.fxml");
-						viewToggle.selectToggle(dayToggle);	
+						loadPage(Window.DAY);
+						viewToggle.selectToggle(dayToggle);
 					}
 				});
 				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("WeekView.fxml");
+						loadPage(Window.WEEK);
+
 						viewToggle.selectToggle(weekToggle);
 					}
 				});
 				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("monthView.fxml");
+						loadPage(Window.MONTH);
 						viewToggle.selectToggle(monthToggle);
 					}
 				});
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("Agenda.fxml");
+						loadPage(Window.AGENDA);
 						viewToggle.selectToggle(agendaToggle);
 					}
 				});	
@@ -117,13 +120,21 @@ public class WindowController implements Initializable {
 	public void loginSuccessful() {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
-		loadPage("WeekView.fxml");
+		loadPage(Window.WEEK);
 		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
 		service.start();
 	}
 	
-	public Object loadPage(String pageName) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
+	public Object loadPage(Window window) {
+       return loadPage(window, null);
+	}
+	
+	public Object loadPage(Window window, Object controller){				
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + window));
+		
+		if(controller != null) {
+			loader.setController(controller);
+		}
 		try {
 			Pane root = loader.load();
 	        mainPane.getChildren().clear();

@@ -1,16 +1,12 @@
 package calendar;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-
-import communication.requests.AppointmentRequest;
-import communication.responses.AppointmentResponse;
+import controllers.AppointmentController;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -22,7 +18,6 @@ public class WeekAppointmentPane extends VBox {
 	
 	Appointment appointment;
 	
-	
 	public WeekAppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
 		this.setPadding(new Insets(5,5,5,5));
@@ -32,6 +27,14 @@ public class WeekAppointmentPane extends VBox {
 		this.setEffect(dropShadow);
 		this.setPrefHeight(calculateHeight());
 		putText();
+		
+		this.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				AppointmentController controller = new AppointmentController(appointment);	
+				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
+			}
+		});
  	}
 	//TODO: Find a way to format the text that allows for correct scaling of appointments
 	//Tempfix: small font size
@@ -47,6 +50,11 @@ public class WeekAppointmentPane extends VBox {
 		Long diff = startTime.until(endTime, ChronoUnit.MINUTES);
 		int height = (int)(0.85 * diff) + 1;
 		return height;
+	}
+	
+	public void onMouseClicked(){
+		System.out.println("Test");
+		
 	}
 
 }

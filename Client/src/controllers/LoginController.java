@@ -2,9 +2,11 @@ package controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import communication.requests.AuthenticationRequest;
 import communication.responses.AuthenticationResponse;
 import calendar.State;
+import calendar.Window;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -62,7 +64,7 @@ public class LoginController implements Initializable {
 		login_create_user.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				State.getWindowController().loadPage("CreateUser.fxml");
+				State.getWindowController().loadPage(Window.CREATE_USER);
 			}
 		});
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import calendar.AgendaPane;
 import calendar.State;
+import calendar.Window;
 import models.Appointment;
 import models.User;
 import javafx.event.ActionEvent;
@@ -42,7 +43,7 @@ public class AgendaController {
 	
 	@FXML
 	void onAddAppointment(ActionEvent event){
-		State.getWindowController().loadPage("createAppointment.fxml");
+		State.getWindowController().loadPage(Window.APPOINTMENT, new AppointmentController());
 	}
 	
 	@FXML
