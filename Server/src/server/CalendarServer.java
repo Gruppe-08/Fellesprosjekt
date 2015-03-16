@@ -16,14 +16,20 @@ import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AppointmentRequest;
 import communication.requests.AuthenticationRequest;
+import communication.requests.BusyCheckRequest;
+import communication.requests.CreateUserRequest;
+import communication.requests.DeleteAppointmentRequest;
+import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
+import communication.requests.GetUsersRequest;
 import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
+import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
@@ -82,9 +88,18 @@ public class CalendarServer extends Server {
 	    		 * to send that allows the server to know what models the client requested.
 	    		 */
 				else if(object instanceof NotificationRequest){
-					String username = clientConnection.username;
-					NotificationResponse response = NotificationController.getNotificationResponse(username);
-					clientConnection.sendTCP(response);
+					NotificationRequest req = (NotificationRequest)object;
+					if (req.getReadId() > 0) {
+						NotificationController.setReadNotification(req.getReadId());
+						if (req.getStatus() >= 0) {
+							//handle notification answer in here
+						}
+					}
+					else {
+						String username = clientConnection.username;
+						NotificationResponse response = NotificationController.getNotificationResponse(username);
+						clientConnection.sendTCP(response);
+					}
 				}
 				else if(object instanceof AppointmentRequest) {
 					AppointmentRequest request = (AppointmentRequest)object;
@@ -104,9 +119,27 @@ public class CalendarServer extends Server {
 					BaseResponse response = AppointmentController.handleDeleteAppointment(request);
 					clientConnection.sendTCP(response);
 				}
+				else if(object instanceof GetUsersRequest) {
+					GetUsersRequest request = (GetUsersRequest) object;
+				
+					BaseResponse response = UserController.handleGetUsersResponse(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof BusyCheckRequest) {
+					BusyCheckRequest request = (BusyCheckRequest) object;
+					
+					BusyCheckResponse response = UserController.handleBusyCheck(request);
+					clientConnection.sendTCP(response);
+					
+				}
 				else if(object instanceof CreateGroupRequest){
 					CreateGroupRequest request = (CreateGroupRequest) object;
 					BaseResponse response = AddGroupController.handleCreateGroupRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof GetUsersRequest){
+					GetUsersRequest request = (GetUsersRequest) object;
+					BaseResponse response = UserController.handleGetUsersRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				

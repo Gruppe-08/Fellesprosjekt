@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
+import calendar.NotificationService;
 import calendar.State;
 import calendar.Window;
 
@@ -32,10 +33,10 @@ public class WindowController implements Initializable {
 	AnchorPane myWindow = null;
 	public static Window previous_window = null;
 	
-	@FXML private Pane userHeader;
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane main_window;
 	@FXML private ImageView profilepic;
+	@FXML private ImageView notificationAlert;
 	
 	@FXML private MenuButton menu;
     @FXML private ToggleButton dayToggle;
@@ -62,20 +63,20 @@ public class WindowController implements Initializable {
 				notification.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						loadPage(Window.NOTIFICATIONS);
 					}
 				});
 
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						loadPage(Window.CREATE_GROUP);
 					}
 				});
 				logout.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						logout();
 					}
 				});
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
@@ -89,13 +90,15 @@ public class WindowController implements Initializable {
 					@Override
 					public void handle(ActionEvent event) {
 						loadPage(Window.WEEK);
+
 						viewToggle.selectToggle(weekToggle);
 					}
 				});
 				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("monthToggle");
+						loadPage(Window.MONTH);
+						viewToggle.selectToggle(monthToggle);
 					}
 				});
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
@@ -109,11 +112,17 @@ public class WindowController implements Initializable {
 		});
 	}
 	
+	protected void logout() {
+		State.getConnectionController().close();
+		State.getStage().close();
+	}
+
 	public void loginSuccessful() {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage(Window.WEEK);
-		//NotificationService handler = new NotificationService(State.getConnectionController(), State.getWindowController());
+		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
+		service.start();
 	}
 	
 	public Object loadPage(Window window) {
@@ -130,19 +139,6 @@ public class WindowController implements Initializable {
 			Pane root = loader.load();
 	        mainPane.getChildren().clear();
 	        mainPane.getChildren().add(root);
-	        return loader.getController();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public Object loadHeader(String pageName){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
-		try {
-			Pane root = loader.load();
-			userHeader.getChildren().clear();
-	        userHeader.getChildren().add(root);
 	        return loader.getController();
 		} catch (IOException e){
 			e.printStackTrace();
@@ -176,9 +172,23 @@ public class WindowController implements Initializable {
 		dayToggle.setSelected(true);
 	}
 	
-	public void flashNotification(Notification notification) {
-		VBox box = new VBox();
-		box.getChildren().add(new Text(notification.getMessage()));
-		mainPane.getChildren().add(box);
+	public synchronized void addNotification(Notification notification) {
+		if (notification.isRead() == 0) {
+			for (Notification not : notifications) {
+				if (notification.getId() == not.getId()) {
+					return;
+				}
+			}
+			notifications.add(notification);
+			notificationAlert.setVisible(true);
+		}
+	}
+	
+	public synchronized Notification getNotification() {
+		notificationAlert.setVisible(false);
+		if (! notifications.isEmpty()) {
+			return notifications.remove(notifications.size()-1);
+		}
+		return null;
 	}
 }

@@ -1,6 +1,6 @@
 package models;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Appointment {
 	private Integer id;
@@ -11,6 +11,8 @@ public class Appointment {
 	private String endTime;
 	private Integer roomId;
 	private String ownerUsername;
+	private ArrayList<String> userRelations = new ArrayList<String>();
+	private ArrayList<Integer> groupRelations = new ArrayList<Integer>();
 	
 	
 	public Appointment(Integer id, String title, String description, String location, String startTime, String endTime,
@@ -25,7 +27,23 @@ public class Appointment {
 		this.roomId = roomId;
 		this.ownerUsername = ownerUsername;
 	}
-	
+
+	public ArrayList<String> getUserRelations() {
+		return userRelations;
+	}
+
+	public void setUserRelations(ArrayList<String> userRelations) {
+		this.userRelations = userRelations;
+	}
+
+	public ArrayList<Integer> getGroupRelations() {
+		return groupRelations;
+	}
+
+	public void setGroupRelations(ArrayList<Integer> groupRelations) {
+		this.groupRelations = groupRelations;
+	}
+
 	public Appointment(String title, String description, String startTime, String endTime) {
 		this.title = title;
 		this.description = description;

@@ -1,16 +1,12 @@
 package calendar;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
-import com.sun.media.jfxmedia.logging.Logger;
 
 import controllers.AppointmentController;
 import models.Appointment;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;

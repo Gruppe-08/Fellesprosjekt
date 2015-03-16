@@ -2,11 +2,14 @@ package calendar;
 
 public enum Window {
 	DAY("Day.fxml"), 
-	WEEK("Week.fxml"), 
+	WEEK("Week.fxml"),
+	MONTH("Month.fxml"),
 	AGENDA("Agenda.fxml"),
 	APPOINTMENT("Appointment.fxml"),
+	NOTIFICATIONS("NotificationView.fxml"),
 	LOGIN("Login.fxml"),
-	CREATE_USER("CreateUser.fxml");
+	CREATE_USER("CreateUser.fxml"),
+	CREATE_GROUP("CreateGroup.fxml");
 	
 	private final String filename;
 	

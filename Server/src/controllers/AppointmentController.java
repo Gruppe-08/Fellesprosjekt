@@ -164,7 +164,6 @@ public class AppointmentController {
 			query += String.format("(username =  '%s' OR owner_username =  '%s') OR ", username, username);
 		query = query.substring(0, query.length()-4); //Strip last OR
 		query += "ORDER BY start_date ASC";
-		
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
 		while(resultSet.next()){
@@ -191,7 +190,6 @@ public class AppointmentController {
 				"room_id = " + appointment.getRoomId() + ", " +
 				"owner_username = '" + appointment.getOwnerUsername() + "' " +
 				"WHERE appointment_id=" + appointment.getId() + ";";
-		System.out.println(query);
 		
 		PreparedStatement statement = db.prepareStatement(query);
 		statement.execute();		
@@ -212,7 +210,6 @@ public class AppointmentController {
 				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
 				appointment.getRoomId() + ", " +
 				"'" + appointment.getOwnerUsername() + "');";
-		
 		statement = db.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);
 		statement.execute();
 		res = statement.getGeneratedKeys();
@@ -221,13 +218,20 @@ public class AppointmentController {
 		if (res.next()) {
 			appointmentId = res.getInt(1);
 			
-			query = String.format(
-					"INSERT INTO UserAppointmentRelation(appointment_id, username) VALUES('%s', '%s')",
-					appointmentId, appointment.getOwnerUsername());
-			
-			statement = db.prepareStatement(query);
-			
-			statement.execute();
+			for(String username : appointment.getUserRelations()) {
+				query = String.format(
+						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
+						appointmentId, username);
+				statement = db.prepareStatement(query);
+				statement.execute();
+			}
+			for(String username : appointment.getUserRelations()) {
+				query = String.format(
+						"INSERT INTO Notification(type, message, created, is_alarm, appointment_id, username, trigger_date) VALUES('%s', '%s', '%s','%s','%s','%s','%s')",
+						"appointment", "You have been invited to an appointment", DateUtil.getNow(), 0, appointmentId, username, DateUtil.getNow());
+				statement = db.prepareStatement(query);
+				statement.execute();
+			}
 		}
 		else
 			throw new SQLException("Unable to get id of generated object");
@@ -288,6 +292,15 @@ public class AppointmentController {
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id"));
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
+		
+		//Get attending users
+		ResultSet users = db.createStatement().executeQuery(
+				"SELECT ua.username FROM UserAppointmentRelation ua, Appointment a "
+				+ "WHERE a.appointment_id = ua.appointment_id AND ua.status = 'attending' AND "
+				+ "a.appointment_id = " + appointment.getId() + ";");
+		while(users.next()) {
+			appointment.getUserRelations().add(users.getString("username"));
+		}
 		return appointment;
 	}
 }

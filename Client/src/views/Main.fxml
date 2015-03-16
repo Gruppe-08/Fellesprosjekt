@@ -17,7 +17,7 @@
                   <Font name="Helvetica Neue Light" size="48.0" />
                </font>
             </Text>
-            <AnchorPane layoutX="656.0" layoutY="6.0" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="656.0" layoutY="6.0" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="546.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                <children>
                   <MenuButton fx:id="menu" layoutX="194.0" layoutY="37.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Menu" visible="false" AnchorPane.rightAnchor="0.0">
                     <items>
@@ -26,15 +26,20 @@
                         <MenuItem fx:id="logout" mnemonicParsing="false" text="Sign out" />
                     </items>
                   </MenuButton>
-                  <Text fx:id="username" fill="WHITE" layoutX="99.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" visible="false" AnchorPane.rightAnchor="140.0">
+                  <Text fx:id="username" fill="WHITE" layoutX="95.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" visible="false" wrappingWidth="298.2000045776367" AnchorPane.rightAnchor="152.79999542236328">
                      <font>
                         <Font name="Helvetica Neue Light" size="25.0" />
                      </font>
                   </Text>
-                  <ImageView fx:id="profilepic" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="300.0">
+                  <ImageView fx:id="profilepic" fitHeight="80.0" fitWidth="80.0" layoutX="7.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.rightAnchor="459.0">
                      <image>
                         <Image url="@../../../Shared/lib/profilepic.png" />
                      </image></ImageView>
+                  <ImageView fx:id="notificationAlert" fitHeight="40.0" fitWidth="40.0" layoutX="414.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../lib/icons/notification.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <ToggleButton fx:id="dayToggle" layoutX="232.0" layoutY="74.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0">
