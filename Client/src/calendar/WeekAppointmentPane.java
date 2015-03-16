@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import communication.requests.AppointmentRequest;
 import communication.responses.AppointmentResponse;
-import controllers.CreateAppointmentController;
+import controllers.AppointmentController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -38,7 +38,7 @@ public class WeekAppointmentPane extends VBox {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				CreateAppointmentController controller = new CreateAppointmentController(appointment);	
+				AppointmentController controller = new AppointmentController(appointment);	
 				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
 			}
 		});

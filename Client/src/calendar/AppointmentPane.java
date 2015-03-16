@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 
 import com.sun.media.jfxmedia.logging.Logger;
 
-import controllers.CreateAppointmentController;
+import controllers.AppointmentController;
 import models.Appointment;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -39,7 +39,7 @@ public class AppointmentPane extends VBox {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				CreateAppointmentController controller = new CreateAppointmentController(appointment);	
+				AppointmentController controller = new AppointmentController(appointment);	
 				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
 
 			}
