@@ -43,7 +43,7 @@ public class AgendaController {
 	
 	@FXML
 	void onAddAppointment(ActionEvent event){
-		State.getWindowController().loadPage(Window.APPOINTMENT, new AppointmentController());
+		State.getWindowController().loadPage(Window.APPOINTMENT, new CreateAppointmentController());
 	}
 	
 	@FXML

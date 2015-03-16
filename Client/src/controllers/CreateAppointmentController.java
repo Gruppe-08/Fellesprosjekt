@@ -24,7 +24,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class AppointmentController {
+public class CreateAppointmentController {
 	Appointment appointment; 
 	Boolean isNew;
 	
@@ -49,11 +49,11 @@ public class AppointmentController {
     @FXML
     Button ok_button;
     
-    public AppointmentController(){ 
+    public CreateAppointmentController(){ 
     	isNew = true;
     }
     
-    public AppointmentController(Appointment appointment){    	
+    public CreateAppointmentController(Appointment appointment){    	
     	this.appointment = appointment;
     	this.isNew = (appointment == null);
     }
