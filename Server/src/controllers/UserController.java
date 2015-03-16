@@ -1,6 +1,7 @@
 package controllers;
 
 
+import models.Appointment;
 import models.User;
 
 import java.security.MessageDigest;
@@ -14,12 +15,16 @@ import java.util.ArrayList;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AuthenticationRequest;
+import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.GetUsersRequest;
 import communication.responses.AuthenticationResponse;
+import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.GetUsersResponse;
+import communication.responses.UserResponse;
 import server.DatabaseConnector;
+import util.DateUtil;
 
 public class UserController {
 	
@@ -28,6 +33,23 @@ public class UserController {
 		String hash = getHashForUser(request.getUsername());
 		Boolean status = compareHashes(request.getPassword(), hash);
 		response.setSuccessful(status);
+		response.setUser(getUser(request.getUsername()));
+		return response;
+	}
+	
+	public static UserResponse handleGetUsersResponse(GetUsersRequest request) {
+		UserResponse response = new UserResponse();
+		try {
+			ArrayList<User> users = getUsers();
+			for(User user : users) {
+				response.addUser(user);
+			}
+			response.setSuccessful(true);
+		}
+		catch(SQLException e) {
+			Logger.logMsg(Logger.ERROR, e.getMessage());
+			response.setSuccessful(false);
+		}
 		
 		return response;
 	}
@@ -59,6 +81,24 @@ public class UserController {
 		}
 		return response;
 	}
+	
+	public static BusyCheckResponse handleBusyCheck(BusyCheckRequest request) {
+		BusyCheckResponse response = new BusyCheckResponse();
+		
+		for(String username : request.getUsernames()) {
+			try {
+				if(isUserBusy(request.getAppointment(), username)) {
+					response.getUsernames().add(username);
+				}
+				
+				response.setSuccessful(true);
+			} catch (SQLException e) {
+				response.setSuccessful(false);
+			}
+		}
+		
+		return response;
+	}	
 	
 	//Retrieves password hash of the specified user from the server
 	private static String getHashForUser(String username) {
@@ -142,6 +182,7 @@ public class UserController {
 			Statement stm = db.createStatement();
 			String getUser = String.format("SELECT * FROM User WHERE username = '%s'", username);
 			ResultSet rs = stm.executeQuery(getUser);
+			rs.next();
 			user = parseResultSetToUser(rs);
 		}
 		catch (SQLException e){
@@ -177,20 +218,27 @@ public class UserController {
 			System.out.println(e);
 		}
 	}
+
+	private static boolean isUserBusy(Appointment a, String username) throws SQLException {
+		Connection db = DatabaseConnector.getDB();
+		String query = 
+				"Select * FROM Appointment a, UserAppointmentRelation ua, User u "
+				+ "WHERE a.appointment_id = ua.appointment_id AND "
+				+ "u.username = ua.username AND u.username = '" + username + "' AND ("
+				+ "a.start_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime()
+				+ "' OR a.end_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime() + "')";
+		ResultSet res = db.createStatement().executeQuery(query);
+		
+		return res.next(); //Returns false if there was no matching appointments
+	}
 	
-	private static ArrayList<User> getUsers() {
+	private static ArrayList<User> getUsers() throws SQLException {
 		Connection db = DatabaseConnector.getDB();
 		ArrayList<User> users = new ArrayList<User>();
-		try {
-			Statement stm = db.createStatement();
-			String getUsers = String.format("SELECT username, firstname, lastname FROM User WHERE 1");
-			ResultSet rs = stm.executeQuery(getUsers);
-			while(rs.next()) {
-				users.add(parseResultSetToUser(rs));
-			}
-		}
-		catch (SQLException e){
-			System.out.println(e);
+		Statement stm = db.createStatement();
+		ResultSet rs = stm.executeQuery("SELECT * FROM User WHERE 1");
+		while(rs.next()) {
+			users.add(parseResultSetToUser(rs));
 		}
 		return users;
 	}
@@ -201,5 +249,6 @@ public class UserController {
 		user.setFirstname(rs.getString("firstname"));
 		user.setLastname(rs.getString("lastname"));
 		return user;
-	}	
+	}
+
 }

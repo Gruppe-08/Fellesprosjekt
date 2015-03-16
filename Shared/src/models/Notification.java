@@ -1,68 +1,112 @@
 package models;
-
-import java.time.LocalDateTime;
-
-import javafx.beans.property.ObjectPropertyBase;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class Notification {
 
-	public Notification(int id, NotificationType type, String message, LocalDateTime timeCreated) {
-		setNotificationId(id);
+	private int id;
+	private String message;
+	private String created;
+	private String triggerDate;
+	private NotificationType notificationType;
+	private boolean isAlarm;
+	private Appointment appointment;
+	private String username;
+	private int read;
+	
+	public Notification(NotificationType type, String message, String timeCreated) {
 		setType(type);
 		setMessage(message);
-		setTimeCreated(timeCreated);
-	}
-
-	public Notification() {
+		setCreated(timeCreated);
 		
 	}
 	
-	private Property<Number> notificationId = new SimpleIntegerProperty();
-	private NotificationType type;
-	private Property<String> message = new SimpleStringProperty();
-	private Property<LocalDateTime> timeCreated = new ObjectPropertyBase<LocalDateTime>(null) {
-		@Override
-		public Object getBean() {
-			return this;
-		}
-		@Override
-		public String getName() {
-			return "timeCreated";
-		}
-	};
-	
-	public int getNotificationId() {
-		return notificationId.getValue().intValue();
+	public Notification() {
 	}
-	
-	public void setNotificationId(int notificationId) {
-		this.notificationId.setValue(notificationId);
-	}
-	
+
 	public NotificationType getType() {
 		return type;
 	}
-	
+
 	public void setType(NotificationType type) {
 		this.type = type;
 	}
-	
+
 	public String getMessage() {
-		return message.getValue();
+		return message;
 	}
-	
+
 	public void setMessage(String message) {
-		this.message.setValue(message);
+		this.message = message;
+	}
+
+	public String getCreated() {
+		return created;
+	}
+
+	public void setCreated(String created) {
+		this.created = created;
+	}
+
+	public String getTriggerDate() {
+		return triggerDate;
+	}
+
+	public void setTriggerDate(String triggerDate) {
+		this.triggerDate = triggerDate;
+	}
+
+	public NotificationType getNotificationType() {
+		return notificationType;
+	}
+
+	public void setNotificationType(String type) {
+		
+		if(type.equals("user")) {
+			notificationType = NotificationType.USER;
+		} else if(type.equals("group")){
+			notificationType = NotificationType.GROUP;
+		} else if(type.equals("appointment")){
+			notificationType = NotificationType.APPOINTMENT;
+		} else {
+			throw new IllegalArgumentException("Unvalid notification type: " + type);
+		}
+	}
+
+	public boolean isAlarm() {
+		return isAlarm;
+	}
+
+	public void setAlarm(int i) {
+		this.isAlarm = (i == 1);
+	}
+	public Appointment getAppointment() {
+		return appointment;
 	}
 	
-	public LocalDateTime getTimeCreated() {
-		return timeCreated.getValue();
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
+
+	private NotificationType type;
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
-	public void setTimeCreated(LocalDateTime timeCreated) {
-		this.timeCreated.setValue(timeCreated);
+	public int isRead() {
+		return read;
+	}
+	
+	public void setRead(int read) {
+		this.read = read;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }
