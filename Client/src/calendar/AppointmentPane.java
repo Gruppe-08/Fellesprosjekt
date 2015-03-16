@@ -3,7 +3,10 @@ package calendar;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import controllers.AppointmentController;
 import models.Appointment;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +31,15 @@ public class AppointmentPane extends VBox {
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.web("#38597F", 1.0));
 		this.setEffect(dropShadow);
+		
+		this.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				AppointmentController controller = new AppointmentController(appointment);	
+				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
+
+			}
+		});
 	}
 	
 	private int calculateHeight() {

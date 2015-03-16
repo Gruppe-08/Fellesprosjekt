@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import models.Notification;
-import communication.requests.NotificationRequest;
-import communication.responses.NotificationResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,28 +13,30 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
+import calendar.NotificationService;
 import calendar.State;
+import calendar.Window;
 
 public class WindowController implements Initializable {
 	Calendar myCalendar = null;
 	AnchorPane myWindow = null;
+	public static Window previous_window = null;
 	
-	@FXML private Pane userHeader;
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane main_window;
 	@FXML private ImageView profilepic;
+	@FXML private ImageView notificationAlert;
 	
 	@FXML private MenuButton menu;
     @FXML private ToggleButton dayToggle;
@@ -52,27 +52,25 @@ public class WindowController implements Initializable {
     @FXML private MenuItem logout;
     @FXML private MenuItem groups;
     
-    private int currentYear;
-    private int currentWeek;
-    private int currentDate;
+    private ArrayList<Notification> notifications = new ArrayList<Notification>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		LoginController loginController = (LoginController)loadPage("Login.fxml");
+		LoginController loginController = (LoginController)loadPage(Window.LOGIN);
 		
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
 				notification.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						loadPage(Window.NOTIFICATIONS);
 					}
 				});
 
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						loadPage(Window.CREATE_GROUP);
 					}
 				});
 				logout.setOnAction(new EventHandler<ActionEvent>(){
@@ -84,28 +82,29 @@ public class WindowController implements Initializable {
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("dayView.fxml");
+						loadPage(Window.DAY);
 						viewToggle.selectToggle(dayToggle);
 					}
 				});
 				weekToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("WeekView.fxml");
+						loadPage(Window.WEEK);
+
 						viewToggle.selectToggle(weekToggle);
 					}
 				});
 				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("monthView.fxml");
+						loadPage(Window.MONTH);
 						viewToggle.selectToggle(monthToggle);
 					}
 				});
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage("Agenda.fxml");
+						loadPage(Window.AGENDA);
 						viewToggle.selectToggle(agendaToggle);
 					}
 				});	
@@ -121,28 +120,25 @@ public class WindowController implements Initializable {
 	public void loginSuccessful() {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
-		loadPage("WeekView.fxml");
+		loadPage(Window.WEEK);
+		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
+		service.start();
 	}
 	
-	public Object loadPage(String pageName) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
+	public Object loadPage(Window window) {
+       return loadPage(window, null);
+	}
+	
+	public Object loadPage(Window window, Object controller){				
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + window));
+		
+		if(controller != null) {
+			loader.setController(controller);
+		}
 		try {
 			Pane root = loader.load();
 	        mainPane.getChildren().clear();
 	        mainPane.getChildren().add(root);
-	        return loader.getController();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public Object loadHeader(String pageName){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + pageName));
-		try {
-			Pane root = loader.load();
-			userHeader.getChildren().clear();
-	        userHeader.getChildren().add(root);
 	        return loader.getController();
 		} catch (IOException e){
 			e.printStackTrace();
@@ -174,5 +170,25 @@ public class WindowController implements Initializable {
 		monthToggle.setVisible(true);
 		agendaToggle.setVisible(true);
 		dayToggle.setSelected(true);
+	}
+	
+	public synchronized void addNotification(Notification notification) {
+		if (notification.isRead() == 0) {
+			for (Notification not : notifications) {
+				if (notification.getId() == not.getId()) {
+					return;
+				}
+			}
+			notifications.add(notification);
+			notificationAlert.setVisible(true);
+		}
+	}
+	
+	public synchronized Notification getNotification() {
+		notificationAlert.setVisible(false);
+		if (! notifications.isEmpty()) {
+			return notifications.remove(notifications.size()-1);
+		}
+		return null;
 	}
 }

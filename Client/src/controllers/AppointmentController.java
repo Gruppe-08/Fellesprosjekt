@@ -41,6 +41,7 @@ import models.Group;
 import models.User;
 import util.DateUtil;
 import calendar.State;
+import calendar.Window;
 import communication.requests.BusyCheckRequest;
 import communication.requests.GetGroupsRequest;
 import communication.requests.GetUsersRequest;
@@ -49,9 +50,9 @@ import communication.responses.BusyCheckResponse;
 import communication.responses.GroupResponse;
 import communication.responses.PutAppointmentResponse;
 import communication.responses.UserResponse;
-import controllers.CreateAppointmentController.Invitable;
+import controllers.AppointmentController.Invitable;
 
-public class CreateAppointmentController implements Initializable {
+public class AppointmentController implements Initializable {
 	Appointment appointment = new Appointment();
 	boolean isNew = false;
 	boolean datesValid = false;
@@ -64,13 +65,10 @@ public class CreateAppointmentController implements Initializable {
     TextArea description;
 
     @FXML
-    DatePicker from_date;
+    DatePicker date;
     
     @FXML
     TextField from_time;
-    
-    @FXML
-    DatePicker to_date;
     
     @FXML
     TextField to_time;
@@ -105,6 +103,33 @@ public class CreateAppointmentController implements Initializable {
     @FXML
     private TableColumn<InvitableGroup, String> group_available_column;
 
+    public AppointmentController(){ 
+    	isNew = true;
+    }
+    
+    public AppointmentController(Appointment appointment){    	
+    	this.appointment = appointment;
+    	this.isNew = (appointment == null);
+    }
+    
+    public void initialize(){
+    	if(appointment != null){
+    		title.setText(appointment.getTitle()); 
+        	description.setText(appointment.getDescription());
+        	
+        	date.setValue( DateUtil.deserializeDate(appointment.getStartTime()) );
+        	
+        	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
+        	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
+    	} else {
+    		appointment = new Appointment();
+    	}
+    	
+    	if(isNew == false){
+    		ok_button.setText("Save");
+    	}
+    }
+
     @FXML
     void onOk(ActionEvent event) {
     	if(titleValid && datesValid) {
@@ -119,7 +144,7 @@ public class CreateAppointmentController implements Initializable {
 	    	}
 	    	for(InvitableGroup group : invite_group_list.getItems()) {
 	    		if(group.selected.getValue())
-	    			request.getAppointment().getUserRelations().add(
+	    			request.getAppointment().getGroupRelations().add(
 	    					group.group.getGroupID());		
 	    	}
 	    	
@@ -133,14 +158,14 @@ public class CreateAppointmentController implements Initializable {
 						response.getErrorMessage());
 				loginAlert.showAndWait();
 	    	} else {
-	    		State.getWindowController().loadPage("Agenda.fxml");
+	    		State.getWindowController().loadPage(Window.AGENDA);
 	    	}
     	}
     }
 
     @FXML
     void onCancel(ActionEvent event) {
-    	State.getWindowController().loadPage("Agenda.fxml");
+    	State.getWindowController().loadPage(Window.AGENDA);
     }
     
     void validateTitleField() {
@@ -159,25 +184,24 @@ public class CreateAppointmentController implements Initializable {
     	datesValid = true;
     	try {
     		from_time.setStyle("");
-    		from_date.setStyle("");
+    		date.setStyle("");
     		LocalTime startTime = LocalTime.parse(from_time.getText());
-    		LocalDateTime startDate = from_date.getValue().atTime(startTime);
+    		LocalDateTime startDate = date.getValue().atTime(startTime);
     		appointment.setStartTime(DateUtil.serializeDateTime(startDate));
     	} catch(DateTimeParseException e) {
     		from_time.setStyle("-fx-border-color: red");
-    		from_date.setStyle("-fx-border-color: red");
+    		date.setStyle("-fx-border-color: red");
     		datesValid = false;
     	}
     	
     	try {
     		to_time.setStyle("");
-    		to_date.setStyle("");
     		LocalTime endTime = LocalTime.parse(to_time.getText());
-    		LocalDateTime endDate = from_date.getValue().atTime(endTime);
+    		LocalDateTime endDate = date.getValue().atTime(endTime);
     		appointment.setEndTime(DateUtil.serializeDateTime(endDate));
     	} catch(DateTimeParseException e) {
     		to_time.setStyle("-fx-border-color: red");
-    		to_date.setStyle("-fx-border-color: red");
+    		date.setStyle("-fx-border-color: red");
     		datesValid = false;
     	}
     	if(datesValid)
@@ -287,8 +311,8 @@ public class CreateAppointmentController implements Initializable {
     	LocalTime startTime = LocalTime.parse(from_time.getText());
     	LocalTime endTime = LocalTime.parse(to_time.getText());
     	
-    	LocalDateTime startDate = from_date.getValue().atTime(startTime);
-    	LocalDateTime endDate = to_date.getValue().atTime(endTime);
+    	LocalDateTime startDate = date.getValue().atTime(startTime);
+    	LocalDateTime endDate = date.getValue().atTime(endTime);
     	
     	a.setStartTime(DateUtil.serializeDateTime(startDate));
 		a.setEndTime(DateUtil.serializeDateTime(endDate));
@@ -322,8 +346,7 @@ public class CreateAppointmentController implements Initializable {
 	   	title.textProperty().addListener(f -> validateTitleField());
 	   	from_time.textProperty().addListener(f -> onChronoFieldChanged());
 	   	to_time.textProperty().addListener(f -> onChronoFieldChanged());
-	   	from_date.valueProperty().addListener(f -> onChronoFieldChanged());
-	   	to_date.valueProperty().addListener(f -> onChronoFieldChanged());
+	   	date.valueProperty().addListener(f -> onChronoFieldChanged());
 	   	
     	initalizeInviteTable();
     	validateTitleField();

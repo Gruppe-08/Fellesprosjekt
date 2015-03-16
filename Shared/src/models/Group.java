@@ -2,7 +2,8 @@ package models;
 
 import java.util.ArrayList;
 
-public class Group {
+public class Group {	
+	private String name;
 	private int groupID;
 	public int getGroupID() {
 		return groupID;
@@ -12,8 +13,10 @@ public class Group {
 		this.groupID = groupID;
 	}
 
-	private String name;
 	private ArrayList<User> members;
+	public void setMembers(ArrayList<User> members) {
+		this.members = members;
+	}
 	
 	public Group(){
 		name = "";
@@ -49,6 +52,5 @@ public class Group {
 	public ArrayList<User> getMembers() {
 		return this.members;
 	}
-	
 
 }

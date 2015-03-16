@@ -1,5 +1,6 @@
 package controllers;
 
+
 import models.Appointment;
 import models.User;
 
@@ -11,10 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.sun.glass.ui.Window.Level;
 import com.sun.media.jfxmedia.logging.Logger;
 
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import communication.requests.AuthenticationRequest;
 import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
@@ -22,6 +21,7 @@ import communication.requests.GetUsersRequest;
 import communication.responses.AuthenticationResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GetUsersResponse;
 import communication.responses.UserResponse;
 import server.DatabaseConnector;
 import util.DateUtil;
@@ -62,6 +62,20 @@ public class UserController {
 			response.setSuccessful(true);
 		}
 		catch(Exception e) {
+			response.setSuccessful(false);
+			response.setErrorMessage(e.getMessage());
+		}
+		return response;
+	}
+	
+	public static GetUsersResponse handleGetUsersRequest(
+			GetUsersRequest request){
+		GetUsersResponse response = new GetUsersResponse();
+		try {
+			response.setUserList(getUsers());
+			response.setSuccessful(true);
+		}
+		catch(Exception e){
 			response.setSuccessful(false);
 			response.setErrorMessage(e.getMessage());
 		}

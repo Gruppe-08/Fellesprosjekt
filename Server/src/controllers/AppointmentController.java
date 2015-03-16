@@ -176,6 +176,7 @@ public class AppointmentController {
 	
 	private static void changeAppointment(Appointment appointment)
 			throws IllegalArgumentException, SQLException {
+		Logger.logMsg(Logger.DEBUG, "Updating appointment " + appointment.getTitle());
 		getAppointment(appointment.getId()); // This will throw IllegalArgumentException if non-existent id
 
 		String query = 
@@ -195,6 +196,7 @@ public class AppointmentController {
 	}
 	
 	private static int addAppointment(Appointment appointment) throws SQLException {
+		Logger.logMsg(Logger.DEBUG, "Adding appointment " + appointment.getTitle());
 		PreparedStatement statement;
 		ResultSet res;
 		
@@ -222,7 +224,13 @@ public class AppointmentController {
 						appointmentId, username);
 				statement = db.prepareStatement(query);
 				statement.execute();
-				
+			}
+			for(String username : appointment.getUserRelations()) {
+				query = String.format(
+						"INSERT INTO Notification(type, message, created, is_alarm, appointment_id, username, trigger_date) VALUES('%s', '%s', '%s','%s','%s','%s','%s')",
+						"appointment", "You have been invited to an appointment", DateUtil.getNow(), 0, appointmentId, username, DateUtil.getNow());
+				statement = db.prepareStatement(query);
+				statement.execute();
 			}
 		}
 		else

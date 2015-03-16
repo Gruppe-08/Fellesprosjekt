@@ -1,6 +1,7 @@
 package models;
 public class Notification {
 
+	private int id;
 	private String message;
 	private String created;
 	private String triggerDate;
@@ -8,6 +9,7 @@ public class Notification {
 	private boolean isAlarm;
 	private Appointment appointment;
 	private String username;
+	private int read;
 	
 	public Notification(NotificationType type, String message, String timeCreated) {
 		setType(type);
@@ -90,5 +92,21 @@ public class Notification {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public int isRead() {
+		return read;
+	}
+	
+	public void setRead(int read) {
+		this.read = read;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }

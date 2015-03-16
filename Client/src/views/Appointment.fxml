@@ -9,19 +9,29 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="906.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateAppointmentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="404.0" layoutX="628.0" layoutY="168.0" stroke="#909090" strokeType="INSIDE" width="252.0" />
-      <VBox prefHeight="476.0" prefWidth="333.0" spacing="15.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="543.0" AnchorPane.topAnchor="100.0">
+      <VBox prefHeight="476.0" prefWidth="325.0" spacing="15.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="536.0" AnchorPane.topAnchor="100.0">
          <children>
-            <HBox prefHeight="20.0" prefWidth="200.0">
+            <HBox prefHeight="20.0" prefWidth="200.0" spacing="25.0">
                <children>
-                  <Label prefHeight="19.0" prefWidth="75.0" text="Title">
+                  <Label prefHeight="19.0" prefWidth="50.0" text="Title">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="title" prefHeight="25.0" prefWidth="220.0" promptText="Title" />
+                  <TextField fx:id="title" prefHeight="25.0" prefWidth="193.0" promptText="Title" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="263.0" spacing="25.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="50.0" text="Date">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="date" prefHeight="25.0" prefWidth="193.0" />
                </children>
             </HBox>
             <HBox prefHeight="34.0" prefWidth="263.0" spacing="25.0">
@@ -31,19 +41,13 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="from_date" prefHeight="25.0" prefWidth="128.0" />
-                  <TextField fx:id="from_time" prefHeight="25.0" prefWidth="68.0" promptText="hh:mm" />
-               </children>
-            </HBox>
-            <HBox prefHeight="34.0" prefWidth="263.0" spacing="25.0">
-               <children>
-                  <Label prefHeight="19.0" prefWidth="50.0" text="to">
+                  <TextField fx:id="from_time" prefHeight="25.0" prefWidth="62.0" promptText="hh:mm" />
+                  <Label layoutX="10.0" layoutY="10.0" prefHeight="19.0" prefWidth="20.0" text="to">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="to_date" prefHeight="25.0" prefWidth="128.0" />
-                  <TextField fx:id="to_time" prefHeight="25.0" prefWidth="68.0" promptText="hh:mm" />
+                  <TextField fx:id="to_time" prefHeight="25.0" prefWidth="62.0" promptText="hh:mm" />
                </children>
             </HBox>
             <VBox prefHeight="100.0" prefWidth="100.0" spacing="5.0">
@@ -53,7 +57,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="description" prefHeight="107.0" prefWidth="263.0" promptText="Appointment description" />
+                  <TextArea fx:id="description" maxWidth="273.0" prefHeight="107.0" prefWidth="223.0" promptText="Appointment description" />
                </children>
             </VBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="70.0" prefWidth="100.0" spacing="20.0" />
@@ -62,6 +66,9 @@
                   <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#onCancel" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
                   <Button fx:id="ok_button" mnemonicParsing="false" onAction="#onOk" prefHeight="34.0" prefWidth="66.0" text="OK" />
                </children>
+               <VBox.margin>
+                  <Insets right="50.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>
@@ -77,7 +84,7 @@
          </font>
       </Label>
       <Line endX="100.0" layoutX="497.0" layoutY="202.0" startX="-110.0" stroke="#909090" />
-      <Button layoutX="418.0" layoutY="126.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="173.0" text="Find available room">
+      <Button layoutX="574.0" layoutY="111.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="173.0" text="Find available room">
          <font>
             <Font size="15.0" />
          </font>
@@ -102,5 +109,8 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <CheckBox layoutX="387.0" layoutY="82.0" mnemonicParsing="false" text="Use custom location" />
+      <TextField layoutX="387.0" layoutY="113.0" />
+      <Separator layoutX="387.0" layoutY="107.0" prefHeight="1.0" prefWidth="361.0" />
    </children>
 </AnchorPane>
