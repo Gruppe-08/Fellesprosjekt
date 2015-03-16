@@ -7,6 +7,12 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 
 public class User {
+	private String username;
+	private String firstname;
+	private String lastname;
+	private Boolean isAdmin;
+	private ArrayList<Integer> attendingAppointments;
+	
 	
 	public ArrayList<Integer> getAttendingAppointments() {
 		return attendingAppointments;
@@ -16,44 +22,46 @@ public class User {
 		this.attendingAppointments = attendingAppointments;
 	}
 
-	public User(String username, String firstname, String lastname) {
+	public User(String username, String firstname, String lastname, Boolean isAdmin) {
 		setUsername(username);
 		setFirstname(firstname);
 		setLastname(lastname);
+		setIsAdmin(isAdmin);
 	}
 	
-	public User() {
-		
-	}
-	
-	private Property<String> username = new SimpleStringProperty();
-	private Property<String> firstname = new SimpleStringProperty();
-	private Property<String> lastname = new SimpleStringProperty();
-	private ArrayList<Integer> attendingAppointments = new ArrayList<Integer>();
+	public User() {	}
 	
 	
 	public String getUsername() {
-		return username.getValue();
+		return username;
 	}
 	
 	public void setUsername(String username) {
-		this.username.setValue(username);
+		this.username = username;
 	}
 	
 	public String getFirstname() {
-		return firstname.getValue();
+		return firstname;
 	}
 	
 	public void setFirstname(String firstname) {
-		this.firstname.setValue(firstname);
+		this.firstname = firstname;
 	}
 	
 	public String getLastname() {
-		return lastname.getValue();
+		return lastname;
 	}
 	
 	public void setLastname(String lastname) {
-		this.lastname.setValue(lastname);
+		this.lastname = lastname;
 	}	
+	
+	public void setIsAdmin(Boolean isAdmin){
+		this.isAdmin = isAdmin;
+	}
+	
+	public Boolean isAdmin(){
+		return isAdmin;
+	}
 
 }
