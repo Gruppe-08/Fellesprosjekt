@@ -49,7 +49,9 @@ public class AppointmentController {
     @FXML
     Button ok_button;
     
-    public AppointmentController(){ }
+    public AppointmentController(){ 
+    	isNew = true;
+    }
     
     public AppointmentController(Appointment appointment){    	
     	this.appointment = appointment;
@@ -65,6 +67,8 @@ public class AppointmentController {
         	
         	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
         	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
+    	} else {
+    		appointment = new Appointment();
     	}
     	
     	if(isNew == false){
