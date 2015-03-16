@@ -23,6 +23,7 @@ import communication.requests.CreateGroupRequest;
 import communication.requests.GetUsersRequest;
 import communication.responses.BaseResponse;
 import communication.responses.GetUsersResponse;
+import communication.responses.UserResponse;
 import javafx.scene.control.CheckBox;
 
 public class GroupController implements Initializable {
@@ -45,12 +46,11 @@ public class GroupController implements Initializable {
 		
 		GetUsersRequest request = new GetUsersRequest();
 		State.getConnectionController().sendTCP(request);
-		GetUsersResponse response = (GetUsersResponse)State.getConnectionController().getObject("communication.responses.GetUsersResponse");
+		UserResponse response = (UserResponse)State.getConnectionController().getObject("communication.responses.UserResponse");
+		users = response.getUsers();
 		double offset = 0;
-		users = response.getUserList();
 		for (User user : users){
 			
-			users.add(user);
 			CheckBox checkbox = addCheckbox(user);
 			listPane.getChildren().add(checkbox);
 			
