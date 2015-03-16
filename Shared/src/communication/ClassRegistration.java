@@ -20,6 +20,7 @@ public abstract class ClassRegistration {
 		kryo.register(communication.requests.GetUsersRequest.class);
 		kryo.register(communication.requests.BusyCheckRequest.class);
 		kryo.register(communication.requests.CreateGroupRequest.class);
+		kryo.register(communication.requests.GetUsersRequest.class);
 		kryo.register(communication.requests.NotificationRequest.class);
 		
 		kryo.register(communication.responses.AuthenticationResponse.class);
@@ -27,6 +28,7 @@ public abstract class ClassRegistration {
 		kryo.register(communication.responses.CreateUserResponse.class);
 		kryo.register(communication.responses.BaseResponse.class);
 		kryo.register(communication.responses.PutAppointmentResponse.class);
+		kryo.register(communication.responses.GetUsersResponse.class);
 		kryo.register(communication.responses.UserResponse.class);
 		kryo.register(communication.responses.BusyCheckResponse.class);
 		kryo.register(communication.responses.NotificationResponse.class);

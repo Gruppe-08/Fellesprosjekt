@@ -68,7 +68,7 @@ public class WindowController implements Initializable {
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Notification");
+						loadPage("CreateGroup.fxml");
 					}
 				});
 				logout.setOnAction(new EventHandler<ActionEvent>(){
@@ -118,7 +118,6 @@ public class WindowController implements Initializable {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage("WeekView.fxml");
-
 		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
 		service.start();
 	}
