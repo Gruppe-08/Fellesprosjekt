@@ -70,7 +70,6 @@ public class NotificationController {
 			
 			notifications.add(not);
 		}
-
 		
 		return notifications;
 	}

@@ -20,6 +20,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
@@ -117,6 +118,7 @@ public class WindowController implements Initializable {
 		enableAndShowButtons();
 		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
 		loadPage("WeekView.fxml");
+
 		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
 		service.start();
 	}
