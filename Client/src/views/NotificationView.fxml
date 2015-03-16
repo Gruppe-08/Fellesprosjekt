@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NotificationViewController">
+   <children>
+      <ScrollPane hbarPolicy="NEVER" layoutX="112.0" layoutY="84.0" prefHeight="546.0" prefWidth="801.0" vbarPolicy="NEVER">
+        <content>
+          <AnchorPane fx:id="notificationPane" minHeight="0.0" minWidth="0.0" prefHeight="556.0" prefWidth="801.0" />
+        </content>
+      </ScrollPane>
+      <Text fill="#1d93c6" layoutX="422.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
+         <font>
+            <Font name="Helvetica Neue Thin" size="36.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

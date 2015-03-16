@@ -26,13 +26,20 @@ public class NotificationController {
 		} catch (SQLException e){
 			Logger.logMsg(Logger.ERROR, "getNotificationResponse generated exception: " + e.getMessage());
 		}
-		
 		return response;
 	}
 	
-	private static void addNotification(Notification not) throws SQLException{
-		db = DatabaseConnector.getDB();
-		
+	public static void setReadNotification(int notificationId) {
+		String queryString = String.format("UPDATE `Notification` SET `read`=1 WHERE `notification_id`=%s", notificationId);
+		try {
+			statement = db.prepareStatement(queryString);
+			statement.execute();
+		} catch (SQLException e) {
+			Logger.logMsg(Logger.ERROR, "Could not set notification to read: " + e.getMessage());
+		}
+	}
+	
+	private static void addNotification(Notification not) throws SQLException{		
 		String isAlarm = not.isAlarm() ? "1" : "0";
 		String type = not.getType().toString().toLowerCase();
 		
@@ -63,22 +70,24 @@ public class NotificationController {
 			
 			notifications.add(not);
 		}
-		
-//		String deleteNotifications = String.format("DELETE FROM Notification WHERE username='%s'", username);
-//		statement = db.prepareStatement(deleteNotifications);
-//		statement.execute();
+
 		
 		return notifications;
 	}
 	
 	public static Notification parseResultSetToNotification(ResultSet res) throws SQLException{
 		Notification not = new Notification();
+		not.setId(res.getInt("notification_id"));
 		not.setMessage(res.getString("message"));
 		not.setCreated(res.getString("created").substring(0,16));
 		not.setAlarm(res.getInt("is_alarm"));
 		not.setTriggerDate(res.getString("trigger_date"));
 		not.setNotificationType(res.getString("type"));
 		not.setUsername(res.getString("username"));
+		not.setRead(Integer.valueOf(res.getString("read")));
+		
+		System.out.println(res.getInt("notification_id"));
+		System.out.println(Integer.valueOf(res.getString("read")));
 		
 		return not;
 	}

@@ -222,7 +222,13 @@ public class AppointmentController {
 						appointmentId, username);
 				statement = db.prepareStatement(query);
 				statement.execute();
-				
+			}
+			for(String username : appointment.getUserRelations()) {
+				query = String.format(
+						"INSERT INTO Notification(type, message, created, is_alarm, appointment_id, username, trigger_date) VALUES('%s', '%s', '%s','%s','%s','%s','%s')",
+						"appointment", "You have been invited to an appointment", DateUtil.getNow(), 0, appointmentId, username, DateUtil.getNow());
+				statement = db.prepareStatement(query);
+				statement.execute();
 			}
 		}
 		else
