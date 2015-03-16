@@ -21,7 +21,7 @@ public class NotificationService extends ScheduledService {
 		this.conn = conn;
 		this.controller = controller;
 		this.setPeriod(new Duration(10000));
-		this.setDelay(new Duration(10000));
+		this.setDelay(new Duration(1000));
 
 	}
 

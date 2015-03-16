@@ -83,11 +83,7 @@ public class NotificationController {
 		not.setTriggerDate(res.getString("trigger_date"));
 		not.setNotificationType(res.getString("type"));
 		not.setUsername(res.getString("username"));
-		not.setRead(Integer.valueOf(res.getString("read")));
-		
-		System.out.println(res.getInt("notification_id"));
-		System.out.println(Integer.valueOf(res.getString("read")));
-		
+		not.setRead(Integer.valueOf(res.getString("read")));		
 		return not;
 	}
 

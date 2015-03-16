@@ -53,8 +53,8 @@ import communication.responses.UserResponse;
 import controllers.AppointmentController.Invitable;
 
 public class AppointmentController implements Initializable {
-	Appointment appointment = new Appointment();
-	boolean isNew = false;
+	Appointment appointment;
+	Boolean isNew;
 	boolean datesValid = false;
 	boolean titleValid = false;
 	
@@ -112,8 +112,9 @@ public class AppointmentController implements Initializable {
     	this.isNew = (appointment == null);
     }
     
-    public void initialize(){
-    	if(appointment != null){
+
+	private void fillAppointmentFields() {
+		if(appointment != null){
     		title.setText(appointment.getTitle()); 
         	description.setText(appointment.getDescription());
         	
@@ -128,7 +129,7 @@ public class AppointmentController implements Initializable {
     	if(isNew == false){
     		ok_button.setText("Save");
     	}
-    }
+	}
 
     @FXML
     void onOk(ActionEvent event) {
@@ -351,6 +352,7 @@ public class AppointmentController implements Initializable {
     	initalizeInviteTable();
     	validateTitleField();
     	onChronoFieldChanged();
+    	fillAppointmentFields();
 	}
 	
 	class Invitable {
