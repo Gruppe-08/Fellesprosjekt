@@ -87,9 +87,18 @@ public class CalendarServer extends Server {
 	    		 * to send that allows the server to know what models the client requested.
 	    		 */
 				else if(object instanceof NotificationRequest){
-					String username = clientConnection.username;
-					NotificationResponse response = NotificationController.getNotificationResponse(username);
-					clientConnection.sendTCP(response);
+					NotificationRequest req = (NotificationRequest)object;
+					if (req.getReadId() > 0) {
+						NotificationController.setReadNotification(req.getReadId());
+						if (req.getStatus() >= 0) {
+							//handle notification answer in here
+						}
+					}
+					else {
+						String username = clientConnection.username;
+						NotificationResponse response = NotificationController.getNotificationResponse(username);
+						clientConnection.sendTCP(response);
+					}
 				}
 				else if(object instanceof AppointmentRequest) {
 					AppointmentRequest request = (AppointmentRequest)object;
