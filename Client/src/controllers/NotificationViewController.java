@@ -57,10 +57,19 @@ public class NotificationViewController implements Initializable {
 		notificationPane.getChildren().add(notBox);
 	}
 	
-	//Should gather all notifications in one request
 	private void notificationWasRead(Notification notification) {
 		NotificationRequest req = new NotificationRequest();
-		req.setReadId(notification.getId());
+		req.setType("read");
+		req.setNotificationId(notification.getId());
+		req.setRead(1);
+		State.getConnectionController().sendTCP(req);
+	}
+	
+	public static void respondedToNotification(Notification notification, int status, NotificationBox box) {
+		NotificationRequest req = new NotificationRequest();
+		req.setType("status");
+		req.setNotificationId(notification.getId());
+		req.setStatus(status);
 		State.getConnectionController().sendTCP(req);
 	}
 }

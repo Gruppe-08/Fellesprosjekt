@@ -1,6 +1,9 @@
 package calendar;
 
+import controllers.NotificationViewController;
 import models.Notification;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
@@ -12,6 +15,7 @@ import javafx.scene.text.Text;
 
 public class NotificationBox extends AnchorPane {
 	
+	private NotificationBox box = this;
 	private Notification notification;
 	
 	public NotificationBox(Notification notification) {
@@ -24,8 +28,24 @@ public class NotificationBox extends AnchorPane {
 	}
 	
 	private void putButtons() {
+		
 		Button confirm = new Button("Confirm");
+		confirm.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				NotificationViewController.respondedToNotification(notification, 1, box);
+			}
+			
+		});
 		Button decline = new Button("Decline");
+
+		decline.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				NotificationViewController.respondedToNotification(notification, 0, box);
+			}
+		});
+		
 		AnchorPane.setTopAnchor(confirm, 40.0);
 		AnchorPane.setTopAnchor(decline, 40.0);
 		AnchorPane.setRightAnchor(confirm, 150.0);

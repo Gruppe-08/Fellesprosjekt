@@ -39,6 +39,23 @@ public class NotificationController {
 		}
 	}
 	
+	public static void setStatus(int notificationId, String username, int status) {
+		String statusString = null;
+		switch(status) {
+			case 0: statusString = "not attending";
+			case 1: statusString = "attending";
+		}
+		System.out.println(statusString + " " + username + " " + status);
+		String queryString = String.format("UPDATE UserAppointmentRelation SET status='%s' WHERE appointment_id=%s AND username ='%s'", 
+		statusString, notificationId, username);
+		try {
+			statement = db.prepareStatement(queryString);
+			statement.execute();
+		} catch (SQLException e) {
+			Logger.logMsg(Logger.ERROR, "Could not set status: " + e.getMessage());
+		}
+	}
+	
 	private static void addNotification(Notification not) throws SQLException{		
 		String isAlarm = not.isAlarm() ? "1" : "0";
 		String type = not.getType().toString().toLowerCase();
