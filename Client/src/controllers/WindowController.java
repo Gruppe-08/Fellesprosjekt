@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import models.Notification;
+import models.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +32,7 @@ import calendar.Window;
 public class WindowController implements Initializable {
 	Calendar myCalendar = null;
 	AnchorPane myWindow = null;
+	MenuItem admin = null;
 	public static Window previous_window = null;
 	
 	@FXML private AnchorPane mainPane;
@@ -79,6 +81,7 @@ public class WindowController implements Initializable {
 						logout();
 					}
 				});
+				
 				dayToggle.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
@@ -118,11 +121,33 @@ public class WindowController implements Initializable {
 	}
 
 	public void loginSuccessful() {
+		User user = State.getUser();
 		enableAndShowButtons();
-		username.setText(State.getUser().getFirstname() + " " + State.getUser().getLastname());
+		
+		if(user.isAdmin()){
+			insertAdminButton();
+		}
+		username.setText(user.getFirstname() + " " + user.getLastname());
+		
+		
 		loadPage(Window.WEEK);
 		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
 		service.start();
+		
+	}
+
+	private void insertAdminButton() {
+		admin = new MenuItem();
+		menu.getItems().add(admin);
+		
+		admin.setText("Admin panel");
+		admin.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event){
+				AdminController controller = new AdminController();
+				loadPage(Window.ADMIN, controller);
+			}
+		});
 	}
 	
 	public Object loadPage(Window window) {

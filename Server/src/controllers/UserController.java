@@ -195,10 +195,11 @@ public class UserController {
 		Connection db = DatabaseConnector.getDB();
 		try {
 			Statement stm = db.createStatement();
-			String updateUser = String.format("UPDATE User SET username = '%s', firstname = '%s', lastname = '%s' WHERE username = '%s'",
+			String updateUser = String.format("UPDATE User SET username = '%s', firstname = '%s', lastname = '%s', admin='%s' WHERE username = '%s'",
 					user.getFirstname(), 
 					user.getLastname(), 
-					user.getUsername());
+					user.getUsername(),
+					user.isAdmin());
 			
 			stm.execute(updateUser);
 		}
@@ -236,7 +237,7 @@ public class UserController {
 		Connection db = DatabaseConnector.getDB();
 		ArrayList<User> users = new ArrayList<User>();
 		Statement stm = db.createStatement();
-		ResultSet rs = stm.executeQuery("SELECT * FROM User WHERE 1");
+		ResultSet rs = stm.executeQuery("SELECT * FROM User");
 		while(rs.next()) {
 			users.add(parseResultSetToUser(rs));
 		}
@@ -248,6 +249,7 @@ public class UserController {
 		user.setUsername(rs.getString("username"));
 		user.setFirstname(rs.getString("firstname"));
 		user.setLastname(rs.getString("lastname"));
+		user.setIsAdmin((rs.getInt("admin") == 1));
 		return user;
 	}
 

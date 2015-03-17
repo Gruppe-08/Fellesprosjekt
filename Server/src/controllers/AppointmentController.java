@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.sun.media.jfxmedia.logging.Logger;
@@ -18,8 +17,6 @@ import communication.responses.BaseResponse;
 import communication.responses.PutAppointmentResponse;
 import server.DatabaseConnector;
 import models.Appointment;
-import models.RepetitionType;
-import models.User;
 import util.DateUtil;
 
 public class AppointmentController {

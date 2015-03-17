@@ -1,15 +1,7 @@
 package server;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.management.remote.NotificationResult;
-
-import models.Appointment;
-
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.sun.media.jfxmedia.logging.Logger;
@@ -21,9 +13,6 @@ import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
-import communication.requests.CreateUserRequest;
-import communication.requests.DeleteAppointmentRequest;
-import communication.requests.GetUsersRequest;
 import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;

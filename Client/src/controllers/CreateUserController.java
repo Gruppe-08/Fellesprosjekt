@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import util.UserUtil;
@@ -31,6 +32,9 @@ public class CreateUserController {
 	
 	@FXML
 	Button submit;
+	
+	@FXML
+	CheckBox admin;
 
 	
 	public void initialize() {
@@ -38,7 +42,7 @@ public class CreateUserController {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Handle createUser");
-				User user = new User(username.getText(), firstname.getText(), lastname.getText());
+				User user = new User(username.getText(), firstname.getText(), lastname.getText(), admin.isSelected());
 
 				String p1= password.getText();
 				String p2 = confirmPassword.getText();

@@ -71,7 +71,7 @@
             </HBox>
          </children>
       </VBox>
-      <Text layoutX="41.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Appointment" wrappingWidth="457.5146484375">
+      <Text fx:id="top_text" layoutX="41.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Appointment" wrappingWidth="457.5146484375">
          <font>
             <Font name="Kalinga" size="40.0" />
          </font>
