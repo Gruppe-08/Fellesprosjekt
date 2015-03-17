@@ -4,8 +4,10 @@ public class NotificationRequest {
 	
 	String type = "";
 	int read = -1;
-	int status = -1;	//1 means that appointment was accepted, 0 declined and -1 means that the invitation is still pending
+	String status = null;	//1 means that appointment was accepted, 0 declined and -1 means that the invitation is still pending
+	int appointmentId;
 	int notificationId;
+	
 	
 	public NotificationRequest(){
 		
@@ -18,8 +20,12 @@ public class NotificationRequest {
 		return read;
 	}
 	
-	public int getStatus() {
+	public String getStatus() {
 		return status;
+	}
+	
+	public int getAppointmentId() {
+		return appointmentId;
 	}
 	
 	public int getNotificationId() {
@@ -28,6 +34,10 @@ public class NotificationRequest {
 	
 	public void setNotificationId(int notificationId) {
 		this.notificationId = notificationId;
+	}
+	
+	public void setAppointmentId(int appointmentId) {
+		this.appointmentId = appointmentId;
 	}
 	
 	public void setType(String type) {
@@ -39,7 +49,7 @@ public class NotificationRequest {
 		this.read = readId;
 	}
 	
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	

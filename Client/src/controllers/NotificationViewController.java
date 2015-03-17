@@ -65,11 +65,12 @@ public class NotificationViewController implements Initializable {
 		State.getConnectionController().sendTCP(req);
 	}
 	
-	public static void respondedToNotification(Notification notification, int status, NotificationBox box) {
+	public static void respondedToNotification(Notification notification, String status, NotificationBox box) {
 		NotificationRequest req = new NotificationRequest();
 		req.setType("status");
-		req.setNotificationId(notification.getId());
+		req.setAppointmentId(notification.getAppointment().getId());
 		req.setStatus(status);
 		State.getConnectionController().sendTCP(req);
+		box.showStatus(status);
 	}
 }

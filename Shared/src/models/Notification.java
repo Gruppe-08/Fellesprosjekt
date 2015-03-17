@@ -10,6 +10,7 @@ public class Notification {
 	private Appointment appointment;
 	private String username;
 	private int read;
+	private String status;
 	
 	public Notification(NotificationType type, String message, String timeCreated) {
 		setType(type);
@@ -108,5 +109,13 @@ public class Notification {
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public String getStatus() {
+		return status;
 	}
 }

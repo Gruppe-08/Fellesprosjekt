@@ -17,6 +17,7 @@ public class NotificationBox extends AnchorPane {
 	
 	private NotificationBox box = this;
 	private Notification notification;
+	private Text statusText;
 	
 	public NotificationBox(Notification notification) {
 		this.notification = notification;
@@ -25,6 +26,7 @@ public class NotificationBox extends AnchorPane {
 		putText();
 		style();
 		putButtons();
+		showStatus(getStatus());
 	}
 	
 	private void putButtons() {
@@ -33,7 +35,7 @@ public class NotificationBox extends AnchorPane {
 		confirm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				NotificationViewController.respondedToNotification(notification, 1, box);
+				NotificationViewController.respondedToNotification(notification, "attending", box);
 			}
 			
 		});
@@ -42,7 +44,7 @@ public class NotificationBox extends AnchorPane {
 		decline.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				NotificationViewController.respondedToNotification(notification, 0, box);
+				NotificationViewController.respondedToNotification(notification, "not_attending", box);
 			}
 		});
 		
@@ -69,6 +71,35 @@ public class NotificationBox extends AnchorPane {
 		AnchorPane.setTopAnchor(msgText, 20.0);
 		AnchorPane.setTopAnchor(createdText, 60.0);
 		this.getChildren().addAll(msgText, createdText);
+	}
+	
+	public void showStatus(String status) {
+		String statusString = null;
+		switch(status) {
+			case "pending": statusString = "Pending";
+					break;
+			case "not_attending": statusString = "Not attending";
+					break;
+			case "attending": statusString = "Attending";
+					break;
+		}
+		Text statusText = new Text(statusString);
+		AnchorPane.setRightAnchor(statusText, 25.0);
+		AnchorPane.setTopAnchor(statusText, 10.0);
+		if (this.statusText != null) {
+			this.getChildren().remove(this.statusText);
+		}
+		this.getChildren().add(statusText);
+		this.statusText = statusText;
+
+	}
+	
+	public void setStatus(String status) {
+		this.notification.setStatus(status);
+	}
+	
+	public String getStatus() {
+		return notification.getStatus();
 	}
 
 }

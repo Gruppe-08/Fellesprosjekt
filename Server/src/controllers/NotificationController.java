@@ -39,11 +39,13 @@ public class NotificationController {
 		}
 	}
 	
-	public static void setStatus(int notificationId, String username, int status) {
+	public static void setStatus(int notificationId, String username, String status) {
 		String statusString = null;
 		switch(status) {
-			case 0: statusString = "not attending";
-			case 1: statusString = "attending";
+			case "not_attending": statusString = "not_attending";
+					break;
+			case "attending": statusString = "attending";
+					break;
 		}
 		System.out.println(statusString + " " + username + " " + status);
 		String queryString = String.format("UPDATE UserAppointmentRelation SET status='%s' WHERE appointment_id=%s AND username ='%s'", 
@@ -71,7 +73,12 @@ public class NotificationController {
 		db = DatabaseConnector.getDB();
 		ArrayList<Notification> notifications = new ArrayList<>();
 		
-		String getNotifications = String.format("SELECT * FROM Notification NATURAL JOIN Appointment WHERE username='%s'", username);	
+		String getNotifications = String.format("SELECT n.*, a.*, ua.status "+
+			"FROM Notification n, Appointment a, UserAppointmentRelation ua " +
+			"WHERE n.username = ua.username "  + 
+			"AND a.appointment_id = ua.appointment_id " + 
+			"AND ua.appointment_id = n.appointment_id " + 
+			"AND n.username =  '%s'", username);	
 		statement = db.prepareStatement(getNotifications);
 		statement.execute();
 		res = statement.getResultSet();
@@ -100,7 +107,8 @@ public class NotificationController {
 		not.setTriggerDate(res.getString("trigger_date"));
 		not.setNotificationType(res.getString("type"));
 		not.setUsername(res.getString("username"));
-		not.setRead(Integer.valueOf(res.getString("read")));		
+		not.setRead(Integer.valueOf(res.getString("read")));
+		not.setStatus(res.getString("status"));
 		return not;
 	}
 

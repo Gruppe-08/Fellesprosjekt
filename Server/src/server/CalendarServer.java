@@ -91,12 +91,11 @@ public class CalendarServer extends Server {
 	    		 */
 				else if(object instanceof NotificationRequest){
 					NotificationRequest req = (NotificationRequest)object;
-					System.out.println(req.getNotificationId() + req.getType() + req.getStatus() + clientConnection.username);
-					if (req.getType() == "read") {
-						NotificationController.setReadNotification(req.getNotificationId());
+					if (req.getType().equals("read")) {
+						NotificationController.setReadNotification(req.getAppointmentId());
 					}
-					else if (req.getType() == "status") {
-						NotificationController.setStatus(req.getNotificationId(), clientConnection.username, req.getStatus());
+					else if (req.getType().equals("status")) {
+						NotificationController.setStatus(req.getAppointmentId(), clientConnection.username, req.getStatus());
 					}
 					else {
 						String username = clientConnection.username;
