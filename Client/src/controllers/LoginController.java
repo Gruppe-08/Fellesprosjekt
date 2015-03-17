@@ -60,19 +60,5 @@ public class LoginController implements Initializable {
 				}
 			}
 		});
-		
-		login_create_user.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				State.getWindowController().loadPage(Window.CREATE_USER);
-			}
-		});
-		
-		login_forgot_password.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event){
-				// TODO: Route to forgotPassword form
-			}
-		});			
 	}
 }
