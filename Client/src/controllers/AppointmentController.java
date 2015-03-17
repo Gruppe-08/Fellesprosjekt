@@ -119,6 +119,7 @@ public class AppointmentController implements Initializable {
     		title.setText(appointment.getTitle()); 
         	description.setText(appointment.getDescription());
         	
+        	System.out.println(appointment.getStartTime());
         	date.setValue( DateUtil.deserializeDate(appointment.getStartTime()) );
         	
         	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
@@ -339,6 +340,7 @@ public class AppointmentController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		appointment = new Appointment();
 	   	appointment.setOwnerUsername(State.getUser().getUsername());
 	   	
 	   	title.textProperty().addListener(f -> validateTitleField());
