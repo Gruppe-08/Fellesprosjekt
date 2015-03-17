@@ -105,6 +105,7 @@ public class AppointmentController implements Initializable {
 
     public AppointmentController(){ 
     	isNew = true;
+    	this.appointment = new Appointment();
     }
     
     public AppointmentController(Appointment appointment){    	
@@ -114,7 +115,7 @@ public class AppointmentController implements Initializable {
     
 
 	private void fillAppointmentFields() {
-		if(appointment != null){
+		if(!isNew){
     		title.setText(appointment.getTitle()); 
         	description.setText(appointment.getDescription());
         	
@@ -124,10 +125,6 @@ public class AppointmentController implements Initializable {
         	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
         	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
     	} else {
-    		appointment = new Appointment();
-    	}
-    	
-    	if(isNew == false){
     		ok_button.setText("Save");
     	}
 	}
