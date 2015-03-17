@@ -72,18 +72,17 @@ public class CreateUserController {
 				CreateUserRequest request = new CreateUserRequest();
 				request.setPassword(password);
 				request.setUser(user);
-				
-				System.out.println("Requesting createUser...");
 				State.getConnectionController().sendTCP(request);
-				Object object = State.getConnectionController().getObject("communication.responses.CreateUserResponse");
-				CreateUserResponse res = (CreateUserResponse) object;
+				
+				CreateUserResponse res = (CreateUserResponse)  State.getConnectionController().getObject("communication.responses.CreateUserResponse");
 				
 				if (res.wasSuccessful()) {
-					State.myWindowController.loadPage(Window.LOGIN);
+					AdminController controller = new AdminController();
+					State.myWindowController.loadPage(Window.ADMIN, controller);
 				}
 				else {
 					// TODO: Flash error message to show that login failed.
-					System.out.println("Login failed");
+					System.out.println(res.getErrorMessage());
 				}
 			}
 		});

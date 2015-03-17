@@ -45,6 +45,7 @@ import communication.requests.BusyCheckRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.BusyCheckResponse;
+import communication.responses.GetUsersResponse;
 import communication.responses.PutAppointmentResponse;
 import communication.responses.UserResponse;
 import controllers.AppointmentController.Invitable;
@@ -235,10 +236,10 @@ public class AppointmentController implements Initializable {
 		});
     	GetUsersRequest request = new GetUsersRequest();
     	State.getConnectionController().sendTCP(request);
-    	UserResponse response = (UserResponse)State.getConnectionController().getObject(
-    			"communication.responses.UserResponse");
+    	GetUsersResponse response = (GetUsersResponse)State.getConnectionController().getObject(
+    			"communication.responses.GetUsersResponse");
     	if(response.wasSuccessful()) {
-    		for(User user : response.getUsers()) {
+    		for(User user : response.getUserList()) {
     			invite_user_list.getItems().add(new Invitable(user));
     		}
     	}
