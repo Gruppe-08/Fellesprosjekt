@@ -77,6 +77,9 @@ public class AppointmentController implements Initializable {
     Button ok_button;
     
     @FXML
+    Text top_text;
+    
+    @FXML
     TableView<Invitable> invite_user_list;
     
     @FXML
@@ -113,6 +116,10 @@ public class AppointmentController implements Initializable {
     	
     	if(isNew == false){
     		ok_button.setText("Save");
+    		top_text.setText("Edit appointment");
+    	} else {
+    		ok_button.setText("Ok");
+    		top_text.setText("Create appointment");
     	}
 	}
 
@@ -129,7 +136,7 @@ public class AppointmentController implements Initializable {
 	    					user.user.getUsername());
 	    		
 	    	}
-	    	request.setNewAppointment(true);
+	    	request.setNewAppointment(isNew);
 	    	
 	    	State.getConnectionController().sendTCP(request);
 	    	PutAppointmentResponse response = (PutAppointmentResponse) State.getConnectionController().getObject("communication.responses.PutAppointmentResponse");
