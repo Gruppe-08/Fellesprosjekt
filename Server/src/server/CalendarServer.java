@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -15,6 +16,7 @@ import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
+import communication.requests.UpdateUserRequest;
 import communication.responses.AppointmentResponse;
 import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
@@ -129,6 +131,12 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetUsersRequest){
 					GetUsersRequest request = (GetUsersRequest) object;
 					BaseResponse response = UserController.handleGetUsersRequest(request);
+					clientConnection.sendTCP(response);
+				} 
+				else if(object instanceof UpdateUserRequest){
+					System.out.println("Got update user request.");
+					UpdateUserRequest request = (UpdateUserRequest) object;
+					BaseResponse response = UserController.handleUpdateUserRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				
