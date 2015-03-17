@@ -18,16 +18,20 @@
          <children>
             <VBox prefHeight="400.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <Label text="Users:" />
-                  <ListView prefHeight="300.0" prefWidth="200.0" />
-                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="Create user" />
+                  <ListView fx:id="user_list" prefHeight="300.0" prefWidth="200.0" />
+                  <Button fx:id="create_user" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#createUser" text="Create user" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="400.0" spacing="15.0">
                <children>
-                  <Label text="User:" />
                   <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="500.0" spacing="10.0">
                      <children>
+                        <HBox maxWidth="380.0" prefHeight="20.0" prefWidth="113.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="113.0" text="Username:" />
+                              <TextField fx:id="username" alignment="TOP_LEFT" disable="true" editable="false" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
                         <HBox maxWidth="380.0" prefHeight="26.0" prefWidth="380.0" spacing="15.0">
                            <children>
                               <Label minWidth="113.0" prefWidth="113.0" text="Name:">
@@ -39,37 +43,16 @@
                               <TextField fx:id="lastname" alignment="TOP_LEFT" promptText="Last" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <HBox maxWidth="380.0" prefHeight="20.0" prefWidth="113.0" spacing="20.0">
-                           <children>
-                              <Label prefWidth="113.0" text="Username:" />
-                              <TextField fx:id="username" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="70.0" layoutY="46.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
-                           <children>
-                              <Label prefWidth="113.0" text="Password:" />
-                              <PasswordField fx:id="password" alignment="TOP_LEFT" disable="true" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="70.0" layoutY="82.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
-                           <children>
-                              <Label text="Confirm password:" />
-                              <PasswordField fx:id="confirmPassword" alignment="TOP_LEFT" disable="true" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
                         <HBox layoutX="20.0" layoutY="118.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
                            <children>
                               <Label prefWidth="113.0" text="Administrator:" />
-                              <CheckBox mnemonicParsing="false" />
+                              <CheckBox fx:id="is_admin" mnemonicParsing="false" />
                            </children>
                         </HBox>
-                        <HBox alignment="TOP_RIGHT" maxWidth="380.0" prefHeight="100.0" prefWidth="380.0">
+                        <HBox alignment="TOP_RIGHT" maxWidth="380.0" prefHeight="50.0" prefWidth="380.0" spacing="15.0">
                            <children>
-                              <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
-                                 <children>
-                                    <Button fx:id="submit" alignment="TOP_RIGHT" mnemonicParsing="false" text="Submit" />
-                                 </children>
-                              </VBox>
+                              <Hyperlink fx:id="delete" onAction="#deleteUser" text="Delete user" textFill="RED" underline="true" />
+                              <Button fx:id="submit" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#submitChanges" text="Save changes" />
                            </children>
                         </HBox>
                      </children>
