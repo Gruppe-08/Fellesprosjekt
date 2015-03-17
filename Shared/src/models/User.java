@@ -1,14 +1,10 @@
 package models;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleStringProperty;
 
 public class User {
 	private String username;
-	private String firstname;
+	private String  firstname;
 	private String lastname;
 	private Boolean isAdmin;
 	private ArrayList<Integer> attendingAppointments;
@@ -62,6 +58,11 @@ public class User {
 	
 	public Boolean isAdmin(){
 		return isAdmin;
+	}
+	
+	@Override
+	public String toString(){
+		return this.firstname + " " + this.lastname;
 	}
 
 }
