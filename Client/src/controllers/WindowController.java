@@ -57,7 +57,7 @@ public class WindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		State.getWindowController().loadPage(Window.LOGIN);
+		loadPage(Window.LOGIN);
 		
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
