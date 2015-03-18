@@ -17,6 +17,7 @@ import communication.requests.AppointmentRequest;
 import communication.responses.AppointmentResponse;
 import calendar.AppointmentPane;
 import calendar.State;
+import calendar.Window;
 import models.Appointment;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -34,6 +35,7 @@ public class DayViewController implements Initializable{
 	@FXML private Text dayLabel;
 	@FXML private Button prevDay;
 	@FXML private Button nextDay;
+	@FXML private Button addButton;
 	private String currentDay;
 	
 	private Map<String, ArrayList<Appointment>> cachedAppointments = new HashMap<String, ArrayList<Appointment>>();
@@ -43,6 +45,13 @@ public class DayViewController implements Initializable{
 
 	
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		addButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				State.getWindowController().loadPage(Window.APPOINTMENT);
+			}
+		});
 		
 		//Necessary for concurrency, take a look at how the use of runLater can be avoided
 		Platform.runLater(new Runnable() {		

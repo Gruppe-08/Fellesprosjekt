@@ -15,6 +15,7 @@ import util.DateUtil;
 import models.Appointment;
 import calendar.State;
 import calendar.WeekAppointmentPane;
+import calendar.Window;
 import communication.requests.AppointmentRequest;
 import communication.responses.AppointmentResponse;
 import javafx.event.ActionEvent;
@@ -34,6 +35,7 @@ public class WeekViewController implements Initializable {
 	@FXML private AnchorPane weekPane;
 	@FXML private Text monthLabel;
 	@FXML private Text yearLabel;
+	@FXML private Button addButton;
 	
 	@FXML private Text mondayLabel;
 	@FXML private Text tuesdayLabel;
@@ -50,6 +52,14 @@ public class WeekViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		addButton.setOnAction(new EventHandler<ActionEvent>() {		
+			@Override
+			public void handle(ActionEvent event) {
+				State.getWindowController().loadPage(Window.APPOINTMENT);
+			}
+		});
+		
 		//Saves the blank pane, so deleting of appointments is easily done
 		for (Node node : weekPane.getChildren()) {
 			blankWeekPane.add(node);

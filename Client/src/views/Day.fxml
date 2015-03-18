@@ -154,5 +154,6 @@
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
+      <Button fx:id="addButton" layoutX="940.0" layoutY="14.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-border-color: #1d93c6; -fx-background-radius: 35; -fx-background-color: #ffffff; -fx-border-radius: 35;" styleClass="-fx-bord" text="New" textFill="#1d93c6" />
 	</children>
 </AnchorPane>
