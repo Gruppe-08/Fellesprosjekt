@@ -1,39 +1,55 @@
 package tests;
 
 import static org.junit.Assert.*;
+
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.sun.media.jfxmedia.logging.Logger;
+import communication.ClassRegistration;
+
 import controllers.AdminController;
+import controllers.ConnectionController;
 import controllers.LoginController;
 import controllers.WindowController;
+import calendar.State;
 import calendar.Window;
 
 
 
 
 public class WindowControllerTest {
-	WindowController controller = new WindowController();
+	WindowController controller;
+	ConnectionController connection;
+	Pane pane;
 	Object o;
+	
+	public WindowControllerTest(){
+		
+		try {
+			controller = new WindowController();
+			connection = new ConnectionController("localhost", 5437);
+			pane = new Pane();
+			ClassRegistration.register(connection);
+		} catch (IOException e) {
+			Logger.logMsg(Logger.ERROR, e.getMessage());
+		}
+		
+	}
 	
 	@Test
 	public void testLoadLogin() {
-		o = controller.loadPage(Window.LOGIN);
-		assertNotNull(o);
+		// Login is loaded without a controller
+		assertNotNull(controller.loadPage(Window.LOGIN, null, pane));
+		assertNull(controller.loadPage(Window.LOGIN, new LoginController(), pane));
 	}
 	
-	@Test
-	public void testLoadAdmin() {
-		o = controller.loadPage(Window.ADMIN, new AdminController());
-		assertNotNull(o);
-		
-		// If the controller is not set, loadPage should return null
-		o = controller.loadPage(Window.ADMIN);
-		assertNull(o);
-	}
 	
 	/*
 	 * Stratup the application
