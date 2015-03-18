@@ -12,6 +12,10 @@ public class BaseResponse {
 	public void setSuccessful(boolean wasSuccessful) {
 		this.wasSuccessful = wasSuccessful;
 	}
+	
+	public Boolean getSuccessful(){
+		return wasSuccessful;
+	}
 	public String getErrorMessage() {
 		return errorMessage;
 	}
