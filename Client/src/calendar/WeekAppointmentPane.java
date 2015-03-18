@@ -42,6 +42,10 @@ public class WeekAppointmentPane extends VBox {
 		Text titleText = new Text(appointment.getTitle());
 		titleText.setFont(Font.font("Helvetica", FontWeight.THIN, 10));
 		this.getChildren().add(titleText);
+		
+		Text locationText = new Text(appointment.getLocation());
+		titleText.setFont(Font.font("Helvetica", FontWeight.THIN, 10));
+		this.getChildren().add(locationText);
 	}
 		
 	private int calculateHeight() {

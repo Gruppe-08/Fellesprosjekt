@@ -108,7 +108,6 @@ public class WeekViewController implements Initializable {
 			for (Appointment appointment: cachedAppointments.get(currentWeek)) {
 				if (DateUtil.getYear(appointment.getStartTime()) == currentYear) {
 					WeekAppointmentPane weekAppointment = new WeekAppointmentPane(appointment);
-					System.out.println("Added");
 					double[] dimensions = calculateAppointmentPlacement(appointment); 
 					AnchorPane.setLeftAnchor(weekAppointment, dimensions[0]);
 					AnchorPane.setRightAnchor(weekAppointment, dimensions[2]);

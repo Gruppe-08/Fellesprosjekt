@@ -160,23 +160,10 @@ public class AppointmentController implements Initializable {
         	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
         	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
         	
-        	if(appointment.getLocation() == null) {
-        		GetRoomsRequest request = new GetRoomsRequest();
-            	State.getConnectionController().sendTCP(request);
-            	RoomResponse response = (RoomResponse) State.getConnectionController().getObject(
-            			"communication.responses.RoomResponse");
-            	
-            	for(Room room : response.getRooms()) {
-            		if(room.getRoomId() == appointment.getRoomId()) {
-            			location.setText(room.getName());
-            			break;
-            		}
-            	}
-        	}
-        	else {
+        	location.setText(appointment.getLocation());
+        	if(appointment.getLocation() != null)
         		use_location_check.setSelected(true);
-        		location.setText(appointment.getLocation());
-        	}
+        	
     	} else {
     		appointment = new Appointment();
     	}
