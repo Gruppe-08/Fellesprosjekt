@@ -12,6 +12,7 @@ import communication.requests.AuthenticationRequest;
 import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
+import communication.requests.GetGroupsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.NotificationRequest;
@@ -22,9 +23,10 @@ import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GroupResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
-import controllers.AddGroupController;
+import controllers.GroupController;
 import controllers.AppointmentController;
 import controllers.NotificationController;
 import controllers.UserController;
@@ -80,11 +82,11 @@ public class CalendarServer extends Server {
 	    		 */
 				else if(object instanceof NotificationRequest){
 					NotificationRequest req = (NotificationRequest)object;
-					if (req.getReadId() > 0) {
-						NotificationController.setReadNotification(req.getReadId());
-						if (req.getStatus() >= 0) {
-							//handle notification answer in here
-						}
+					if (req.getType().equals("read")) {
+						NotificationController.setReadNotification(req.getAppointmentId());
+					}
+					else if (req.getType().equals("status")) {
+						NotificationController.setStatus(req.getAppointmentId(), clientConnection.username, req.getStatus());
 					}
 					else {
 						String username = clientConnection.username;
@@ -121,16 +123,15 @@ public class CalendarServer extends Server {
 					
 					BusyCheckResponse response = UserController.handleBusyCheck(request);
 					clientConnection.sendTCP(response);
-					
 				}
 				else if(object instanceof CreateGroupRequest){
 					CreateGroupRequest request = (CreateGroupRequest) object;
-					BaseResponse response = AddGroupController.handleCreateGroupRequest(request);
+					BaseResponse response = GroupController.handleCreateGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
-				else if(object instanceof GetUsersRequest){
-					GetUsersRequest request = (GetUsersRequest) object;
-					BaseResponse response = UserController.handleGetUsersRequest(request);
+				else if(object instanceof GetGroupsRequest){
+					GetGroupsRequest request = (GetGroupsRequest) object;
+					GroupResponse response = GroupController.handleGetGroupsRequest(request);
 					clientConnection.sendTCP(response);
 				} 
 				else if(object instanceof UpdateUserRequest){
@@ -139,9 +140,8 @@ public class CalendarServer extends Server {
 					BaseResponse response = UserController.handleUpdateUserRequest(request);
 					clientConnection.sendTCP(response);
 				}
-				
 			}
-
+			
 			public void connected(Connection connection) {
 				Logger.logMsg(Logger.DEBUG, "A new client connected");
 			}

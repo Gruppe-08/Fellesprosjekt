@@ -17,6 +17,12 @@ import communication.responses.BaseResponse;
 import communication.responses.PutAppointmentResponse;
 import server.DatabaseConnector;
 import models.Appointment;
+<<<<<<< HEAD
+=======
+import models.Group;
+import models.RepetitionType;
+import models.User;
+>>>>>>> 90e775d25116fa58e65f97174ea5c6f3820257d4
 import util.DateUtil;
 
 public class AppointmentController {
@@ -215,14 +221,25 @@ public class AppointmentController {
 		if (res.next()) {
 			appointmentId = res.getInt(1);
 			
+			//Put all users to invite in a single list without duplicates
+			ArrayList<String> usernamesToAdd = new ArrayList<String>();
 			for(String username : appointment.getUserRelations()) {
+				usernamesToAdd.add(username);
+			}
+			for(int groupID : appointment.getGroupRelations()) {
+				Group group = GroupController.getGroup(groupID);
+				for(String username : group.getMembers()) {
+					if(!usernamesToAdd.contains(username))
+						usernamesToAdd.add(username);
+				}
+			}
+			
+			for(String username : usernamesToAdd) {
 				query = String.format(
 						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
 						appointmentId, username);
 				statement = db.prepareStatement(query);
 				statement.execute();
-			}
-			for(String username : appointment.getUserRelations()) {
 				query = String.format(
 						"INSERT INTO Notification(type, message, created, is_alarm, appointment_id, username, trigger_date) VALUES('%s', '%s', '%s','%s','%s','%s','%s')",
 						"appointment", "You have been invited to an appointment", DateUtil.getNow(), 0, appointmentId, username, DateUtil.getNow());

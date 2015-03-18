@@ -2,21 +2,30 @@ package models;
 
 import java.util.ArrayList;
 
-public class Group {
+public class Group {	
 	private String name;
-	private String description;
-	private ArrayList<User> members;
+	private int groupID;
+	public int getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(int groupID) {
+		this.groupID = groupID;
+	}
+
+	private ArrayList<String> usernames;
+	public void setMembers(ArrayList<String> usernames) {
+		this.usernames = usernames;
+	}
 	
 	public Group(){
 		name = "";
-		description = "";
-		members = new ArrayList<User>();
+		usernames = new ArrayList<String>();
 	}
 	
-	public Group(String name, String description, ArrayList<User> members){
+	public Group(String name, ArrayList<String> usernames){
 		this.name = name;
-		this.description = description;
-		this.members = members;
+		this.usernames = usernames;
 	}
 	
 	public void setName(String name){
@@ -27,31 +36,21 @@ public class Group {
 		return name;
 	}
 	
-	public void setDescription(String description){
-		this.description = description;
+	public void addUser(String username){
+		usernames.add(username);
 	}
 	
-	public String getDescription(){
-		return this.description;
-	}
-	
-	
-	public void addUser(User user){
-		members.add(user);
-	}
-	
-	public void removeUser(User user){
+	public void removeUser(String username){
 		try{
-			members.remove(user);
+			usernames.remove(username);
 		} catch(Exception e){
 			throw new IllegalArgumentException("This user could not be deleted.");
 		}
 
 	}
 
-	public ArrayList<User> getMembers() {
-		return this.members;
+	public ArrayList<String> getMembers() {
+		return this.usernames;
 	}
-	
 
 }

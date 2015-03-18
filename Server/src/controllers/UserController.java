@@ -97,7 +97,22 @@ public class UserController {
 		}
 		
 		return response;
-	}	
+	}
+	
+	public static ArrayList<String> getUsersByGroup(int groupID) throws SQLException {
+		Connection db = DatabaseConnector.getDB();
+		ArrayList<String> usernames = new ArrayList<String>();
+		String query = 
+				"SELECT * FROM UserGroupRelation ug, User u WHERE ug.username = u.username AND ug.group_id = " +
+				groupID;
+		ResultSet res = db.prepareStatement(query).executeQuery();
+		
+		while(res.next()) {
+			usernames.add(res.getString("username"));
+		}
+		
+		return usernames;
+	}
 	
 	public static BaseResponse handleUpdateUserRequest(UpdateUserRequest request) {
 		BaseResponse res = new BaseResponse();
@@ -132,7 +147,7 @@ public class UserController {
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
 		return hash;
 	}
 	
@@ -257,7 +272,7 @@ public class UserController {
 		return users;
 	}
 	
-	private static User parseResultSetToUser(ResultSet rs) throws SQLException{
+	public static User parseResultSetToUser(ResultSet rs) throws SQLException{
 		User user = new User();
 		user.setUsername(rs.getString("username"));
 		user.setFirstname(rs.getString("firstname"));
