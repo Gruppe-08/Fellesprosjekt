@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,13 +13,18 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -28,21 +34,26 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import models.Appointment;
 import models.Group;
+import models.Room;
 import models.User;
 import util.DateUtil;
 import calendar.State;
 import calendar.Window;
 import communication.requests.BusyCheckRequest;
 import communication.requests.GetGroupsRequest;
+import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.BusyCheckResponse;
 import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.PutAppointmentResponse;
+import communication.responses.RoomResponse;
 
 public class AppointmentController implements Initializable {
 	Appointment appointment;
@@ -64,6 +75,9 @@ public class AppointmentController implements Initializable {
     
     @FXML
     TextField to_time;
+    
+    @FXML
+    Text header_text;
     
     @FXML
     Button cancel_button;
@@ -97,8 +111,19 @@ public class AppointmentController implements Initializable {
     
     @FXML
     private TableColumn<InvitableGroup, String> group_available_column;
+    
+    @FXML
+    private TextField location;
+    
+    @FXML
+    private CheckBox use_location_check;
+    
+    @FXML
+    private Button room_button;
 
     public AppointmentController(){ 
+		if(appointment == null)
+			appointment = new Appointment();
     	isNew = true;
     	this.appointment = new Appointment();
     }
@@ -108,17 +133,58 @@ public class AppointmentController implements Initializable {
     	this.isNew = (appointment == null);
     }
     
-
+    @FXML
+    private void onChooseRoom() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ChooseRoom.fxml"));
+		try {
+			Parent root = loader.load();
+			ChooseRoomController controller = (ChooseRoomController)loader.getController();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			controller.initialize(stage, this);
+			stage.setScene(scene);
+			stage.initOwner(State.getStage());
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+    }
+    
 	private void fillAppointmentFields() {
 		if(!isNew){
     		title.setText(appointment.getTitle()); 
         	description.setText(appointment.getDescription());
         	
-        	System.out.println(appointment.getStartTime());
-        	date.setValue( DateUtil.deserializeDate(appointment.getStartTime()) );
+        	date.setValue(DateUtil.deserializeDate(appointment.getStartTime()) );
         	
         	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
         	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
+        	
+        	if(appointment.getLocation() == null) {
+        		GetRoomsRequest request = new GetRoomsRequest();
+            	State.getConnectionController().sendTCP(request);
+            	RoomResponse response = (RoomResponse) State.getConnectionController().getObject(
+            			"communication.responses.RoomResponse");
+            	
+            	for(Room room : response.getRooms()) {
+            		if(room.getRoomId() == appointment.getRoomId()) {
+            			location.setText(room.getName());
+            			break;
+            		}
+            	}
+        	}
+        	else {
+        		use_location_check.setSelected(true);
+        		location.setText(appointment.getLocation());
+        	}
+    	} else {
+    		appointment = new Appointment();
+    	}
+    	
+    	if(isNew == false) {
+    		header_text.setText("Edit Appointment");
 
     		ok_button.setText("Save");
     		top_text.setText("Edit appointment");
@@ -145,7 +211,11 @@ public class AppointmentController implements Initializable {
 	    			request.getAppointment().getGroupRelations().add(
 	    					group.group.getGroupID());		
 	    	}
-
+	    	
+	    	if(use_location_check.isSelected()) {
+	    		appointment.setLocation(location.getText());
+	    		appointment.setRoomId(null);
+	    	}
 	    	request.setNewAppointment(isNew);
 	    	
 	    	State.getConnectionController().sendTCP(request);
@@ -300,7 +370,6 @@ public class AppointmentController implements Initializable {
     		}
     	}
     }
-
     
     private void updateAvailableUsers() {
     	BusyCheckRequest request = new BusyCheckRequest();
@@ -341,16 +410,37 @@ public class AppointmentController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		appointment = new Appointment();
 	   	appointment.setOwnerUsername(State.getUser().getUsername());
+    	if(!isNew)
+    		fillAppointmentFields();
+	   	
 	   	
 	   	title.textProperty().addListener(f -> validateTitleField());
 	   	from_time.textProperty().addListener(f -> onChronoFieldChanged());
 	   	to_time.textProperty().addListener(f -> onChronoFieldChanged());
 	   	date.valueProperty().addListener(f -> onChronoFieldChanged());
+	   	room_button.disableProperty().bind(use_location_check.selectedProperty());
+	   	location.disableProperty().bind(use_location_check.selectedProperty().not());
+	   	use_location_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable,
+					Boolean oldValue, Boolean newValue) {
+				if(newValue == true) {
+					appointment.setRoomId(null);
+					appointment.setLocation("");
+					location.setText("");
+					location.promptTextProperty().set("Enter name of location");
+				}
+				else {
+					appointment.setLocation(null);
+					location.setText("");
+					location.promptTextProperty().set("");					
+				}
+			}
+		});
 	   	
     	initalizeInviteTable();
     	validateTitleField();
     	onChronoFieldChanged();
-    	fillAppointmentFields();
 	}
 	
 	class Invitable {
@@ -377,5 +467,11 @@ public class AppointmentController implements Initializable {
 			titleProperty = new SimpleStringProperty(
 					group.getName());
 		}
+	}
+
+	public void setRoom(Room room) {
+		appointment.setRoomId(room.getRoomId());
+		appointment.setLocation(null);
+		location.setText(room.getName());
 	}
 }

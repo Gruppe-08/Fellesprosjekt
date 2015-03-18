@@ -61,7 +61,7 @@
                </children>
             </VBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="70.0" prefWidth="100.0" spacing="20.0" />
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="136.0" prefWidth="333.0" spacing="10.0">
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="136.0" prefWidth="307.0" spacing="10.0">
                <children>
                   <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#onCancel" prefHeight="34.0" prefWidth="66.0" text="Cancel" />
                   <Button fx:id="ok_button" mnemonicParsing="false" onAction="#onOk" prefHeight="34.0" prefWidth="66.0" text="OK" />
@@ -72,7 +72,7 @@
             </HBox>
          </children>
       </VBox>
-      <Text fx:id="top_text" layoutX="41.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Appointment" wrappingWidth="457.5146484375">
+      <Text fx:id="header_text" layoutX="41.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Appointment" wrappingWidth="457.5146484375">
          <font>
             <Font name="Kalinga" size="40.0" />
          </font>
@@ -84,7 +84,7 @@
          </font>
       </Label>
       <Line endX="100.0" layoutX="497.0" layoutY="202.0" startX="-110.0" stroke="#909090" />
-      <Button layoutX="574.0" layoutY="111.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="173.0" text="Find available room">
+      <Button fx:id="room_button" layoutX="574.0" layoutY="111.0" mnemonicParsing="false" onAction="#onChooseRoom" prefHeight="19.0" prefWidth="173.0" text="Find available room">
          <font>
             <Font size="15.0" />
          </font>
@@ -109,8 +109,8 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <CheckBox layoutX="387.0" layoutY="82.0" mnemonicParsing="false" text="Use custom location" />
-      <TextField layoutX="387.0" layoutY="113.0" />
+      <CheckBox fx:id="use_location_check" layoutX="387.0" layoutY="82.0" mnemonicParsing="false" text="Use custom location" />
+      <TextField fx:id="location" layoutX="387.0" layoutY="113.0" />
       <Separator layoutX="387.0" layoutY="107.0" prefHeight="1.0" prefWidth="361.0" />
    </children>
 </AnchorPane>
