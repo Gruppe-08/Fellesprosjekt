@@ -122,8 +122,6 @@ public class AppointmentController implements Initializable {
     private Button room_button;
 
     public AppointmentController(){ 
-		if(appointment == null)
-			appointment = new Appointment();
     	isNew = true;
     	this.appointment = new Appointment();
     }
@@ -187,10 +185,8 @@ public class AppointmentController implements Initializable {
     		header_text.setText("Edit Appointment");
 
     		ok_button.setText("Save");
-    		top_text.setText("Edit appointment");
     	} else {
     		ok_button.setText("Ok");
-    		top_text.setText("Create appointment");
     	}
 	}
 
@@ -408,7 +404,6 @@ public class AppointmentController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		appointment = new Appointment();
 	   	appointment.setOwnerUsername(State.getUser().getUsername());
     	if(!isNew)
     		fillAppointmentFields();
