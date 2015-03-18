@@ -70,7 +70,7 @@ public class WindowController implements Initializable {
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage(Window.CREATE_GROUP);
+						loadPage(Window.GROUP);
 					}
 				});
 				logout.setOnAction(new EventHandler<ActionEvent>(){
