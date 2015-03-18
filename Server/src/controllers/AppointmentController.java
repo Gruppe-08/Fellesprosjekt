@@ -17,12 +17,7 @@ import communication.responses.BaseResponse;
 import communication.responses.PutAppointmentResponse;
 import server.DatabaseConnector;
 import models.Appointment;
-<<<<<<< HEAD
-=======
 import models.Group;
-import models.RepetitionType;
-import models.User;
->>>>>>> 90e775d25116fa58e65f97174ea5c6f3820257d4
 import util.DateUtil;
 
 public class AppointmentController {
