@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import util.UserUtil;
@@ -31,6 +32,9 @@ public class CreateUserController {
 	
 	@FXML
 	Button submit;
+	
+	@FXML
+	CheckBox admin;
 
 	
 	public void initialize() {
@@ -38,7 +42,7 @@ public class CreateUserController {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Handle createUser");
-				User user = new User(username.getText(), firstname.getText(), lastname.getText());
+				User user = new User(username.getText(), firstname.getText(), lastname.getText(), admin.isSelected());
 
 				String p1= password.getText();
 				String p2 = confirmPassword.getText();
@@ -68,18 +72,17 @@ public class CreateUserController {
 				CreateUserRequest request = new CreateUserRequest();
 				request.setPassword(password);
 				request.setUser(user);
-				
-				System.out.println("Requesting createUser...");
 				State.getConnectionController().sendTCP(request);
-				Object object = State.getConnectionController().getObject("communication.responses.CreateUserResponse");
-				CreateUserResponse res = (CreateUserResponse) object;
+				
+				CreateUserResponse res = (CreateUserResponse)  State.getConnectionController().getObject("communication.responses.CreateUserResponse");
 				
 				if (res.wasSuccessful()) {
-					State.myWindowController.loadPage(Window.LOGIN);
+					AdminController controller = new AdminController();
+					State.myWindowController.loadPage(Window.ADMIN, controller);
 				}
 				else {
 					// TODO: Flash error message to show that login failed.
-					System.out.println("Login failed");
+					System.out.println(res.getErrorMessage());
 				}
 			}
 		});

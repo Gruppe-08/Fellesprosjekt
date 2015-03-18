@@ -9,7 +9,8 @@ public enum Window {
 	NOTIFICATIONS("NotificationView.fxml"),
 	LOGIN("Login.fxml"),
 	CREATE_USER("CreateUser.fxml"),
-	CREATE_GROUP("CreateGroup.fxml");
+	CREATE_GROUP("CreateGroup.fxml"),
+	ADMIN("Admin.fxml");
 	
 	private final String filename;
 	

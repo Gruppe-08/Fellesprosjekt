@@ -2,26 +2,54 @@ package communication.requests;
 
 public class NotificationRequest {
 	
-	int readId = -1;	
-	int status = -1;	//1 means that appointment was accepted, 0 declined and -1 means that the invitation is still pending
+	String type = "";
+	int read = -1;
+	String status = null;	//1 means that appointment was accepted, 0 declined and -1 means that the invitation is still pending
+	int appointmentId;
+	int notificationId;
+	
 	
 	public NotificationRequest(){
 		
 	}
-	
-	public int getReadId() {
-		return readId;
+	public String getType() {
+		return type;
 	}
 	
-	public int getStatus() {
+	public int getReadId() {
+		return read;
+	}
+	
+	public String getStatus() {
 		return status;
 	}
 	
-	public void setReadId(int readId) {
-		this.readId = readId;
+	public int getAppointmentId() {
+		return appointmentId;
 	}
 	
-	public void setStatus(int status) {
+	public int getNotificationId() {
+		return notificationId;
+	}
+	
+	public void setNotificationId(int notificationId) {
+		this.notificationId = notificationId;
+	}
+	
+	public void setAppointmentId(int appointmentId) {
+		this.appointmentId = appointmentId;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
+	public void setRead(int readId) {
+		this.read = readId;
+	}
+	
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	

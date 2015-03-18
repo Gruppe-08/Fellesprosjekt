@@ -2,18 +2,14 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -33,7 +28,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -43,7 +37,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.util.Pair;
 import models.Appointment;
 import models.Group;
 import models.Room;
@@ -57,11 +50,10 @@ import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.BusyCheckResponse;
+import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.PutAppointmentResponse;
 import communication.responses.RoomResponse;
-import communication.responses.UserResponse;
-import controllers.AppointmentController.Invitable;
 
 public class AppointmentController implements Initializable {
 	Appointment appointment;
@@ -92,6 +84,9 @@ public class AppointmentController implements Initializable {
 
     @FXML
     Button ok_button;
+    
+    @FXML
+    Text top_text;
     
     @FXML
     TableView<Invitable> invite_user_list;
@@ -130,6 +125,7 @@ public class AppointmentController implements Initializable {
 		if(appointment == null)
 			appointment = new Appointment();
     	isNew = true;
+    	this.appointment = new Appointment();
     }
     
     public AppointmentController(Appointment appointment){    	
@@ -157,7 +153,7 @@ public class AppointmentController implements Initializable {
     }
     
 	private void fillAppointmentFields() {
-		if(appointment != null){
+		if(!isNew){
     		title.setText(appointment.getTitle()); 
         	description.setText(appointment.getDescription());
         	
@@ -189,7 +185,12 @@ public class AppointmentController implements Initializable {
     	
     	if(isNew == false) {
     		header_text.setText("Edit Appointment");
+
     		ok_button.setText("Save");
+    		top_text.setText("Edit appointment");
+    	} else {
+    		ok_button.setText("Ok");
+    		top_text.setText("Create appointment");
     	}
 	}
 
@@ -215,7 +216,6 @@ public class AppointmentController implements Initializable {
 	    		appointment.setLocation(location.getText());
 	    		appointment.setRoomId(null);
 	    	}
-	    	
 	    	request.setNewAppointment(isNew);
 	    	
 	    	State.getConnectionController().sendTCP(request);
@@ -351,10 +351,10 @@ public class AppointmentController implements Initializable {
         //Fill user invite list with users
     	GetUsersRequest request = new GetUsersRequest();
     	State.getConnectionController().sendTCP(request);
-    	UserResponse response = (UserResponse)State.getConnectionController().getObject(
-    			"communication.responses.UserResponse");
+    	GetUsersResponse response = (GetUsersResponse)State.getConnectionController().getObject(
+    			"communication.responses.GetUsersResponse");
     	if(response.wasSuccessful()) {
-    		for(User user : response.getUsers()) {
+    		for(User user : response.getUserList()) {
     			invite_user_list.getItems().add(new Invitable(user));
     		}
     	}
@@ -408,6 +408,7 @@ public class AppointmentController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		appointment = new Appointment();
 	   	appointment.setOwnerUsername(State.getUser().getUsername());
     	if(!isNew)
     		fillAppointmentFields();

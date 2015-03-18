@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="568.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="#135f7f" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font name="Helvetica Neue Light" size="36.0" />
+         </font>
+      </Text>
+      <HBox prefHeight="400.0" spacing="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="150.0">
+         <children>
+            <VBox prefHeight="400.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <ListView fx:id="user_list" prefHeight="300.0" prefWidth="200.0" />
+                  <Button fx:id="create_user" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#createUser" text="Create user" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="400.0" spacing="15.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="500.0" spacing="10.0">
+                     <children>
+                        <HBox maxWidth="380.0" prefHeight="20.0" prefWidth="113.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="113.0" text="Username:" textFill="#4a6f7f" />
+                              <TextField fx:id="username" alignment="TOP_LEFT" disable="true" editable="false" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox maxWidth="380.0" prefHeight="26.0" prefWidth="380.0" spacing="15.0">
+                           <children>
+                              <Label minWidth="113.0" prefWidth="113.0" text="Name:" textFill="#4a6f7f">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="firstname" alignment="TOP_LEFT" promptText="First" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="lastname" alignment="TOP_LEFT" promptText="Last" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="20.0" layoutY="118.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="113.0" text="Administrator:" textFill="#4a6f7f" />
+                              <CheckBox fx:id="is_admin" mnemonicParsing="false" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="TOP_RIGHT" maxWidth="380.0" prefHeight="50.0" prefWidth="380.0" spacing="15.0">
+                           <children>
+                              <Hyperlink fx:id="delete" onAction="#deleteUser" text="Delete user" textFill="RED" underline="true" />
+                              <Button fx:id="submit" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#submitChanges" text="Save changes" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

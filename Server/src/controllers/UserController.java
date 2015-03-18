@@ -18,7 +18,9 @@ import communication.requests.AuthenticationRequest;
 import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.GetUsersRequest;
+import communication.requests.UpdateUserRequest;
 import communication.responses.AuthenticationResponse;
+import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.GetUsersResponse;
@@ -37,13 +39,10 @@ public class UserController {
 		return response;
 	}
 	
-	public static UserResponse handleGetUsersResponse(GetUsersRequest request) {
-		UserResponse response = new UserResponse();
+	public static GetUsersResponse handleGetUsersResponse(GetUsersRequest request) {
+		GetUsersResponse response = new GetUsersResponse();
 		try {
-			ArrayList<User> users = getUsers();
-			for(User user : users) {
-				response.addUser(user);
-			}
+			response.setUserList(getUsers());
 			response.setSuccessful(true);
 		}
 		catch(SQLException e) {
@@ -54,14 +53,14 @@ public class UserController {
 		return response;
 	}
 	
-	public static CreateUserResponse handleCreateUserRequest(
-			CreateUserRequest request) {
+	public static CreateUserResponse handleCreateUserRequest(CreateUserRequest request) {
 		CreateUserResponse response = new CreateUserResponse();
 		try {
 			createNewUser(request.getUser(), request.getPassword());
 			response.setSuccessful(true);
 		}
 		catch(Exception e) {
+			System.out.println(e.getMessage());
 			response.setSuccessful(false);
 			response.setErrorMessage(e.getMessage());
 		}
@@ -113,6 +112,26 @@ public class UserController {
 		}
 		
 		return usernames;
+	}
+	
+	public static BaseResponse handleUpdateUserRequest(UpdateUserRequest request) {
+		BaseResponse res = new BaseResponse();
+		
+		try {
+			if(request.isDeleteRequest()){
+				String username = request.getUser().getUsername();
+				deleteUser(username);
+			} else {
+				updateUser(request.getUser());
+			}
+			res.setSuccessful(true);
+		} catch (SQLException e) {
+			res.setSuccessful(false);
+			res.setErrorMessage(e.getMessage());
+			Logger.logMsg(Logger.ERROR, e.getMessage());
+		}
+		
+		return res;
 	}
 	
 	//Retrieves password hash of the specified user from the server
@@ -169,8 +188,8 @@ public class UserController {
 				
 				Statement stm = db.createStatement();
 				
-				String insertUser = String.format("INSERT INTO User(username, password_hash, firstname, lastname) VALUES ('%s', '%s', '%s', '%s')",
-						user.getUsername(), password, user.getFirstname(), user.getLastname());
+				String insertUser = String.format("INSERT INTO User (username, password_hash, firstname, lastname, admin) VALUES ('%s', '%s', '%s', '%s', '%s')",
+						user.getUsername(), password, user.getFirstname(), user.getLastname(), Integer.toString(user.isAdmin() ? 1 : 0));
 				stm.execute(insertUser);	
 			} catch (SQLException e) {
 				Logger.logMsg(Logger.ERROR, e.getMessage());
@@ -184,7 +203,7 @@ public class UserController {
 	
 	private static Boolean userAlreadyExists(String username) {
 		User user = UserController.getUser(username);
-		if (user.getUsername() == null) {
+		if (user == null) {
 			return false;
 		}
 		return true;
@@ -206,32 +225,27 @@ public class UserController {
 		return user;
 	}
 	
-	private static void updateUser(User user) {
+	private static void updateUser(User user) throws SQLException {
 		Connection db = DatabaseConnector.getDB();
-		try {
-			Statement stm = db.createStatement();
-			String updateUser = String.format("UPDATE User SET username = '%s', firstname = '%s', lastname = '%s' WHERE username = '%s'",
-					user.getFirstname(), 
-					user.getLastname(), 
-					user.getUsername());
-			
-			stm.execute(updateUser);
-		}
-		catch (SQLException e){
-			System.out.println(e);
-		}
+		
+		String admin = Integer.toString((user.isAdmin() ? 1 : 0)); // Convert from boolean to 1/0
+
+		Statement stm = db.createStatement();
+		String updateUser = String.format("UPDATE User SET firstname = '%s', lastname = '%s', admin='%s' WHERE username = '%s'",
+				user.getFirstname(), 
+				user.getLastname(),
+				admin,
+				user.getUsername()
+				);
+		
+		stm.execute(updateUser);
 	}
 	
-	private static void deleteUser(String username) {
+	private static void deleteUser(String username) throws SQLException {
 		Connection db = DatabaseConnector.getDB();
-		try {
-			Statement stm = db.createStatement();
-			String deleteUser = String.format("DELETE FROM User WHERE username='%s'", username);
-			stm.execute(deleteUser);
-		}
-		catch (SQLException e) {
-			System.out.println(e);
-		}
+		Statement stm = db.createStatement();
+		String deleteUser = String.format("DELETE FROM User WHERE username='%s'", username);
+		stm.execute(deleteUser);
 	}
 
 	private static boolean isUserBusy(Appointment a, String username) throws SQLException {
@@ -251,7 +265,7 @@ public class UserController {
 		Connection db = DatabaseConnector.getDB();
 		ArrayList<User> users = new ArrayList<User>();
 		Statement stm = db.createStatement();
-		ResultSet rs = stm.executeQuery("SELECT * FROM User WHERE 1");
+		ResultSet rs = stm.executeQuery("SELECT * FROM User");
 		while(rs.next()) {
 			users.add(parseResultSetToUser(rs));
 		}
@@ -263,7 +277,10 @@ public class UserController {
 		user.setUsername(rs.getString("username"));
 		user.setFirstname(rs.getString("firstname"));
 		user.setLastname(rs.getString("lastname"));
+		user.setIsAdmin((rs.getInt("admin") == 1));
 		return user;
 	}
+
+	
 
 }
