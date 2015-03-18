@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import communication.requests.AuthenticationRequest;
 import communication.responses.AuthenticationResponse;
 import calendar.State;
-import calendar.Window;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

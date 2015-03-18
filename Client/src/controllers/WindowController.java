@@ -21,7 +21,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import calendar.Calendar;
@@ -58,7 +57,6 @@ public class WindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		LoginController loginController = (LoginController)loadPage(Window.LOGIN);
 		
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
