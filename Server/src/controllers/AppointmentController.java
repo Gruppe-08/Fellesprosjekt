@@ -184,13 +184,13 @@ public class AppointmentController {
 				"end_date = '" + appointment.getEndTime().toString() + "'," + 
 				"title = '" + appointment.getTitle() + "'," + 
 				"description = '" + appointment.getDescription() + "'," + 
-				"location = " + (appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
+				"location = " + (appointment.getLocation() == null ? "null," : "'" + appointment.getLocation() + "',") + 
 				"room_id = " + appointment.getRoomId() + ", " +
 				"owner_username = '" + appointment.getOwnerUsername() + "' " +
 				"WHERE appointment_id=" + appointment.getId() + ";";
 		
 		PreparedStatement statement = db.prepareStatement(query);
-		statement.execute();		
+		statement.execute();
 	}
 	
 	private static int addAppointment(Appointment appointment) throws SQLException {
@@ -205,7 +205,7 @@ public class AppointmentController {
 				"'" + appointment.getEndTime() + "'," + 
 				"'" + appointment.getTitle() + "'," + 
 				"'" + appointment.getDescription() + "'," + 
-				(appointment.getLocation() == null ? "null," : "'" + appointment.getDescription() + "',") + 
+				(appointment.getLocation() == null ? "null," : "'" + appointment.getLocation() + "',") + 
 				appointment.getRoomId() + ", " +
 				"'" + appointment.getOwnerUsername() + "');";
 		statement = db.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);
@@ -296,11 +296,23 @@ public class AppointmentController {
 		Appointment appointment = new Appointment();
 		appointment.setId(resultSet.getInt("appointment_id"));
 		appointment.setStartTime(resultSet.getString("start_date").substring(0, 16));
-		appointment.setEndTime(resultSet.getString("end_date").substring(0, 16)); // TODO: Needs a string parser
+		appointment.setEndTime(resultSet.getString("end_date").substring(0, 16));
 		appointment.setTitle(resultSet.getString("title"));
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id"));
+		if(resultSet.wasNull()) appointment.setRoomId(null);
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
+		appointment.setLocation(resultSet.getString("location"));
+		
+		//Set location to room name if room is location
+		if(appointment.getRoomId() != null) {
+			String query = String.format("SELECT r.name FROM Room r WHERE r.room_id = %s;", appointment.getRoomId());
+			ResultSet res = db.prepareStatement(query).executeQuery();
+			
+			if(res.next())
+				appointment.setLocation(res.getString("name"));
+			else appointment.setLocation("");
+		}
 		
 		//Get attending users
 		ResultSet users = db.createStatement().executeQuery(

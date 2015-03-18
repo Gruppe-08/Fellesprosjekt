@@ -42,7 +42,6 @@ public class WindowController implements Initializable {
 	@FXML private MenuButton menu;
     @FXML private ToggleButton dayToggle;
     @FXML private ToggleButton weekToggle;
-    @FXML private ToggleButton monthToggle;
     @FXML private ToggleButton agendaToggle;
     
     @FXML private ToggleGroup viewToggle;
@@ -94,13 +93,6 @@ public class WindowController implements Initializable {
 						loadPage(Window.WEEK);
 
 						viewToggle.selectToggle(weekToggle);
-					}
-				});
-				monthToggle.setOnAction(new EventHandler<ActionEvent>(){
-					@Override
-					public void handle(ActionEvent event) {
-						loadPage(Window.MONTH);
-						viewToggle.selectToggle(monthToggle);
 					}
 				});
 				agendaToggle.setOnAction(new EventHandler<ActionEvent>(){
@@ -195,7 +187,6 @@ public class WindowController implements Initializable {
 		menu.setVisible(true);
 		dayToggle.setVisible(true);
 		weekToggle.setVisible(true);
-		monthToggle.setVisible(true);
 		agendaToggle.setVisible(true);
 		dayToggle.setSelected(true);
 	}
