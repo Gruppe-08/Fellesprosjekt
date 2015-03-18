@@ -23,9 +23,16 @@ public class User {
 		setFirstname(firstname);
 		setLastname(lastname);
 		setIsAdmin(isAdmin);
+		attendingAppointments = new ArrayList<>();
 	}
 	
-	public User() {	}
+	public User() {
+		username = "";
+		firstname = "";
+		lastname = "";
+		isAdmin = false;
+		attendingAppointments = new ArrayList<>();
+	}
 	
 	
 	public String getUsername() {
