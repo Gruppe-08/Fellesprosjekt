@@ -20,6 +20,7 @@ import communication.requests.BusyCheckRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.GetGroupsRequest;
+import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
 import communication.requests.CreateUserRequest;
@@ -35,9 +36,11 @@ import communication.responses.CreateUserResponse;
 import communication.responses.GroupResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
+import communication.responses.RoomResponse;
 import controllers.GroupController;
 import controllers.AppointmentController;
 import controllers.NotificationController;
+import controllers.RoomController;
 import controllers.UserController;
 import communication.ClassRegistration;
 
@@ -86,9 +89,6 @@ public class CalendarServer extends Server {
     				return; 
     			}
 	    		//--ALL OTHER METHODS SHOULD BE BEYOND THIS POINT--
-	    		/* TODO: Provide more cases for different models, we need to create some model 
-	    		 * to send that allows the server to know what models the client requested.
-	    		 */
 				else if(object instanceof NotificationRequest){
 					NotificationRequest req = (NotificationRequest)object;
 					if (req.getReadId() > 0) {
@@ -141,6 +141,11 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetGroupsRequest){
 					GetGroupsRequest request = (GetGroupsRequest) object;
 					GroupResponse response = GroupController.handleGetGroupsRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof GetRoomsRequest) {
+					GetRoomsRequest request = (GetRoomsRequest) object;
+					RoomResponse response = RoomController.handleGetRoomsRequest(request);
 					clientConnection.sendTCP(response);
 				}
 			}

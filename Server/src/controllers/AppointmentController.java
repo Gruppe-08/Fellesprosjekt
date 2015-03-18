@@ -193,7 +193,7 @@ public class AppointmentController {
 				"WHERE appointment_id=" + appointment.getId() + ";";
 		
 		PreparedStatement statement = db.prepareStatement(query);
-		statement.execute();		
+		statement.execute();
 	}
 	
 	private static int addAppointment(Appointment appointment) throws SQLException {
@@ -304,6 +304,7 @@ public class AppointmentController {
 		appointment.setDescription(resultSet.getString("description"));
 		appointment.setRoomId(resultSet.getInt("room_id"));
 		appointment.setOwnerUsername(resultSet.getString("owner_username"));
+		appointment.setLocation(resultSet.getString("location"));
 		
 		//Get attending users
 		ResultSet users = db.createStatement().executeQuery(
