@@ -16,7 +16,6 @@ import communication.requests.GetGroupsRequest;
 import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
-
 import communication.requests.GroupRequest;
 import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
@@ -145,6 +144,11 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetRoomsRequest) {
 					GetRoomsRequest request = (GetRoomsRequest) object;
 					RoomResponse response = RoomController.handleGetRoomsRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof GroupRequest){
+					GroupRequest request = (GroupRequest) object;
+					GroupResponse response = GroupController.handleGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof GroupRequest){
