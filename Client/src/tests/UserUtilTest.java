@@ -28,6 +28,8 @@ public class UserUtilTest {
 	
 	@Test
 	public void testIsMatchingPasswords(){
+		assertTrue(UserUtil.isMatchingPasswords("kebab","kebab"));
+		assertFalse(UserUtil.isMatchingPasswords("kebab","burger"));
 
 	}
 	
