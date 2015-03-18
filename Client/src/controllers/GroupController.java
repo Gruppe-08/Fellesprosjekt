@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 import models.Group;
 import models.User;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,7 +21,6 @@ import calendar.State;
 import communication.requests.CreateGroupRequest;
 import communication.requests.GetUsersRequest;
 import communication.responses.BaseResponse;
-import communication.responses.GetUsersResponse;
 import communication.responses.UserResponse;
 import javafx.scene.control.CheckBox;
 

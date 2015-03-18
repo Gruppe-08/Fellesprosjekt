@@ -28,8 +28,6 @@
                         <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
                            <children>
                               <Button fx:id="login_submit" alignment="TOP_RIGHT" mnemonicParsing="false" text="Login" />
-                              <Hyperlink fx:id="login_create_user" alignment="TOP_RIGHT" text="Create user" />
-                              <Hyperlink fx:id="login_forgot_password" alignment="TOP_RIGHT" text="Forgot password" />
                            </children>
                         </VBox>
                      </children>

@@ -22,6 +22,7 @@ public abstract class ClassRegistration {
 		kryo.register(communication.requests.CreateGroupRequest.class);
 		kryo.register(communication.requests.GetUsersRequest.class);
 		kryo.register(communication.requests.NotificationRequest.class);
+		kryo.register(communication.requests.UpdateUserRequest.class);
 		kryo.register(communication.requests.GetGroupsRequest.class);
 		
 		kryo.register(communication.responses.AuthenticationResponse.class);
@@ -47,5 +48,6 @@ public abstract class ClassRegistration {
 		kryo.register(java.time.LocalDateTime.class);
 		
 		kryo.register(javafx.beans.property.SimpleStringProperty.class);
+		
 	}
 }

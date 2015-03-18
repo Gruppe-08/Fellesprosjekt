@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="568.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateUserController">
+<AnchorPane prefHeight="568.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane prefHeight="300.0" prefWidth="500.0" AnchorPane.leftAnchor="212.0" AnchorPane.rightAnchor="212.0" AnchorPane.topAnchor="10.0">
+      <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="500.0" spacing="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="500.0" spacing="10.0">
+            <HBox maxWidth="380.0" prefHeight="26.0" prefWidth="380.0" spacing="15.0">
                <children>
-                  <HBox maxWidth="380.0" prefHeight="26.0" prefWidth="380.0" spacing="15.0">
-                     <children>
-                        <Label minWidth="113.0" prefWidth="113.0" text="Name:">
-                           <HBox.margin>
-                              <Insets right="5.0" />
-                           </HBox.margin></Label>
-                        <TextField fx:id="firstname" alignment="TOP_LEFT" promptText="First" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="lastname" alignment="TOP_LEFT" promptText="Last" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox maxWidth="380.0" prefHeight="20.0" prefWidth="113.0" spacing="20.0">
-                     <children>
-                        <Label prefWidth="113.0" text="Username:" />
-                        <TextField fx:id="username" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="70.0" layoutY="46.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
-                     <children>
-                        <Label prefWidth="113.0" text="Password:" />
-                        <PasswordField fx:id="password" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="70.0" layoutY="82.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
-                     <children>
-                        <Label text="Confirm password:" />
-                        <PasswordField fx:id="confirmPassword" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="TOP_RIGHT" maxWidth="380.0" prefHeight="100.0" prefWidth="380.0">
-                     <children>
-                        <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
-                           <children>
-                              <Button fx:id="submit" alignment="TOP_RIGHT" mnemonicParsing="false" text="Create user" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
+                  <Label minWidth="113.0" prefWidth="113.0" text="Name:">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="firstname" alignment="TOP_LEFT" promptText="First" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="lastname" alignment="TOP_LEFT" promptText="Last" HBox.hgrow="ALWAYS" />
                </children>
-            </VBox>
+            </HBox>
+            <HBox maxWidth="380.0" prefHeight="20.0" prefWidth="113.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="113.0" text="Username:" />
+                  <TextField fx:id="username" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox layoutX="70.0" layoutY="46.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="113.0" text="Password:" />
+                  <PasswordField fx:id="password" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox layoutX="70.0" layoutY="82.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
+               <children>
+                  <Label text="Confirm password:" />
+                  <PasswordField fx:id="confirmPassword" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox layoutX="20.0" layoutY="118.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="113.0" text="Administrator:" />
+                  <CheckBox fx:id="admin" mnemonicParsing="false" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" maxWidth="380.0" prefHeight="100.0" prefWidth="380.0">
+               <children>
+                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Button fx:id="submit" alignment="TOP_RIGHT" mnemonicParsing="false" text="Submit" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
-      </AnchorPane>
+      </VBox>
    </children>
 </AnchorPane>
