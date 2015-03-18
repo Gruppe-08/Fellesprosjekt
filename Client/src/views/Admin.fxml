@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -9,7 +10,7 @@
 
 <AnchorPane prefHeight="568.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <Text fill="#135f7f" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
          <font>
             <Font name="Helvetica Neue Light" size="36.0" />
          </font>
@@ -28,13 +29,13 @@
                      <children>
                         <HBox maxWidth="380.0" prefHeight="20.0" prefWidth="113.0" spacing="20.0">
                            <children>
-                              <Label prefWidth="113.0" text="Username:" />
+                              <Label prefWidth="113.0" text="Username:" textFill="#4a6f7f" />
                               <TextField fx:id="username" alignment="TOP_LEFT" disable="true" editable="false" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <HBox maxWidth="380.0" prefHeight="26.0" prefWidth="380.0" spacing="15.0">
                            <children>
-                              <Label minWidth="113.0" prefWidth="113.0" text="Name:">
+                              <Label minWidth="113.0" prefWidth="113.0" text="Name:" textFill="#4a6f7f">
                                  <HBox.margin>
                                     <Insets right="5.0" />
                                  </HBox.margin>
@@ -45,7 +46,7 @@
                         </HBox>
                         <HBox layoutX="20.0" layoutY="118.0" maxWidth="380.0" prefHeight="20.0" prefWidth="380.0" spacing="20.0">
                            <children>
-                              <Label prefWidth="113.0" text="Administrator:" />
+                              <Label prefWidth="113.0" text="Administrator:" textFill="#4a6f7f" />
                               <CheckBox fx:id="is_admin" mnemonicParsing="false" />
                            </children>
                         </HBox>
