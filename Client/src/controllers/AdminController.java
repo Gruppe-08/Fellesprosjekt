@@ -1,18 +1,15 @@
 package controllers;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import calendar.State;
 import calendar.Window;
-import communication.requests.CreateUserRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.UpdateUserRequest;
 import communication.responses.BaseResponse;
 import communication.responses.GetUsersResponse;
 import models.User;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -127,9 +124,7 @@ public class AdminController implements Initializable {
 					"Could not update this user.");
 			editAlert.showAndWait();
 		} else {
-			editAlert = new Alert(AlertType.INFORMATION, "User " + user + " edited.");
-			editAlert.showAndWait();
-			user_list.setItems(users);
+			State.getWindowController().loadPage(Window.ADMIN, new AdminController());
 		}
 	}
 	
@@ -146,12 +141,8 @@ public class AdminController implements Initializable {
 					"Could not delete this user.");
 			deleteAlert.showAndWait();
 		} else {
-			user = new User();
 			
-			deleteAlert = new Alert(AlertType.INFORMATION, 
-					"User " + user + " deleted.");
-			deleteAlert.showAndWait();
-			initializeList();
+			State.getWindowController().loadPage(Window.ADMIN, new AdminController());
 		}
 	}
 	
