@@ -116,7 +116,7 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetUsersRequest) {
 					GetUsersRequest request = (GetUsersRequest) object;
 				
-					BaseResponse response = UserController.handleGetUsersResponse(request);
+					BaseResponse response = UserController.handleGetUsersRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof BusyCheckRequest) {
@@ -144,11 +144,6 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetRoomsRequest) {
 					GetRoomsRequest request = (GetRoomsRequest) object;
 					RoomResponse response = RoomController.handleGetRoomsRequest(request);
-					clientConnection.sendTCP(response);
-				}
-				else if(object instanceof GroupRequest){
-					GroupRequest request = (GroupRequest) object;
-					GroupResponse response = GroupController.handleGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof GroupRequest){

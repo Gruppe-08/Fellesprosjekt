@@ -269,7 +269,7 @@ public class AppointmentController {
 		return appointments;
 	}
 	
-	private static Appointment getAppointment(int appointmentId) throws SQLException {
+	protected static Appointment getAppointment(int appointmentId) throws SQLException {
 		Appointment appointment;
 		
 		Statement statement = db.createStatement();

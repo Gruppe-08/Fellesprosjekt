@@ -4,15 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.media.jfxmedia.logging.Logger;
-import communication.responses.NotificationResponse;
 
+import communication.responses.NotificationResponse;
 import models.Appointment;
 import models.Notification;
+import models.NotificationType;
 import server.DatabaseConnector;
+import util.DateUtil;
 
 public class NotificationController {
 	private static Connection db;
@@ -39,28 +42,49 @@ public class NotificationController {
 		}
 	}
 	
-	public static void setStatus(int notificationId, String username, String status) {
+	public static void setStatus(int appointmentId, String username, String status) {
 		String statusString = null;
+	
 		switch(status) {
-			case "not_attending": statusString = "not_attending";
+			case "not_attending": statusString = "not attending";
 					break;
 			case "attending": statusString = "attending";
 					break;
+			default: throw new IllegalArgumentException("Not a valid status");
 		}
-		System.out.println(statusString + " " + username + " " + status);
+
 		String queryString = String.format("UPDATE UserAppointmentRelation SET status='%s' WHERE appointment_id=%s AND username ='%s'", 
-		statusString, notificationId, username);
+		statusString, appointmentId, username);
 		try {
 			statement = db.prepareStatement(queryString);
 			statement.execute();
 		} catch (SQLException e) {
 			Logger.logMsg(Logger.ERROR, "Could not set status: " + e.getMessage());
 		}
+		
+		createUpdateNotification(appointmentId, username, statusString);
+	}
+
+	private static void createUpdateNotification(int appointmentId,
+			String username, String statusString) {
+		Appointment appointment;
+		try {
+			appointment = AppointmentController.getAppointment(appointmentId);
+			String notificationString = String.format("User %s responded: '%s' to appointment '%s' at %s", username, statusString, appointment.getTitle(), appointment.getStartTime());
+			String timeString = DateUtil.serializeDateTime(LocalDateTime.now());
+			Notification notification = new Notification(NotificationType.USER, notificationString, timeString);
+			notification.setUsername(appointment.getOwnerUsername());
+			notification.setStatus("pending");
+			addNotification(notification);
+		} catch (SQLException e) {
+			Logger.logMsg(Logger.ERROR, "Failed to set notification on a user updating status on an appointment. The exception was: " + e.getStackTrace());
+		}
 	}
 	
 	private static void addNotification(Notification not) throws SQLException{		
 		String isAlarm = not.isAlarm() ? "1" : "0";
 		String type = not.getType().toString().toLowerCase();
+		System.out.println("'" + type + "'");
 		
 		String addNotification = String.format("INSERT INTO Notification (type, message, created, is_alarm, aopointment_id, username, triggerdate) "
 				+ "VALUES (%s, %s, %s, %s, %s, %s, %s)",
