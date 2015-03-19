@@ -8,6 +8,7 @@ import models.Appointment;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -26,10 +27,10 @@ public class AppointmentPane extends VBox {
 		this.setPrefWidth(900);
 		this.setPrefHeight(calculateHeight());
 		this.setPadding(new Insets(5,5,5,5));
-		this.setStyle("-fx-background-color: #A7F0F0");
+		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
 		this.putText();
 		DropShadow dropShadow = new DropShadow();
-		dropShadow.setColor(Color.web("#38597F", 1.0));
+		dropShadow.setColor(Color.web("#38597F", 0.2));
 		this.setEffect(dropShadow);
 		
 		this.setOnMouseClicked(new EventHandler<Event>() {
@@ -52,8 +53,10 @@ public class AppointmentPane extends VBox {
 	}
 	
 	private void putText() {
-		Text titleText = new Text(appointment.getTitle());
-		titleText.setFont(Font.font("Helvetica", FontWeight.THIN, 20));
-		this.getChildren().addAll(titleText);
+		Label titleText = new Label(appointment.getTitle());
+		titleText.setWrapText(true);
+		titleText.setStyle("-fx-text-fill: #1d93c6");
+		titleText.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
+		this.getChildren().add(titleText);
 	}
 }
