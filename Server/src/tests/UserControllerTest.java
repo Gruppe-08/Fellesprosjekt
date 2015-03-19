@@ -72,85 +72,30 @@ public class UserControllerTest {
 		
 	}
 	
-	//public static GetUsersResponse handleGetUsersRequest(
-			//GetUsersRequest request){
-		//GetUsersResponse response = new GetUsersResponse();
-		//try {
-			//response.setUserList(getUsers());
-			//response.setSuccessful(true);
-		//}
-		//catch(Exception e){
-			//response.setSuccessful(false);
-			//response.setErrorMessage(e.getMessage());
-		//}
-		//return response;
-	//}
-	
-	@Test
-	public void handleCreateUserRequestTest(){
-		CreateUserRequest request = new CreateUserRequest();
-		CreateUserResponse response = UserController.handleCreateUserRequest(request);
-		//User user = response.createNewUser(request.getUser(),request.getPassword()); 
-		//assertNotNull(user);
-		assertNull(response.getErrorMessage()); 
-		
-	}
-	
-	
-	//public static CreateUserResponse handleCreateUserRequest(CreateUserRequest request) {
-	//CreateUserResponse response = new CreateUserResponse();
-	//try {
-		//createNewUser(request.getUser(), request.getPassword());
-		//response.setSuccessful(true);
-	//}
-	//catch(Exception e) {
-		//System.out.println(e.getMessage());
-		//response.setSuccessful(false);
-		//response.setErrorMessage(e.getMessage());
-	//}
-	//return response;
-//}
-
-	
-	
-	
-	@Test
-	public void handleBusyCheckTest(){
-		
-	}
-	
-	
-
 	
 	@Test
 	public void handleUpdateUserRequestTest(){
 		UpdateUserRequest req = new UpdateUserRequest();
+		User user = new User("ingrid","Ingrid","Vold",false);
+		req.setUser(user);
+		req.setDelete(true);
 		BaseResponse res = UserController.handleUpdateUserRequest(req);
-		assertTrue(res.wasSuccessful()); 
-		assertNull(res.getErrorMessage());
+		assertTrue(res.wasSuccessful());
 		
 	}
 	
 	
+	@Test
+	public void handleCreateUserRequestTest(){
+		User user = new User("ingrid","Ingrid","Vold",false);
+		CreateUserRequest request = new CreateUserRequest();
+		request.setUser(user);
+		request.setPassword("kebab");
+		CreateUserResponse response = UserController.handleCreateUserRequest(request);
+		assertTrue(response.wasSuccessful());
+		
+		
+	}
+		
 
-	
-	//public static BaseResponse handleUpdateUserRequest(UpdateUserRequest request) {
-		//BaseResponse res = new BaseResponse();
-		
-		//try {
-			//if(request.isDeleteRequest()){
-				//String username = request.getUser().getUsername();
-				//deleteUser(username);
-			//} else {
-				//updateUser(request.getUser());
-			//}
-			//res.setSuccessful(true);
-		//} catch (SQLException e) {
-			//res.setSuccessful(false);
-			//res.setErrorMessage(e.getMessage());
-			//Logger.logMsg(Logger.ERROR, e.getMessage());
-		//}
-		
-		//return res;
-	//}
 }

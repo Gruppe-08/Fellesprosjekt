@@ -24,9 +24,7 @@ import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.GetUsersResponse;
-import communication.responses.UserResponse;
 import server.DatabaseConnector;
-import util.DateUtil;
 
 public class UserController {
 	
