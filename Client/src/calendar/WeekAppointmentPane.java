@@ -29,7 +29,7 @@ public class WeekAppointmentPane extends VBox {
 	public WeekAppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
 		this.setPadding(new Insets(10,10,10,10));
-		this.setStyle("-fx-background-color: #1d93c6");
+		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.web("#38597F", 0.2));
 		this.setEffect(dropShadow);
@@ -50,9 +50,9 @@ public class WeekAppointmentPane extends VBox {
 	private void putText() {
 		Label titleText = new Label(appointment.getTitle());
 		titleText.setWrapText(true);
-		titleText.setStyle("-fx-text-fill: #ffffff");
+		titleText.setStyle("-fx-text-fill: #1d93c6");
 		titleText.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 13));
-		this.getChildren().addAll(titleText);
+		this.getChildren().add(titleText);
 
 	}
 		
