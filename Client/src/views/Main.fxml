@@ -23,7 +23,7 @@
                     <items>
                       <MenuItem fx:id="notification" mnemonicParsing="false" text="Notifications" />
                       <MenuItem fx:id="groups" mnemonicParsing="false" text="Groups" />
-                        <MenuItem fx:id="logout" mnemonicParsing="false" text="Sign out" />
+                        <MenuItem fx:id="exit" mnemonicParsing="false" text="Exit" />
                     </items>
                   </MenuButton>
                   <Text fx:id="username" fill="WHITE" layoutX="95.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" visible="false" wrappingWidth="298.2000045776367" AnchorPane.rightAnchor="152.79999542236328">
