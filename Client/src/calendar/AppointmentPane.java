@@ -20,7 +20,6 @@ public class AppointmentPane extends VBox {
 	
 	private Appointment appointment;
 	
-	
 	public AppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
 		this.setPrefWidth(900);
@@ -35,9 +34,8 @@ public class AppointmentPane extends VBox {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				AppointmentController controller = new AppointmentController(appointment);	
-				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
-
+				System.out.println(getClass());
+				State.openAppointmentView(getClass(), appointment);
 			}
 		});
 	}

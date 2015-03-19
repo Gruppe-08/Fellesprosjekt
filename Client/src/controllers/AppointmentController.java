@@ -5,6 +5,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
@@ -164,6 +165,17 @@ public class AppointmentController implements Initializable {
         	if(appointment.getLocation() != null)
         		use_location_check.setSelected(true);
         	
+        	//Clear users that have been invited from invite list
+        	for(Entry<String, String> userRelation : appointment.getUserRelations().entrySet())
+        		for(Invitable user : invite_user_list.getItems())
+        			if(userRelation.getKey() == user.user.getUsername())
+        				invite_user_list.getItems().remove(user);
+        	//Clear groups that have been invited from invite list
+        	for(Entry<Integer, String> groupRelation : appointment.getGroupRelations().entrySet())
+        		for(InvitableGroup group : invite_group_list.getItems())
+        			if(groupRelation.getKey() == group.group.getGroupID())
+        				invite_user_list.getItems().remove(group);
+        	
     	} else {
     		appointment = new Appointment();
     	}
@@ -186,13 +198,11 @@ public class AppointmentController implements Initializable {
 	    	request.setAppointment(appointment);
 	    	for(Invitable user : invite_user_list.getItems()) {
 	    		if(user.selected.getValue())
-	    			request.getAppointment().getUserRelations().add(
-	    					user.user.getUsername());		
+	    			request.getAppointment().getUserRelations().put(user.user.getUsername(), "pending");
 	    	}
 	    	for(InvitableGroup group : invite_group_list.getItems()) {
 	    		if(group.selected.getValue())
-	    			request.getAppointment().getGroupRelations().add(
-	    					group.group.getGroupID());		
+	    			request.getAppointment().getGroupRelations().put(group.group.getGroupID(), "pending");	
 	    	}
 	    	
 	    	if(use_location_check.isSelected()) {

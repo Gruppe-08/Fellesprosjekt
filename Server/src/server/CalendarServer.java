@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.sun.media.jfxmedia.logging.Logger;
@@ -145,6 +146,12 @@ public class CalendarServer extends Server {
 					RoomResponse response = RoomController.handleGetRoomsRequest(request);
 					clientConnection.sendTCP(response);
 				}
+				else if(object instanceof FrameworkMessage) {}
+				//This must always come last!
+				else
+					Logger.logMsg(Logger.DEBUG, "Request of type: " +
+							object.getClass().getName() +
+							" was not handled by any controller and was dropped");
 			}
 			
 			public void connected(Connection connection) {

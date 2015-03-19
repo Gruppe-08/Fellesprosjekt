@@ -9,6 +9,7 @@ import communication.responses.BaseResponse;
 import util.DateUtil;
 import models.Appointment;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -43,6 +44,13 @@ public class AgendaPane extends AnchorPane{
 		setTitle(appointment.getTitle());
 		setDescription(appointment.getDescription());
 		setTime(appointment.getStartTime(), appointment.getEndTime());
+		
+		this.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				State.openAppointmentView(getClass(), appointment);
+			}
+		});
 		
 		text = new VBox();
 		text.setPrefHeight(50);

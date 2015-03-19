@@ -1,5 +1,7 @@
 package communication;
 
+import java.util.HashMap;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
@@ -51,5 +53,6 @@ public abstract class ClassRegistration {
 		
 		kryo.register(javafx.beans.property.SimpleStringProperty.class);
 		kryo.register(javafx.beans.property.SimpleIntegerProperty.class);
+		kryo.register(java.util.HashMap.class);
 	}
 }
