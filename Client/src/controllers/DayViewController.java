@@ -43,13 +43,12 @@ public class DayViewController implements Initializable{
 	private static ArrayList<Node> blankDayPane = new ArrayList<Node>();
 	
 
-	
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				State.getWindowController().loadPage(Window.APPOINTMENT);
+				State.getWindowController().loadPage(Window.APPOINTMENT, new AppointmentController());
 			}
 		});
 		

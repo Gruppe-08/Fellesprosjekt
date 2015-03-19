@@ -25,6 +25,7 @@ import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
@@ -116,7 +117,7 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetUsersRequest) {
 					GetUsersRequest request = (GetUsersRequest) object;
 				
-					BaseResponse response = UserController.handleGetUsersRequest(request);
+					GetUsersResponse response = UserController.handleGetUsersRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof BusyCheckRequest) {

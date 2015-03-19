@@ -98,8 +98,8 @@ public class AgendaPane extends AnchorPane{
 		LocalDateTime start = DateUtil.deserializeDateTime(startTime);
 		LocalDateTime end = DateUtil.deserializeDateTime(endTime);
 		String date = start.getMonth().toString().toLowerCase() + " " + start.getDayOfMonth();
-		String start_time = start.getHour() + ":" + start.getMinute();
-		String end_time = end.getHour() + ":" + end.getMinute();
+		String start_time = DateUtil.serializeTime(start.toLocalTime());
+		String end_time = DateUtil.serializeTime(end.toLocalTime());
 		
 		this.time = new Text(
 				String.format("%s, from %s to %s", date, start_time, end_time));
