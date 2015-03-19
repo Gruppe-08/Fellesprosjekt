@@ -14,7 +14,7 @@
          <children>
             <Text fill="WHITE" layoutX="54.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calendar" AnchorPane.leftAnchor="20.0">
                <font>
-                  <Font name="Helvetica Neue Light" size="48.0" />
+                  <Font name="Helvetica Neue Thin" size="50.0" />
                </font>
             </Text>
             <AnchorPane layoutX="656.0" layoutY="6.0" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="546.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
@@ -26,15 +26,11 @@
                         <MenuItem fx:id="exit" mnemonicParsing="false" text="Exit" />
                     </items>
                   </MenuButton>
-                  <Text fx:id="username" fill="WHITE" layoutX="95.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" visible="false" wrappingWidth="298.2000045776367" AnchorPane.rightAnchor="152.79999542236328">
+                  <Text fx:id="username" fill="WHITE" layoutX="64.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" visible="false" wrappingWidth="322.2000045776367" AnchorPane.rightAnchor="159.79999542236328">
                      <font>
-                        <Font name="Helvetica Neue Light" size="25.0" />
+                        <Font name="Helvetica Neue Thin" size="30.0" />
                      </font>
                   </Text>
-                  <ImageView fx:id="profilepic" fitHeight="80.0" fitWidth="80.0" layoutX="7.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.rightAnchor="459.0">
-                     <image>
-                        <Image url="@../../../Shared/lib/profilepic.png" />
-                     </image></ImageView>
                   <ImageView fx:id="notificationAlert" fitHeight="40.0" fitWidth="40.0" layoutX="414.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../lib/icons/notification.png" />
@@ -42,12 +38,12 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <ToggleButton fx:id="dayToggle" layoutX="232.0" layoutY="74.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0">
+            <ToggleButton fx:id="dayToggle" layoutX="224.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: white;" text="Day" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="224.0">
                <toggleGroup>
                   <ToggleGroup fx:id="viewToggle" />
                </toggleGroup></ToggleButton>
-            <ToggleButton fx:id="weekToggle" layoutX="283.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Week" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="283.0" />
-            <ToggleButton fx:id="agendaToggle" layoutX="347.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Agenda" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="347.0" />
+            <ToggleButton fx:id="weekToggle" layoutX="301.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: white;" text="Week" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="301.0" />
+            <ToggleButton fx:id="agendaToggle" layoutX="378.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: white;" text="Agenda" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="378.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainPane" layoutX="27.0" layoutY="116.0" maxHeight="668.0" maxWidth="1006.0" prefHeight="668.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />

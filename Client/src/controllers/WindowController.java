@@ -180,7 +180,6 @@ public class WindowController implements Initializable {
 	}
 	
 	private void enableAndShowButtons() {
-		profilepic.setVisible(true);
 		username.setVisible(true);
 		menu.setVisible(true);
 		dayToggle.setVisible(true);
