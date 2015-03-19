@@ -39,6 +39,7 @@ public class NotificationViewController implements Initializable {
 		ArrayList<Notification> readNotifications = new ArrayList<Notification>();
 		NotificationRequest req = new NotificationRequest();
 		State.getConnectionController().sendTCP(req);
+		System.out.println("notificationrequest sent");
 		NotificationResponse response = (NotificationResponse)State.getConnectionController().getObject("communication.responses.NotificationResponse");
 		for (Notification notification : response.getNotifications()) {
 			if (notification.isRead() == 1) {
@@ -59,18 +60,8 @@ public class NotificationViewController implements Initializable {
 	
 	private void notificationWasRead(Notification notification) {
 		NotificationRequest req = new NotificationRequest();
-		req.setType("read");
 		req.setNotificationId(notification.getId());
-		req.setRead(1);
+		req.setRead(true);
 		State.getConnectionController().sendTCP(req);
-	}
-	
-	public static void respondedToNotification(Notification notification, String status, NotificationBox box) {
-		NotificationRequest req = new NotificationRequest();
-		req.setType("status");
-		req.setAppointmentId(notification.getAppointment().getId());
-		req.setStatus(status);
-		State.getConnectionController().sendTCP(req);
-		box.showStatus(status);
 	}
 }

@@ -33,7 +33,7 @@ public class NotificationController {
 	}
 	
 	public static void setReadNotification(int notificationId) {
-		String queryString = String.format("UPDATE `Notification` SET `read`=1 WHERE `notification_id`=%s", notificationId);
+		String queryString = String.format("UPDATE `Notification` SET `read`=1 WHERE `notification_id` = %s", notificationId);
 		try {
 			statement = db.prepareStatement(queryString);
 			statement.execute();

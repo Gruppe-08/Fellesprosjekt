@@ -1,68 +1,32 @@
 package calendar;
 
-import controllers.NotificationViewController;
 import models.Notification;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
+import javafx.scene.text.FontWeight;
 
 public class NotificationBox extends AnchorPane {
 	
-	private NotificationBox box = this;
 	private Notification notification;
-	private Text statusText;
+	private Label statusText;
 	
 	public NotificationBox(Notification notification) {
 		this.notification = notification;
 		this.setPrefHeight(100);
 		this.setPrefWidth(801);
 		putText();
-		style();
-		putButtons();
+		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
 		showStatus(getStatus());
 	}
-	
-	private void putButtons() {
-		
-		Button confirm = new Button("Confirm");
-		confirm.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				NotificationViewController.respondedToNotification(notification, "attending", box);
-			}
-			
-		});
-		Button decline = new Button("Decline");
 
-		decline.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				NotificationViewController.respondedToNotification(notification, "not_attending", box);
-			}
-		});
-		
-		AnchorPane.setTopAnchor(confirm, 40.0);
-		AnchorPane.setTopAnchor(decline, 40.0);
-		AnchorPane.setRightAnchor(confirm, 150.0);
-		AnchorPane.setRightAnchor(decline, 50.0);
-		confirm.setStyle("-fx-background-color: white");
-		decline.setStyle("-fx-background-color: white");
-		this.getChildren().addAll(confirm, decline);
-	}
-	
-	private void style() {
-		this.setStyle("-fx-background-color: cyan");
-	}
-	
 	private void putText() {
-		Text msgText = new Text(notification.getMessage());
-		msgText.setFont(Font.font("Helvetica Neue", FontPosture.REGULAR, 20));
-		Text createdText = new Text("Created: " + notification.getCreated());
-		createdText.setFont(Font.font("Helvetica Neue", FontPosture.REGULAR, 20));
+		Label msgText = new Label(notification.getMessage());
+		msgText.setStyle("-fx-text-fill: #1d93c6");
+		msgText.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
+		Label createdText = new Label("Created: " + notification.getCreated());
+		createdText.setStyle("-fx-text-fill: #1d93c6");
+		createdText.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
 		AnchorPane.setLeftAnchor(msgText, 20.0);
 		AnchorPane.setLeftAnchor(createdText, 20.0);
 		AnchorPane.setTopAnchor(msgText, 20.0);
@@ -72,27 +36,32 @@ public class NotificationBox extends AnchorPane {
 	
 	public void showStatus(String status) {
 		String statusString = null;
+		String color = null;
 		switch(status) {
-			case "pending": statusString = "Pending";
-					break;
-			case "not_attending": statusString = "Not attending";
-					break;
-			case "attending": statusString = "Attending";
-					break;
+			case "pending": 
+				statusString = "Pending";
+				color = "yellow";
+				break;
+			case "not_attending": 
+				statusString = "Not attending";
+				color = "#cd5e51";
+				break;
+			case "attending":
+				statusString = "Attending";
+				color = "#1dc69d";
+				break;
 		}
-		Text statusText = new Text(statusString);
-		AnchorPane.setRightAnchor(statusText, 25.0);
-		AnchorPane.setTopAnchor(statusText, 10.0);
+		Label statusText = new Label(statusString);
+		statusText.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
+		statusText.setStyle("-fx-text-fill: " + color);
+
+		AnchorPane.setRightAnchor(statusText, 40.0);
+		AnchorPane.setTopAnchor(statusText, 34.0);
 		if (this.statusText != null) {
 			this.getChildren().remove(this.statusText);
 		}
 		this.getChildren().add(statusText);
 		this.statusText = statusText;
-
-	}
-	
-	public void setStatus(String status) {
-		this.notification.setStatus(status);
 	}
 	
 	public String getStatus() {
