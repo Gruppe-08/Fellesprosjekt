@@ -2,16 +2,11 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import models.User;
 
 import org.junit.Test;
-
-import com.sun.media.jfxmedia.logging.Logger;
 
 import server.DatabaseConnector;
 import communication.requests.AuthenticationRequest;
@@ -76,7 +71,7 @@ public class UserControllerTest {
 	@Test
 	public void handleUpdateUserRequestTest(){
 		UpdateUserRequest req = new UpdateUserRequest();
-		User user = new User("ingrid","Ingrid","Vold",false);
+		User user = new User("villevold","Ingrid","Vold",false);
 		req.setUser(user);
 		req.setDelete(true);
 		BaseResponse res = UserController.handleUpdateUserRequest(req);
@@ -87,15 +82,24 @@ public class UserControllerTest {
 	
 	@Test
 	public void handleCreateUserRequestTest(){
-		User user = new User("ingrid","Ingrid","Vold",false);
+		User user = new User("villevold","Ingrid","Vold",false);
 		CreateUserRequest request = new CreateUserRequest();
 		request.setUser(user);
-		request.setPassword("kebab");
+		request.setPassword("kebab1");
 		CreateUserResponse response = UserController.handleCreateUserRequest(request);
 		assertTrue(response.wasSuccessful());
 		
 		
 	}
+	
+	@Test
+	public void handleBusyCheckTest(){
+		BusyCheckRequest request = new BusyCheckRequest();
+		BusyCheckResponse response = UserController.handleBusyCheck(request);
 		
+		ArrayList<String> usernames = response.getUsernames();
+		assertNotNull(usernames);		
+		
+	}
 
 }
