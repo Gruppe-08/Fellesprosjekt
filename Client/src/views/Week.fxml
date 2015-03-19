@@ -223,7 +223,7 @@
             <Font name="Helvetica Neue Thin" size="33.0" />
          </font>
       </Text>
-      <Button fx:id="addButton" layoutX="937.0" layoutY="14.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-border-color: #1d93c6; -fx-background-radius: 35; -fx-background-color: #ffffff; -fx-border-radius: 35;" styleClass="-fx-bord" text="New" textFill="#1d93c6" />
+      <Button fx:id="addButton" layoutX="937.0" layoutY="14.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-border-color: #1d93c6; -fx-background-radius: 35; -fx-background-color: #ffffff; -fx-border-radius: 35;" styleClass="-fx-bord" text="New" textFill="#1d93c6" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
 	</children>
    <opaqueInsets>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
