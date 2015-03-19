@@ -67,7 +67,7 @@ public class Notification {
 		} else if(type.equals("appointment")){
 			notificationType = NotificationType.APPOINTMENT;
 		} else {
-			throw new IllegalArgumentException("Unvalid notification type: " + type);
+			throw new IllegalArgumentException("Invalid notification type: " + type);
 		}
 	}
 

@@ -153,6 +153,7 @@ public class WindowController implements Initializable {
 		}
 		try {
 			Pane root = loader.load();
+	        System.out.println("loading");
 	        mainPane.getChildren().clear();
 	        mainPane.getChildren().add(root);
 	        return loader.getController();
