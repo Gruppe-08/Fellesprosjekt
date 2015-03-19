@@ -54,7 +54,7 @@ public class NotificationController {
 		}
 
 		String queryString = String.format("UPDATE UserAppointmentRelation SET status='%s' WHERE appointment_id=%s AND username ='%s'", 
-		statusString, appointmentId, username);
+		status, appointmentId, username);
 		try {
 			statement = db.prepareStatement(queryString);
 			statement.execute();
@@ -67,28 +67,40 @@ public class NotificationController {
 
 	private static void createUpdateNotification(int appointmentId,
 			String username, String statusString) {
+		String timeString;
 		Appointment appointment;
 		try {
 			appointment = AppointmentController.getAppointment(appointmentId);
-			String notificationString = String.format("User %s responded: '%s' to appointment '%s' at %s", username, statusString, appointment.getTitle(), appointment.getStartTime());
-			String timeString = DateUtil.serializeDateTime(LocalDateTime.now());
-			Notification notification = new Notification(NotificationType.USER, notificationString, timeString);
+			timeString  = DateUtil.presentString(appointment.getStartTime());
+			
+			String notificationString = String.format("User %s responded: %s to appointment %s at %s", username, statusString, appointment.getTitle(), timeString);
+			
+			String timeCreated = DateUtil.serializeDateTime(LocalDateTime.now());
+			
+			Notification notification = new Notification(NotificationType.USER, notificationString, timeCreated);
 			notification.setUsername(appointment.getOwnerUsername());
 			notification.setStatus("pending");
+			notification.setTriggerDate(timeCreated);
+			notification.setAppointment(appointment);
+			
 			addNotification(notification);
 		} catch (SQLException e) {
-			Logger.logMsg(Logger.ERROR, "Failed to set notification on a user updating status on an appointment. The exception was: " + e.getStackTrace());
+			Logger.logMsg(Logger.ERROR, "Failed to set notification on a user updating status on an appointment. The exception was: " + e.getMessage());
 		}
 	}
 	
 	private static void addNotification(Notification not) throws SQLException{		
-		String isAlarm = not.isAlarm() ? "1" : "0";
-		String type = not.getType().toString().toLowerCase();
-		System.out.println("'" + type + "'");
+		String addNotification = String.format("INSERT INTO Notification (type, message, created, is_alarm, appointment_id, username, trigger_date) "
+				+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+				not.getType().toString().toLowerCase(),
+				 not.getMessage(), 
+				 not.getCreated(), 
+				 not.isAlarm() ? "1" : "0",
+				 not.getAppointment().getId(), 
+				 not.getUsername(), 
+				 not.getTriggerDate());
+		System.out.println(addNotification);
 		
-		String addNotification = String.format("INSERT INTO Notification (type, message, created, is_alarm, aopointment_id, username, triggerdate) "
-				+ "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-				 type, not.getMessage(), not.getCreated(), isAlarm, not.getAppointment().getId(), not.getUsername(), not.getTriggerDate());
 		statement = db.prepareStatement(addNotification);
 		statement.execute();
 	}
