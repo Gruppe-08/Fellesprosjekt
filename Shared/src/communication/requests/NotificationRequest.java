@@ -4,7 +4,7 @@ public class NotificationRequest {
 	
 	String type = "";
 	int read = -1;
-	String status = null;	//1 means that appointment was accepted, 0 declined and -1 means that the invitation is still pending
+	String status = null;
 	int appointmentId;
 	int notificationId;
 	

@@ -47,8 +47,8 @@ public class CreateGroupController implements Initializable {
 		
 		GetUsersRequest request = new GetUsersRequest();
 		State.getConnectionController().sendTCP(request);
-		UserResponse response = (UserResponse)State.getConnectionController().getObject("communication.responses.UserResponse");
-		users = response.getUsers();
+		GetUsersResponse response = (GetUsersResponse)State.getConnectionController().getObject("communication.responses.GetUsersResponse");
+		users = response.getUserList();
 		double offset = 0;
 		for (User user : users){
 			

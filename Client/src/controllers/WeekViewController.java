@@ -54,7 +54,7 @@ public class WeekViewController implements Initializable {
 		addButton.setOnAction(new EventHandler<ActionEvent>() {		
 			@Override
 			public void handle(ActionEvent event) {
-				State.getWindowController().loadPage(Window.APPOINTMENT);
+				State.getWindowController().loadPage(Window.APPOINTMENT, new AppointmentController());
 			}
 		});
 		
