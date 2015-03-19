@@ -14,6 +14,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -24,84 +25,77 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
 
-public class AgendaPane extends AnchorPane{
-	private VBox text;
-	private Text title;
-	private Text description;
-	private Text time;
-	private Hyperlink delete;
+public class AgendaPane extends AnchorPane {
+	private Label title;
+	private Label description;
+	private Label time;
+	private Label room;
 	
 	Appointment appointment;
 
 	public AgendaPane(Appointment appointment) {
 		this.appointment = appointment;
 		
-		this.setPrefSize(600, 50);
+		this.setPrefSize(600, 110);
 		this.setPadding(new Insets(5,5,5,5));
-		this.setStyle("-fx-background-color: white");
+		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
 		
 		setTitle(appointment.getTitle());
 		setDescription(appointment.getDescription());
 		setTime(appointment.getStartTime(), appointment.getEndTime());
+		if (appointment.getRoomId() == null) {
+			setRoom("No location set");
+		}
+		else {
+			setRoom(appointment.getRoomId().toString());
+		}
 		
-		text = new VBox();
-		text.setPrefHeight(50);
-		text.setPrefWidth(400);
-		text.setSpacing(5);
 		
-		delete = new Hyperlink("x");
-		delete.setTextFill(Paint.valueOf("red"));
-		delete.setId(appointment.getId().toString());
-		delete.setOnAction(new EventHandler<ActionEvent>() {
-			@SuppressWarnings("restriction")
-			@Override
-			public void handle(ActionEvent event) {
-				Hyperlink link = (Hyperlink) event.getSource();
-				int id = Integer.parseInt(link.getId());
-
-				DeleteAppointmentRequest request = new DeleteAppointmentRequest(id);
-				State.getConnectionController().sendTCP(request);				
-				Logger.logMsg(Logger.DEBUG, "waiting for response");
-				BaseResponse response = (BaseResponse) State.getConnectionController().getObject("communication.responses.BaseResponse");
-				
-				if(response.wasSuccessful()){
-					Logger.logMsg(Logger.DEBUG, "Delete appointment successfull");
-					State.getWindowController().loadPage(Window.AGENDA);
-				} else {
-					Alert loginAlert = new Alert(AlertType.ERROR, 
-							"Could not delete appointment.");
-					loginAlert.showAndWait();
-				}
-			}
-		});
-		
-		text.getChildren().addAll(title, description, time);
-		this.getChildren().addAll(text, delete);
-		AnchorPane.setRightAnchor(delete, 0.0);
-		AnchorPane.setLeftAnchor(text, 0.0);
+		this.getChildren().addAll(title, description, time);
 		
 		DropShadow dropShadow = new DropShadow();
-		dropShadow.setColor(Color.web("#38597F", 1.0));
+		dropShadow.setColor(Color.web("#38597F", 0.2));
 		this.setEffect(dropShadow);
 	}
 	
-	public void setTitle(String title){
-		this.title = new Text(title);
-		this.title.setFont(Font.font("Helvetica neue medium", FontWeight.BOLD, 12));
+	private void setTitle(String title){
+		this.title = new Label(title);
+		AnchorPane.setLeftAnchor(this.title, 5.0);
+		AnchorPane.setTopAnchor(this.title, 7.0);
+		this.title.setFont(Font.font("Helvetica neue ", FontWeight.BOLD, 18));
+		this.title.setStyle("-fx-text-fill: #1d93c6");
 	}
 	
-	public void setDescription(String description){
-		this.description = new Text(description);
+	private void setDescription(String description){
+		this.description = new Label(description);
+		AnchorPane.setTopAnchor(this.description, 37.0);
+		AnchorPane.setLeftAnchor(this.description, 5.0);
+		this.description.setFont(Font.font("Helvetica neue ", FontWeight.THIN, 12));
+		this.description.setStyle("-fx-text-fill: #1d93c6");
+
 	}
 	
-	public void setTime(String startTime, String endTime){
+	private void setTime(String startTime, String endTime){
 		LocalDateTime start = DateUtil.deserializeDateTime(startTime);
 		LocalDateTime end = DateUtil.deserializeDateTime(endTime);
-		String date = start.getMonth().toString().toLowerCase() + " " + start.getDayOfMonth();
+		String month = start.getMonth().toString().toLowerCase();
+		String monthCapitalized = month.substring(0,1).toUpperCase() + month.substring(1);
+		int day = start.getDayOfMonth();
 		String start_time = DateUtil.serializeTime(start.toLocalTime());
 		String end_time = DateUtil.serializeTime(end.toLocalTime());
 		
-		this.time = new Text(
-				String.format("%s, from %s to %s", date, start_time, end_time));
+		this.time = new Label(String.format("%s %s, from %s to %s", monthCapitalized, day, start_time, end_time));
+		AnchorPane.setTopAnchor(this.time, 52.0);
+		AnchorPane.setLeftAnchor(this.time, 5.0);
+		this.time.setFont(Font.font("Helvetica neue ", FontWeight.THIN, 12));
+		this.time.setStyle("-fx-text-fill: #1d93c6");
+	}
+	
+	private void setRoom(String roomName) {
+		this.room = new Label(roomName);
+		AnchorPane.setTopAnchor(this.time, 67.0);
+		AnchorPane.setLeftAnchor(this.time, 5.0);
+		this.time.setFont(Font.font("Helvetica neue ", FontWeight.THIN, 12));
+		this.time.setStyle("-fx-text-fill: #1d93c6");
 	}
 }
