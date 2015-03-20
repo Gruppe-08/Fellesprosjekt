@@ -41,6 +41,14 @@ public class DateUtil {
 		return LocalTime.parse(str, defaultTimeFormatter);
 	}
 	
+	public static String getTime(LocalDateTime dateTime){
+		return dateTime.toString().substring(TIME_START);
+	}
+	
+	public static String getTime(String dateTime){
+		return dateTime.substring(TIME_START);
+	}
+	
 	public static String serializeTime(LocalTime localTime)  throws DateTimeParseException {
 		return localTime.format(defaultTimeFormatter);
 	}
@@ -120,5 +128,9 @@ public class DateUtil {
 		String time = String.format("%02d:%02d", from.getHour(), from.getMinute());
 		String result = String.format("%s %s - %s", month, day, time);
 		return result;
+	}
+
+	public static String getDate(String dateTime) {
+		return dateTime.substring(DATE_START, DATE_END);
 	}
 }
