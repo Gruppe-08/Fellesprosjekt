@@ -14,6 +14,7 @@ import communication.responses.NotificationResponse;
 import models.Appointment;
 import models.Notification;
 import models.NotificationType;
+import models.User;
 import server.DatabaseConnector;
 import util.DateUtil;
 
@@ -42,38 +43,26 @@ public class NotificationController {
 		}
 	}
 	
-	public static void setStatus(int appointmentId, String username, String status) {
-		String statusString = null;
-	
-		switch(status) {
-			case "not_attending": statusString = "not attending";
-					break;
-			case "attending": statusString = "attending";
-					break;
-			default: throw new IllegalArgumentException("Not a valid status");
-		}
-
-		String queryString = String.format("UPDATE UserAppointmentRelation SET status='%s' WHERE appointment_id=%s AND username ='%s'", 
-		status, appointmentId, username);
-		try {
-			statement = db.prepareStatement(queryString);
-			statement.execute();
-		} catch (SQLException e) {
-			Logger.logMsg(Logger.ERROR, "Could not set status: " + e.getMessage());
-		}
-		
-		createUpdateNotification(appointmentId, username, statusString);
-	}
-
-	private static void createUpdateNotification(int appointmentId,
-			String username, String statusString) {
+	static void createUpdateNotification(int appointmentId, String username, String status) {
 		String timeString;
 		Appointment appointment;
+		
+		switch(status) {
+		case "not_attending": status = "not attending";
+				break;
+		case "attending": status = "attending";
+				break;
+		}
+		
 		try {
 			appointment = AppointmentController.getAppointment(appointmentId);
 			timeString  = DateUtil.presentString(appointment.getStartTime());
 			
-			String notificationString = String.format("User %s responded: %s to appointment %s at %s", username, statusString, appointment.getTitle(), timeString);
+			User user = UserController.getUser(username);
+			String name = user.getFirstname() + " " + user.getLastname();
+			
+			
+			String notificationString = String.format("%s is %s to appointment %s at %s", name, status, appointment.getTitle(), timeString);
 			
 			String timeCreated = DateUtil.serializeDateTime(LocalDateTime.now());
 			
