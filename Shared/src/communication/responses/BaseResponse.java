@@ -1,7 +1,7 @@
 package communication.responses;
 
 public class BaseResponse {
-	private boolean wasSuccessful;
+	private boolean wasSuccessful = true;
 	private String errorMessage;
 	
 	public BaseResponse() {}

@@ -6,10 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AppointmentRequest;
+import communication.requests.ChangeAppointmentStatusRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
@@ -46,6 +49,29 @@ public class AppointmentController {
 		
 		return response;
 	}
+
+	public static BaseResponse handleStatusChangeRequest(ChangeAppointmentStatusRequest request) {
+		BaseResponse response = new BaseResponse();
+		
+		try {
+			String query;
+			if(request.isGroup()) {
+				query = "UPDATE AppointmentGroupRelation SET status = '" + request.getStatus() + "' " + 
+						"WHERE appointment_id = " + request.getAppointmentID() + " AND group_id = " + request.getUsername();
+			}
+			else {
+				query = "UPDATE UserAppointmentRelation SET status = '" + request.getStatus() + "' " + 
+						"WHERE appointment_id = " + request.getAppointmentID() + " AND username = '" + request.getUsername() + "'";
+			}
+			db.prepareStatement(query).execute();
+		} catch (SQLException e) {
+			Logger.logMsg(Logger.ERROR, "Error when changing user appointment status: " + e);
+			response.setErrorMessage("Internal error: Failed to change your status");
+			response.setSuccessful(false);
+		}
+		
+		return response;
+	}
 	
 	public static BaseResponse handleDeleteAppointment(DeleteAppointmentRequest request){
 		BaseResponse res = new BaseResponse();
@@ -57,7 +83,7 @@ public class AppointmentController {
 		} catch(SQLException e){
 			res.setErrorMessage("Could not delete this appointment.");
 			res.setSuccessful(false);
-			Logger.logMsg(Logger.WARNING, "Error when deleting an appointment: " + e);
+			Logger.logMsg(Logger.ERROR, "Error when deleting an appointment: " + e);
 		}
 		
 		return res;
@@ -137,7 +163,7 @@ public class AppointmentController {
 		
 		//Executes and returns
 		resultSet= statement.executeQuery(query);
-		while(resultSet.next()){
+		while(resultSet.next()) {
 			Appointment appointment = parseResultSetToAppointment(resultSet);
 			appointments.add(appointment);
 			
@@ -215,29 +241,16 @@ public class AppointmentController {
 		int appointmentId;
 		if (res.next()) {
 			appointmentId = res.getInt(1);
-			
-			//Put all users to invite in a single list without duplicates
-			ArrayList<String> usernamesToAdd = new ArrayList<String>();
-			for(String username : appointment.getUserRelations()) {
-				usernamesToAdd.add(username);
-			}
-			for(int groupID : appointment.getGroupRelations()) {
-				Group group = GroupController.getGroup(groupID);
-				for(String username : group.getMembers()) {
-					if(!usernamesToAdd.contains(username))
-						usernamesToAdd.add(username);
-				}
-			}
-			
-			for(String username : usernamesToAdd) {
+
+			for(Entry<String, String> userRelation : appointment.getUserRelations().entrySet()) {
 				query = String.format(
-						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', 'pending')",
-						appointmentId, username);
+						"INSERT INTO UserAppointmentRelation(appointment_id, username, status) VALUES('%s', '%s', '%s')",
+						appointmentId, userRelation.getKey(), userRelation.getValue());
 				statement = db.prepareStatement(query);
 				statement.execute();
 				query = String.format(
 						"INSERT INTO Notification(type, message, created, is_alarm, appointment_id, username, trigger_date) VALUES('%s', '%s', '%s','%s','%s','%s','%s')",
-						"appointment", "You have been invited to an appointment", DateUtil.getNow(), 0, appointmentId, username, DateUtil.getNow());
+						"appointment", "You have been invited to an appointment", DateUtil.getNow(), 0, appointmentId, userRelation.getKey(), DateUtil.getNow());
 				statement = db.prepareStatement(query);
 				statement.execute();
 			}
@@ -247,7 +260,7 @@ public class AppointmentController {
 		return appointmentId;
 	}
 	
-	private static ArrayList<Appointment> getAppointments(){
+	private static ArrayList<Appointment> getAppointments() {
 		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 		ResultSet resultSet;
 		
@@ -316,12 +329,19 @@ public class AppointmentController {
 		
 		//Get attending users
 		ResultSet users = db.createStatement().executeQuery(
-				"SELECT ua.username FROM UserAppointmentRelation ua, Appointment a "
-				+ "WHERE a.appointment_id = ua.appointment_id AND ua.status = 'attending' AND "
-				+ "a.appointment_id = " + appointment.getId() + ";");
+				"SELECT * FROM UserAppointmentRelation ua "
+				+ "WHERE ua.appointment_id = " + appointment.getId() + ";");
 		while(users.next()) {
-			appointment.getUserRelations().add(users.getString("username"));
+			appointment.getUserRelations().put(users.getString("username"), users.getString("status"));
 		}
+		
+		//Get attending groups
+				ResultSet groups = db.createStatement().executeQuery(
+						"SELECT ag.* FROM GroupAppointmentRelation ag "
+						+ "WHERE ag.appointment_id = " + appointment.getId() + ";");
+				while(users.next()) {
+					appointment.getGroupRelations().put(groups.getInt("group_id"), groups.getString("status"));
+				}
 		return appointment;
 	}
 }

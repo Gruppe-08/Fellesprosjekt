@@ -1,6 +1,8 @@
 package calendar;
 
 import models.Notification;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
@@ -18,6 +20,13 @@ public class NotificationBox extends AnchorPane {
 		putText();
 		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
 		showStatus(getStatus());
+		
+		this.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				State.openAppointmentView(this, notification.getAppointment());
+			}
+		});
 	}
 
 	private void putText() {
