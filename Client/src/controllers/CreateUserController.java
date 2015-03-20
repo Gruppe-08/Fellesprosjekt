@@ -8,6 +8,8 @@ import models.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
@@ -41,7 +43,6 @@ public class CreateUserController {
 		submit.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Handle createUser");
 				User user = new User(username.getText(), firstname.getText(), lastname.getText(), admin.isSelected());
 
 				String p1= password.getText();
@@ -51,19 +52,21 @@ public class CreateUserController {
 				Boolean validUser = UserUtil.isValidUser(user);
 				
 				if(validPassword && validUser){
-					System.out.println("Set valid style");
 					password.setStyle("");
 					confirmPassword.setStyle("");
 					sendRequest(user, p1);
 				} else {
-					// TODO: give user feedback on what is wrong
-					System.out.println("Input is unvalid");
+					Alert alert = new Alert(AlertType.INFORMATION);
 					if(!validPassword){
-						System.out.println("Set unvalid style");
 						password.setStyle("-fx-border-color: red");
 						confirmPassword.setStyle("-fx-border-color: red");
+						
+						String error = "";
+						if(password.getText().length() < 6) error = "The password must be 6 characters or more.\n";
+						else error = "The passwords does not match";
+						alert.setContentText(error);
 					}
-
+					alert.showAndWait();
 				}
 				
 			}
@@ -81,8 +84,9 @@ public class CreateUserController {
 					State.myWindowController.loadPage(Window.ADMIN, controller);
 				}
 				else {
-					// TODO: Flash error message to show that login failed.
-					System.out.println(res.getErrorMessage());
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setContentText("Could not log in. Contact your system administrator.");
+					alert.showAndWait();
 				}
 			}
 		});
