@@ -51,7 +51,7 @@ public class NotificationViewController implements Initializable {
 	
 	private void addNotificationBox(Notification notification) {
 		for (Node node : notificationPane.getChildren()) {
-			AnchorPane.setTopAnchor(node, AnchorPane.getTopAnchor(node) + 100.0);
+			AnchorPane.setTopAnchor(node, AnchorPane.getTopAnchor(node) + 103.0);
 		}
 		NotificationBox notBox = new NotificationBox(notification);
 		AnchorPane.setTopAnchor(notBox, 0.0);
