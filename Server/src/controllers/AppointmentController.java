@@ -51,24 +51,32 @@ public class AppointmentController {
 	}
 
 	public static BaseResponse handleStatusChangeRequest(ChangeAppointmentStatusRequest request) {
+		
+		String username = request.getUsername();
+		int appointmentId = request.getAppointmentID();
+		String status = request.getStatus();
 		BaseResponse response = new BaseResponse();
 		
 		try {
 			String query;
 			if(request.isGroup()) {
-				query = "UPDATE AppointmentGroupRelation SET status = '" + request.getStatus() + "' " + 
-						"WHERE appointment_id = " + request.getAppointmentID() + " AND group_id = " + request.getUsername();
+				query = "UPDATE AppointmentGroupRelation SET status = '" + status + "' " + 
+						"WHERE appointment_id = " + appointmentId + " AND group_id = " + username;
 			}
 			else {
-				query = "UPDATE UserAppointmentRelation SET status = '" + request.getStatus() + "' " + 
+				query = "UPDATE UserAppointmentRelation SET status = '" + status + "' " + 
 						"WHERE appointment_id = " + request.getAppointmentID() + " AND username = '" + request.getUsername() + "'";
 			}
 			db.prepareStatement(query).execute();
+			NotificationController.createUpdateNotification(appointmentId, username, status);
+			
 		} catch (SQLException e) {
 			Logger.logMsg(Logger.ERROR, "Error when changing user appointment status: " + e);
 			response.setErrorMessage("Internal error: Failed to change your status");
 			response.setSuccessful(false);
 		}
+		
+		
 		
 		return response;
 	}

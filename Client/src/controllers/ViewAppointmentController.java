@@ -91,6 +91,8 @@ public class ViewAppointmentController {
     @FXML
     void onOk(ActionEvent event) {
     	stage.close();
+		State.getWindowController().loadPage(State.getWindowController().getCurrentPage());
+
     }
 
     @FXML
@@ -102,22 +104,30 @@ public class ViewAppointmentController {
 
     @FXML
     void onAccept(ActionEvent event) {
+    	String username = State.getUser().getUsername();
+    	String status = "attending";
+    	
     	ChangeAppointmentStatusRequest request = new ChangeAppointmentStatusRequest(
-    			appointment.getId(), "attending", State.getUser().getUsername());
+    			appointment.getId(), status, username);
     	State.getConnectionController().sendRequest(request, BaseResponse.class);
-    	currentUserPair.status.set("attending");
+    	
+    	currentUserPair = new NameStatusPair(username, status);
     	displayAccepted();
 
     }
 
     @FXML
     void onDecline(ActionEvent event) {
+    	String username = State.getUser().getUsername();
+    	String status = "not_attending";
+    	
     	ChangeAppointmentStatusRequest request = new ChangeAppointmentStatusRequest(
-    			appointment.getId(), "not_attending", State.getUser().getUsername());
+    			appointment.getId(), status, username);
     	State.getConnectionController().sendRequest(request, BaseResponse.class);
-    	currentUserPair.status.set("not_attending");
+    	
+    	currentUserPair = new NameStatusPair(username, status);
 		displayDeclined();
-    }
+    }	
 
 	public void initialize(Stage stage, Appointment appointment) {
 		this.stage = stage;
@@ -167,9 +177,9 @@ public class ViewAppointmentController {
 		//Load data from appointment into view
 		title.setText(appointment.getTitle());
 		description.setText(appointment.getDescription());
-		from_time.setText(DateUtil.deserializeTime(appointment.getStartTime()).toString());
-		to_time.setText(DateUtil.deserializeTime(appointment.getEndTime()).toString());
-		date.setText(DateUtil.deserializeDate(appointment.getStartTime()).toString());
+		from_time.setText(DateUtil.getTime(appointment.getStartTime()));
+		to_time.setText(DateUtil.getTime(appointment.getEndTime()));
+		date.setText(DateUtil.getDate(appointment.getStartTime()));
 		location1.setText(appointment.getLocation());
 		
 		String status = appointment.getUserRelations().get(State.getUser().getUsername());

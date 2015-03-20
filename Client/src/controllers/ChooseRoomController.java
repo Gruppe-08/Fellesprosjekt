@@ -33,12 +33,6 @@ public class ChooseRoomController {
     private TableColumn<Room, String> capacity_column;
     
     void initialize(Stage myStage, AppointmentController controller) {
-    	if(controller.appointment.getStartTime() == null || controller.appointment.getEndTime() == null) {
-    		root.getChildren().remove(root_table);
-    		System.out.println("invalid");
-    		return;
-    	}
-    	
     	root_table.setRowFactory(new Callback<TableView<Room>, TableRow<Room>>() {
 			@Override
 			public TableRow<Room> call(TableView<Room> param) {

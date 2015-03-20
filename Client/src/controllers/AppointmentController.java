@@ -2,10 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
@@ -28,6 +27,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -53,19 +53,20 @@ import calendar.State;
 import calendar.Window;
 import communication.requests.BusyCheckRequest;
 import communication.requests.GetGroupsRequest;
-import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.BusyCheckResponse;
 import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.PutAppointmentResponse;
-import communication.responses.RoomResponse;
+
 
 public class AppointmentController implements Initializable {
 	Appointment appointment;
 	Boolean isNew;
-	boolean datesValid = false;
+	boolean dateValid = false;
+	boolean timeFromValid = false;
+	boolean timeToValid = false;
 	boolean titleValid = false;
 	boolean descriptionValid = true;
 	boolean selfAvailable = true;
@@ -146,20 +147,27 @@ public class AppointmentController implements Initializable {
     
     @FXML
     private void onChooseRoom() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ChooseRoom.fxml"));
-		try {
-			Parent root = loader.load();
-			ChooseRoomController controller = (ChooseRoomController)loader.getController();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			controller.initialize(stage, this);
-			stage.setScene(scene);
-			stage.initOwner(State.getStage());
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	if(dateValid && timeFromValid && timeToValid) {
+    		setAppointmentProperties();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ChooseRoom.fxml"));
+			try {
+				Parent root = loader.load();
+				ChooseRoomController controller = (ChooseRoomController)loader.getController();
+				Scene scene = new Scene(root);
+				Stage stage = new Stage();
+				controller.initialize(stage, this);
+				stage.setScene(scene);
+				stage.initOwner(State.getStage());
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.showAndWait();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	} else {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setContentText("Please set a valid date and time before booking the room");
+    		alert.showAndWait();
+    	}
 		
     }
     
@@ -210,10 +218,11 @@ public class AppointmentController implements Initializable {
 	}
 
     @FXML
-    void onOk(ActionEvent event) {
-    	boolean atLeastOneUserInvited = false;
-    	if(titleValid && datesValid && descriptionValid) {
+    void onSubmit(ActionEvent event) {
+		boolean atLeastOneUserInvited = false;
+    	if(titleValid && dateValid && timeFromValid && timeToValid && descriptionValid) {
 	    	PutAppointmentRequest request = new PutAppointmentRequest();
+	    	setAppointmentProperties();
 	    	request.setAppointment(appointment);
 	    	for(Invitable user : invite_user_list.getItems()) {
 	    		if(user.selected.getValue())
@@ -241,67 +250,148 @@ public class AppointmentController implements Initializable {
 						response.getErrorMessage());
 				loginAlert.showAndWait();
 	    	} else {
-	    		State.getWindowController().loadPage(Window.AGENDA);
+	        	State.getWindowController().loadPage(State.getWindowController().getLastPage());
 	    	}
+    	} else {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Fix unvalid fields");
+
+    		String fix = getValidationString();
+    		alert.setContentText("To submit this appointment, \nyou must fix the following fields: \n"+ fix);
+    		
+    		alert.showAndWait();
+ 
     	}
     }
 
+	private String getValidationString() {
+		System.out.println(titleValid + ", " + dateValid  + ", " + descriptionValid  + ", " + timeFromValid + ", " + timeToValid);
+		String fix = (titleValid ? "" : "title")
+				+ (dateValid ? "" : ", date")
+				+ (descriptionValid ? "" : ", description")
+				+ (timeFromValid ? "" : ", from-time")
+				+ (timeToValid ? "" :  ", to-time")
+				+ ".";
+
+		if(fix.substring(0,1).equals(",")){
+			fix = fix.substring(2);
+		}
+		
+		fix =  fix.substring(0,1).toUpperCase() + fix.substring(1);
+		return fix;
+	}
+
     @FXML
     void onCancel(ActionEvent event) {
-    	State.getWindowController().loadPage(Window.AGENDA);
+    	State.getWindowController().loadPage(State.getWindowController().getLastPage());
     }
     
-    void validateTitleField() {
+    void onTitleChanged() {
     	title.setStyle("");
-    	if(title.getText().equals("") || (title.getText().length() > 20)) {
-    		title.setStyle("-fx-border-color: red");
-    		titleValid = false;
-    	}
-    	else {
-        	appointment.setTitle(title.getText());
-        	titleValid = true;
-    	}
-    }
-    
-    void validateDescriptionField() {
-    	description.setStyle("");
-    	if(description.getText().length() > 30) {
-    		description.setStyle("-fx-border-color: red");
-    		descriptionValid = false;
-    	}
-    	else {
-    		appointment.setDescription(description.getText());
-    		descriptionValid = true;
-    	}
-    }
-    
-    void onChronoFieldChanged() {
-    	datesValid = true;
-    	try {
-    		from_time.setStyle("");
-    		date.setStyle("");
-    		LocalTime startTime = LocalTime.parse(from_time.getText());
-    		LocalDateTime startDate = date.getValue().atTime(startTime);
-    		appointment.setStartTime(DateUtil.serializeDateTime(startDate));
-    	} catch(DateTimeParseException e) {
-    		from_time.setStyle("-fx-border-color: red");
-    		date.setStyle("-fx-border-color: red");
-    		datesValid = false;
+    	
+    	int length = title.getText().length();
+    	titleValid = (length > 0 && length < 20);
+    	
+    	if(titleValid) {
+    		appointment.setTitle(title.getText());
+    	} else {
+    		setUnvalidStyle(title);
     	}
     	
-    	try {
-    		to_time.setStyle("");
-    		LocalTime endTime = LocalTime.parse(to_time.getText());
-    		LocalDateTime endDate = date.getValue().atTime(endTime);
-    		appointment.setEndTime(DateUtil.serializeDateTime(endDate));
-    	} catch(DateTimeParseException e) {
-    		to_time.setStyle("-fx-border-color: red");
-    		date.setStyle("-fx-border-color: red");
-    		datesValid = false;
+    	
+    }
+    
+    void onDescriptionChanged() {
+    	description.setStyle("");
+    	
+    	descriptionValid = description.getText().length() < 30;
+    	
+    	if(descriptionValid) {
+    		appointment.setDescription(description.getText());
     	}
-    	if(datesValid)
-    		updateAvailableUsers();
-    };
+    	else {
+    		setUnvalidStyle(description);
+    	}
+    }
+
+    
+    void onDateFieldChanged() {
+    	dateValid = true;
+    	this.date.setStyle("");
+    	
+    	LocalDate selectedDate = this.date.getValue();
+
+    	try{
+    		DateUtil.serializeDate(selectedDate);
+    		Boolean inThePast = selectedDate.isBefore(LocalDate.now());
+    		assertFalse(inThePast);
+    	} catch (AssertionError e) {
+    		date.setValue(LocalDate.now());
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setContentText("You cannot set a date in the past");
+    		alert.showAndWait();
+    	} catch (Exception e) {
+    		setUnvalidStyle(this.date);
+    		dateValid = false;
+    	}
+    }
+    
+    
+
+	private void assertFalse(Boolean b) throws AssertionError {
+		if(b == false) {
+			return;
+		} else {
+			throw new AssertionError();
+		}
+		
+	}
+
+	void onTimeFromChanged() {
+    	timeFromValid = true;
+    	from_time.setStyle("");
+    	
+    	try {
+    		String timeString = from_time.getText();
+    		LocalTime.parse(timeString);
+    	} catch (Exception e) {
+    		setUnvalidStyle(from_time);
+    		timeFromValid = false;
+    	}
+    }
+    
+    void onTimeToChanged() {
+    	timeToValid = true;
+    	to_time.setStyle("");
+    	
+    	try {
+    		String timeString = to_time.getText();
+    		LocalTime.parse(timeString);
+    	} catch (Exception e) {
+    		setUnvalidStyle(to_time);
+    		timeToValid = false;
+    	}
+    	
+    	
+    }
+    
+    private void setAppointmentProperties() {
+		LocalDate selectedDate = this.date.getValue();
+		LocalTime time;
+		String timeString;
+
+	    time = DateUtil.deserializeTime(from_time.getText());
+	    timeString = DateUtil.serializeDateTime(selectedDate.atTime(time));
+	    appointment.setStartTime(timeString);
+
+	    time = DateUtil.deserializeTime(to_time.getText());
+	    timeString = DateUtil.serializeDateTime(selectedDate.atTime(time));
+	    appointment.setEndTime(timeString);
+	}
+
+	private void setUnvalidStyle(Control control) {
+		control.setStyle("-fx-text-box-border: red; -fx-focus-color: red;");
+	};
     
     private void initalizeInviteTable() {
         name_column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Invitable,String>, ObservableValue<String>>() {
@@ -448,11 +538,11 @@ public class AppointmentController implements Initializable {
     	if(!isNew)
     		fillAppointmentFields();
 	   	
-	   	title.textProperty().addListener(f -> validateTitleField());
-	   	description.textProperty().addListener(f -> validateDescriptionField());
-	   	from_time.textProperty().addListener(f -> onChronoFieldChanged());
-	   	to_time.textProperty().addListener(f -> onChronoFieldChanged());
-	   	date.valueProperty().addListener(f -> onChronoFieldChanged());
+	   	title.textProperty().addListener(f -> onTitleChanged());
+	   	description.textProperty().addListener(f -> onDescriptionChanged());
+	   	from_time.textProperty().addListener(f -> onTimeFromChanged());
+	   	to_time.textProperty().addListener(f -> onTimeToChanged());
+	   	date.valueProperty().addListener(f -> onDateFieldChanged());
 	   	room_button.disableProperty().bind(use_location_check.selectedProperty());
 	   	location.disableProperty().bind(use_location_check.selectedProperty().not());
 	   	use_location_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -472,8 +562,6 @@ public class AppointmentController implements Initializable {
 				}
 			}
 		});
-    	validateTitleField();
-    	onChronoFieldChanged();
 	}
 	
 	class Invitable {
