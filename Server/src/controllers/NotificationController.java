@@ -134,6 +134,10 @@ public class NotificationController {
 		not.setUsername(res.getString("username"));
 		not.setRead(Integer.valueOf(res.getString("read")));
 		not.setStatus(res.getString("status"));
+		String typeString = res.getString("type");
+		if (typeString.equals("appointment")) not.setType(NotificationType.APPOINTMENT);
+		else if(typeString.equals("user")) not.setType(NotificationType.USER);
+		else not.setType(NotificationType.GROUP);
 		return not;
 	}
 

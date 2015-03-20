@@ -1,6 +1,7 @@
 package calendar;
 
 import models.Notification;
+import models.NotificationType;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -19,7 +20,9 @@ public class NotificationBox extends AnchorPane {
 		this.setPrefWidth(801);
 		putText();
 		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
-		showStatus(getStatus());
+		if (notification.getType() == NotificationType.APPOINTMENT) {
+			showStatus(getStatus());
+		}
 		
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
