@@ -228,14 +228,14 @@ public class AppointmentController implements Initializable {
 						response.getErrorMessage());
 				loginAlert.showAndWait();
 	    	} else {
-	    		State.getWindowController().loadPage(Window.AGENDA);
+	        	State.getWindowController().loadPage(State.getWindowController().getLastPage());
 	    	}
     	}
     }
 
     @FXML
     void onCancel(ActionEvent event) {
-    	State.getWindowController().loadPage(Window.AGENDA);
+    	State.getWindowController().loadPage(State.getWindowController().getLastPage());
     }
     
     void validateTitleField() {
