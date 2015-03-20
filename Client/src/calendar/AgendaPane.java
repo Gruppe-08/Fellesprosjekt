@@ -6,9 +6,11 @@ import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.DeleteAppointmentRequest;
 import communication.responses.BaseResponse;
+import controllers.AppointmentController;
 import util.DateUtil;
 import models.Appointment;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -56,6 +58,15 @@ public class AgendaPane extends AnchorPane {
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.web("#38597F", 0.2));
 		this.setEffect(dropShadow);
+		
+		this.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				AppointmentController controller = new AppointmentController(appointment);	
+				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
+
+			}
+		});
 	}
 	
 	private void setTitle(String title){
