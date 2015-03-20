@@ -19,6 +19,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -102,6 +103,12 @@ public class WindowController implements Initializable {
 						viewToggle.selectToggle(agendaToggle);
 					}
 				});	
+				notificationAlert.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						loadPage(Window.NOTIFICATIONS);
+					}
+				});
 			}
 		});
 	}
