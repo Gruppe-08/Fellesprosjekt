@@ -15,12 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 public class AppointmentPane extends VBox {
 	
 	private Appointment appointment;
-	
 	
 	public AppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
@@ -36,9 +34,8 @@ public class AppointmentPane extends VBox {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				AppointmentController controller = new AppointmentController(appointment);	
-				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
-
+				System.out.println(getClass());
+				State.openAppointmentView(getClass(), appointment);
 			}
 		});
 	}

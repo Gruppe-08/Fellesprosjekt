@@ -51,7 +51,13 @@ public class AgendaPane extends AnchorPane {
 		else {
 			setRoom(appointment.getRoomId().toString());
 		}
-		
+
+		this.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				State.openAppointmentView(this, appointment);
+			}
+		});
 		
 		this.getChildren().addAll(title, description, time);
 		

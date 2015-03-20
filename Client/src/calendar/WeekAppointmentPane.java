@@ -40,8 +40,7 @@ public class WeekAppointmentPane extends VBox {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				AppointmentController controller = new AppointmentController(appointment);	
-				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
+				State.openAppointmentView(getClass(), appointment);
 			}
 		});
  	}

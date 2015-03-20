@@ -19,5 +19,4 @@ public class NotificationResponse {
 	public ArrayList<Notification> getNotifications(){
 		return notifications;
 	}
-
 }

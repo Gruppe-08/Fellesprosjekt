@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAppointmentController">
+   <children>
+      <Label fx:id="title" layoutX="14.0" layoutY="7.0" text="Title">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="description" layoutX="14.0" layoutY="45.0" text="Description">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="320.0" layoutY="93.0" text="participants" />
+      <TableView fx:id="member_table" layoutX="320.0" layoutY="108.0" prefHeight="200.0" prefWidth="266.0">
+        <columns>
+          <TableColumn fx:id="name_column" prefWidth="175.0" text="Name" />
+          <TableColumn fx:id="status_column" prefWidth="90.0" text="Status" />
+        </columns>
+      </TableView>
+      <Button layoutX="549.0" layoutY="361.0" mnemonicParsing="false" onAction="#onOk" text="OK" />
+      <Button fx:id="edit_button" layoutX="494.0" layoutY="361.0" mnemonicParsing="false" onAction="#onEdit" text="Edit" />
+      <Label layoutX="14.0" layoutY="93.0" text="Where:" />
+      <Label fx:id="location1" layoutX="14.0" layoutY="108.0" text="location">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="164.0" text="from" />
+      <Label fx:id="from_time" layoutX="52.0" layoutY="160.0" text="10:00">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="to_time" layoutX="148.0" layoutY="160.0" text="15:00">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="121.0" layoutY="165.0" text="to" />
+      <Label fx:id="date" layoutX="15.0" layoutY="193.0" text="Date">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="12.0" layoutY="246.0" text="You are " />
+      <Label fx:id="status" layoutX="64.0" layoutY="240.0" text="pending response">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="accept_button" layoutX="187.0" layoutY="283.0" mnemonicParsing="false" onAction="#onAccept" style="-fx-background-color: green;" text="Accept" />
+      <Button fx:id="decline_button" layoutX="117.0" layoutY="283.0" mnemonicParsing="false" onAction="#onDecline" style="-fx-background-color: red;" text="decline" />
+   </children>
+</Pane>

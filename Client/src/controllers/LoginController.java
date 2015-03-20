@@ -44,9 +44,9 @@ public class LoginController implements Initializable {
 				request.setPassword(login_password.getText());
 				
 				System.out.println("Requesting authentication...");
-				State.getConnectionController().sendTCP(request);
-				Object object = State.getConnectionController().getObject("communication.responses.AuthenticationResponse");
-				AuthenticationResponse auth = (AuthenticationResponse) object;
+				AuthenticationResponse auth = 
+						(AuthenticationResponse) State.getConnectionController().sendRequest(request, 
+								AuthenticationResponse.class);
 				if (auth.wasSuccessful()) {
 					State.setUser(auth.getUser());
 					System.out.println(auth.getUser());
