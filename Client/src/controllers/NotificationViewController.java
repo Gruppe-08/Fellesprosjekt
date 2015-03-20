@@ -39,7 +39,6 @@ public class NotificationViewController implements Initializable {
 		ArrayList<Notification> readNotifications = new ArrayList<Notification>();
 		NotificationRequest req = new NotificationRequest();
 		State.getConnectionController().sendTCP(req);
-		System.out.println("notificationrequest sent");
 		NotificationResponse response = (NotificationResponse)State.getConnectionController().getObject("communication.responses.NotificationResponse");
 		for (Notification notification : response.getNotifications()) {
 			if (notification.isRead() == 1) {

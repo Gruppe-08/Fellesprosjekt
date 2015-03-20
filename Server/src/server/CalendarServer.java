@@ -121,7 +121,6 @@ public class CalendarServer extends Server {
 				}
 				else if(object instanceof BusyCheckRequest) {
 					BusyCheckRequest request = (BusyCheckRequest) object;
-					
 					BusyCheckResponse response = UserController.handleBusyCheck(request);
 					clientConnection.sendTCP(response);
 				}

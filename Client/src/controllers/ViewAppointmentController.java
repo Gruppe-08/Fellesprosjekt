@@ -1,13 +1,17 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 
+import communication.requests.BusyCheckRequest;
 import communication.requests.ChangeAppointmentStatusRequest;
 import communication.requests.GetGroupsRequest;
 import communication.requests.GetUsersRequest;
 import communication.responses.BaseResponse;
+import communication.responses.BusyCheckResponse;
 import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.UserResponse;
@@ -29,6 +33,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -37,6 +45,9 @@ public class ViewAppointmentController {
 	private Stage stage;
 	private Appointment appointment;
 	private NameStatusPair currentUserPair;
+	
+	@FXML
+	private AnchorPane pane;
 
     @FXML
     private Label date;
@@ -121,6 +132,18 @@ public class ViewAppointmentController {
 	public void initialize(Stage stage, Appointment appointment) {
 		this.stage = stage;
 		this.appointment = appointment;
+		BusyCheckRequest req = new BusyCheckRequest();
+		ArrayList<String> usernames = new ArrayList<String>();
+		usernames.add(State.getUser().getUsername());
+		req.setUsernames(usernames);
+		req.setAppointment(this.appointment);
+		State.getConnectionController().sendTCP(req);
+		BusyCheckResponse response = (BusyCheckResponse)State.getConnectionController().getObject("communication.responses.BusyCheckResponse");
+		System.out.println("received busycheckresponse");
+		if (!response.getUsernames().isEmpty()) {
+			flashUnavailable();
+		}
+		
 		
 		//Set factories for member table
 		name_column.setCellValueFactory(
@@ -222,4 +245,15 @@ public class ViewAppointmentController {
 			this.status = new SimpleStringProperty(status);
 		}
 	};
+	
+	private void flashUnavailable() {
+		System.out.println("unavailable");
+		Label unavailableLabel = new Label("This appointment collides with another");
+		unavailableLabel.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
+		unavailableLabel.setStyle("-fx-text-fill: #cd5e51");
+		AnchorPane.setLeftAnchor(unavailableLabel, 32.0);
+		AnchorPane.setTopAnchor(unavailableLabel, 350.0);
+		pane.getChildren().add(unavailableLabel);
+	}
+
 }

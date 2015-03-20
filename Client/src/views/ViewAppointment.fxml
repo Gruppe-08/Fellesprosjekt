@@ -5,77 +5,78 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAppointmentController">
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAppointmentController">
    <children>
-      <Label fx:id="title" layoutX="16.0" layoutY="14.0" text="Title" textFill="#1d93c6">
+      <Button fx:id="decline_button" layoutX="166.0" layoutY="300.0" mnemonicParsing="false" onAction="#onDecline" prefWidth="65.0" style="-fx-border-color: red; -fx-border-radius: 3; -fx-background-color: white;" styleClass="-fx-border-color" text="Decline" AnchorPane.leftAnchor="100.0" />
+      <Button fx:id="accept_button" layoutX="63.0" layoutY="300.0" mnemonicParsing="false" onAction="#onAccept" prefWidth="65.0" style="-fx-border-radius: 3; -fx-background-color: white; -fx-border-color: green;" styleClass="-fx-border-rad" text="Accept" AnchorPane.leftAnchor="25.0" />
+      <Label fx:id="status" layoutX="95.0" layoutY="256.0" text="pending response" textFill="#1d93c6">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="256.0" text="You are " textFill="#1d93c6" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="date" layoutX="26.0" layoutY="185.0" text="Date" textFill="#1d93c6" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="180.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="136.0" layoutY="150.0" text="to" textFill="#1d93c6" AnchorPane.topAnchor="145.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="to_time" layoutX="159.0" layoutY="150.0" text="15:00" textFill="#1d93c6" AnchorPane.topAnchor="145.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="from_time" layoutX="77.0" layoutY="150.0" text="10:00" textFill="#1d93c6" AnchorPane.topAnchor="145.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="150.0" text="From" textFill="#1d93c6" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="145.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="location1" layoutX="95.0" layoutY="117.0" text="location" textFill="#1d93c6" AnchorPane.topAnchor="110.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="117.0" text="Where:" textFill="#1d93c6" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="110.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="edit_button" layoutX="440.0" layoutY="301.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="28.0" prefWidth="64.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 3;" text="Edit" />
+      <Button layoutX="525.0" layoutY="301.0" mnemonicParsing="false" onAction="#onOk" prefHeight="28.0" prefWidth="64.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 3;" text="OK" AnchorPane.rightAnchor="25.0" />
+      <TableView fx:id="member_table" layoutX="323.0" layoutY="75.0" prefHeight="200.0" prefWidth="266.0" AnchorPane.rightAnchor="25.0">
+         <columns>
+            <TableColumn fx:id="name_column" prefWidth="175.0" text="Name" />
+            <TableColumn fx:id="status_column" prefWidth="90.0" text="Status" />
+         </columns>
+      </TableView>
+      <Label layoutX="394.0" layoutY="50.0" text="Participants" textFill="#1d93c6" AnchorPane.topAnchor="40.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="description" layoutX="26.0" layoutY="79.0" text="Description" textFill="#1d93c6" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="75.0">
+         <font>
+            <Font name="Helvetica Neue Thin" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="title" layoutX="26.0" layoutY="24.0" text="Title" textFill="#1d93c6">
          <font>
             <Font name="Helvetica Neue Bold" size="30.0" />
          </font>
       </Label>
-      <Label fx:id="description" layoutX="16.0" layoutY="69.0" text="Description" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="398.0" layoutY="40.0" text="Participants" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <TableView fx:id="member_table" layoutX="313.0" layoutY="65.0" prefHeight="200.0" prefWidth="266.0">
-        <columns>
-          <TableColumn fx:id="name_column" prefWidth="175.0" text="Name" />
-          <TableColumn fx:id="status_column" prefWidth="90.0" text="Status" />
-        </columns>
-      </TableView>
-      <Button layoutX="515.0" layoutY="291.0" mnemonicParsing="false" onAction="#onOk" prefHeight="28.0" prefWidth="64.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 3;" text="OK" />
-      <Button fx:id="edit_button" layoutX="430.0" layoutY="291.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="28.0" prefWidth="64.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 3;" text="Edit" />
-      <Label layoutX="16.0" layoutY="107.0" text="Where:" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="location1" layoutX="85.0" layoutY="107.0" text="location" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="16.0" layoutY="140.0" text="From" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="from_time" layoutX="67.0" layoutY="140.0" text="10:00" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="to_time" layoutX="149.0" layoutY="140.0" text="15:00" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="126.0" layoutY="140.0" text="to" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="date" layoutX="16.0" layoutY="175.0" text="Date" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="16.0" layoutY="246.0" text="You are " textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="status" layoutX="85.0" layoutY="246.0" text="pending response" textFill="#1d93c6">
-         <font>
-            <Font name="Helvetica Neue Thin" size="20.0" />
-         </font>
-      </Label>
-      <Button fx:id="accept_button" layoutX="53.0" layoutY="290.0" mnemonicParsing="false" onAction="#onAccept" prefWidth="65.0" style="-fx-border-radius: 3; -fx-background-color: white; -fx-border-color: green;" styleClass="-fx-border-rad" text="Accept" />
-      <Button fx:id="decline_button" layoutX="156.0" layoutY="290.0" mnemonicParsing="false" onAction="#onDecline" prefWidth="65.0" style="-fx-border-color: red; -fx-border-radius: 3; -fx-background-color: white;" styleClass="-fx-border-color" text="Decline" />
    </children>
-</Pane>
+</AnchorPane>
