@@ -19,7 +19,8 @@ public class NotificationViewController implements Initializable {
 	@FXML AnchorPane notificationPane;
 	
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {		
+	public void initialize(URL location, ResourceBundle resources) {
+		notificationPane.setPrefHeight(1.0);
 		for (Notification notification : getReadNotifications()) {
 			addNotificationBox(notification);
 		}
@@ -52,6 +53,7 @@ public class NotificationViewController implements Initializable {
 		for (Node node : notificationPane.getChildren()) {
 			AnchorPane.setTopAnchor(node, AnchorPane.getTopAnchor(node) + 103.0);
 		}
+		notificationPane.setPrefHeight(notificationPane.getPrefHeight() + 103.0);
 		NotificationBox notBox = new NotificationBox(notification);
 		AnchorPane.setTopAnchor(notBox, 0.0);
 		notificationPane.getChildren().add(notBox);
