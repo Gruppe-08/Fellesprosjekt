@@ -19,6 +19,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -32,7 +33,7 @@ public class WindowController implements Initializable {
 	Calendar myCalendar = null;
 	AnchorPane myWindow = null;
 	MenuItem admin = null;
-	public static Window previous_window = null;
+	private Window currentPage, lastPage;
 	
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane main_window;
@@ -49,7 +50,7 @@ public class WindowController implements Initializable {
     @FXML private Text username;
     
     @FXML private MenuItem notification;
-    @FXML private MenuItem logout;
+    @FXML private MenuItem exit;
     @FXML private MenuItem groups;
     
     private ArrayList<Notification> notifications = new ArrayList<Notification>();
@@ -70,13 +71,13 @@ public class WindowController implements Initializable {
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage(Window.CREATE_GROUP);
+						loadPage(Window.GROUP);
 					}
 				});
-				logout.setOnAction(new EventHandler<ActionEvent>(){
+				exit.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						logout();
+						exit();
 					}
 				});
 				
@@ -102,11 +103,17 @@ public class WindowController implements Initializable {
 						viewToggle.selectToggle(agendaToggle);
 					}
 				});	
+				notificationAlert.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						loadPage(Window.NOTIFICATIONS);
+					}
+				});
 			}
 		});
 	}
 	
-	protected void logout() {
+	protected void exit() {
 		State.getConnectionController().close();
 		State.getStage().close();
 	}
@@ -122,6 +129,7 @@ public class WindowController implements Initializable {
 		
 		
 		loadPage(Window.WEEK);
+		currentPage = Window.WEEK;
 		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
 		service.start();
 		
@@ -129,7 +137,9 @@ public class WindowController implements Initializable {
 
 	private void insertAdminButton() {
 		admin = new MenuItem();
+		menu.getItems().remove(exit);
 		menu.getItems().add(admin);
+		menu.getItems().add(exit);
 		
 		admin.setText("Admin panel");
 		admin.setOnAction(new EventHandler<ActionEvent>() {
@@ -139,6 +149,14 @@ public class WindowController implements Initializable {
 				loadPage(Window.ADMIN, controller);
 			}
 		});
+	}
+	
+	public Window getLastPage() {
+		return lastPage;
+	}
+	
+	public Window getCurrentPage() {
+		return currentPage;
 	}
 	
 	public Object loadPage(Window window) {
@@ -156,9 +174,13 @@ public class WindowController implements Initializable {
 			loader.setController(controller);
 		}
 		try {
+			lastPage = currentPage;
+			currentPage = window;
 			Pane root = loader.load();
+
 	        destination.getChildren().clear();
 	        destination.getChildren().add(root);
+
 	        return loader.getController();
 		} catch (IOException e){
 			e.printStackTrace();
@@ -182,7 +204,6 @@ public class WindowController implements Initializable {
 	}
 	
 	private void enableAndShowButtons() {
-		profilepic.setVisible(true);
 		username.setVisible(true);
 		menu.setVisible(true);
 		dayToggle.setVisible(true);

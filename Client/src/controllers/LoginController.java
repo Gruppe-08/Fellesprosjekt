@@ -42,7 +42,7 @@ public class LoginController implements Initializable {
 			public void handle(ActionEvent event) {
 				String username = login_username.getText();
 				String password = login_password.getText();
-				AuthenticationResponse auth = loginUser(username, password, connection);
+				AuthenticationResponse auth = loginUser(username, password, State.getConnectionController());
 				
 				if (auth.wasSuccessful()) {
 					State.setUser(auth.getUser());

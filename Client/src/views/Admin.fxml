@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="568.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="568.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fill="#135f7f" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <Text fill="#1d93c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" AnchorPane.leftAnchor="460.0" AnchorPane.rightAnchor="460.0" AnchorPane.topAnchor="30.0">
          <font>
-            <Font name="Helvetica Neue Light" size="36.0" />
+            <Font name="Helvetica Neue Thin" size="36.0" />
          </font>
       </Text>
-      <HBox prefHeight="400.0" spacing="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="150.0">
+      <HBox prefHeight="400.0" spacing="30.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="150.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="200.0" spacing="15.0">
                <children>

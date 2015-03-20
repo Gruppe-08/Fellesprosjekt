@@ -19,7 +19,8 @@ public class NotificationViewController implements Initializable {
 	@FXML AnchorPane notificationPane;
 	
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {		
+	public void initialize(URL location, ResourceBundle resources) {
+		notificationPane.setPrefHeight(1.0);
 		for (Notification notification : getReadNotifications()) {
 			addNotificationBox(notification);
 		}
@@ -50,8 +51,9 @@ public class NotificationViewController implements Initializable {
 	
 	private void addNotificationBox(Notification notification) {
 		for (Node node : notificationPane.getChildren()) {
-			AnchorPane.setTopAnchor(node, AnchorPane.getTopAnchor(node) + 100.0);
+			AnchorPane.setTopAnchor(node, AnchorPane.getTopAnchor(node) + 103.0);
 		}
+		notificationPane.setPrefHeight(notificationPane.getPrefHeight() + 103.0);
 		NotificationBox notBox = new NotificationBox(notification);
 		AnchorPane.setTopAnchor(notBox, 0.0);
 		notificationPane.getChildren().add(notBox);
@@ -59,18 +61,8 @@ public class NotificationViewController implements Initializable {
 	
 	private void notificationWasRead(Notification notification) {
 		NotificationRequest req = new NotificationRequest();
-		req.setType("read");
 		req.setNotificationId(notification.getId());
-		req.setRead(1);
+		req.setRead(true);
 		State.getConnectionController().sendTCP(req);
-	}
-	
-	public static void respondedToNotification(Notification notification, String status, NotificationBox box) {
-		NotificationRequest req = new NotificationRequest();
-		req.setType("status");
-		req.setAppointmentId(notification.getAppointment().getId());
-		req.setStatus(status);
-		State.getConnectionController().sendTCP(req);
-		box.showStatus(status);
 	}
 }

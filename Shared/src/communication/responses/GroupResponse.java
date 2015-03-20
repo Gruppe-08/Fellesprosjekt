@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import models.Group;
 
 public class GroupResponse extends BaseResponse {
-	private ArrayList<Group> Groups = new ArrayList<Group>();
+	private ArrayList<Group> groups = new ArrayList<Group>();
 
 	public ArrayList<Group> getGroups() {
-		return Groups;
+		return groups;
 	}
 
 	public void addGroup(Group Group) {
-		Groups.add(Group);
+		groups.add(Group);
 	}
 }

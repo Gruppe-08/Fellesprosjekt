@@ -48,9 +48,9 @@ public class UserControllerTest {
 
 	public AuthenticationRequest getAuthenticationRequest(Boolean valid) {
 		AuthenticationRequest request = new AuthenticationRequest();
-		request.setUsername("test");
+		request.setUsername("kristian");
 		if(valid) {
-			request.setPassword("123456");
+			request.setPassword("motorsykkel");
 		} else {
 			request.setPassword("");
 		}

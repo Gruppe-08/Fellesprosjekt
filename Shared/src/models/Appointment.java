@@ -1,6 +1,10 @@
 package models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import util.DateUtil;
 
 public class Appointment {
 	private Integer id;
@@ -11,9 +15,9 @@ public class Appointment {
 	private String endTime;
 	private Integer roomId;
 	private String ownerUsername;
-	private ArrayList<String> userRelations = new ArrayList<String>();
-	private ArrayList<Integer> groupRelations = new ArrayList<Integer>();
-	
+	private HashMap<String, String> userRelations = new HashMap<String, String>();
+	private HashMap<Integer, String> groupRelations = new HashMap<Integer, String>();
+
 	
 	public Appointment(Integer id, String title, String description, String location, String startTime, String endTime,
 			Integer roomId, String ownerUsername) {
@@ -28,20 +32,12 @@ public class Appointment {
 		this.ownerUsername = ownerUsername;
 	}
 
-	public ArrayList<String> getUserRelations() {
+	public HashMap<String, String> getUserRelations() {
 		return userRelations;
 	}
 
-	public void setUserRelations(ArrayList<String> userRelations) {
+	public void setUserRelations(HashMap<String, String> userRelations) {
 		this.userRelations = userRelations;
-	}
-
-	public ArrayList<Integer> getGroupRelations() {
-		return groupRelations;
-	}
-
-	public void setGroupRelations(ArrayList<Integer> groupRelations) {
-		this.groupRelations = groupRelations;
 	}
 
 	public Appointment(String title, String description, String startTime, String endTime) {
@@ -108,6 +104,11 @@ public class Appointment {
 	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
+	
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = DateUtil.serializeDateTime(startTime);
+		System.out.println("Setting startTime");
+	}
 
 	public String getEndTime() {
 		return endTime;
@@ -115,6 +116,11 @@ public class Appointment {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+	
+	public void setEndTime(LocalDateTime date) {
+		this.startTime = DateUtil.serializeDateTime(date);
+		
 	}
 
 	public Integer getRoomId() {
@@ -141,6 +147,14 @@ public class Appointment {
 				+ description + ", location=" + location + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", roomId=" + roomId
 				+ ", ownerUsername=" + ownerUsername + "]";
+	}
+
+	public HashMap<Integer, String> getGroupRelations() {
+		return groupRelations;
+	}
+
+	public void setGroupRelations(HashMap<Integer, String> groupRelations) {
+		this.groupRelations = groupRelations;
 	}
 
 }

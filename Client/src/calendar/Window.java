@@ -10,7 +10,8 @@ public enum Window {
 	LOGIN("Login.fxml"),
 	CREATE_USER("CreateUser.fxml"),
 	CREATE_GROUP("CreateGroup.fxml"),
-	ADMIN("Admin.fxml");
+	ADMIN("Admin.fxml"),
+	GROUP("Group.fxml");
 	
 	private final String filename;
 	

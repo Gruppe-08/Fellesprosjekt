@@ -9,10 +9,13 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 
+import communication.responses.AuthenticationResponse;
+
 public class ConnectionController extends Client {
 	ArrayList<Object> messageStack = new ArrayList<Object>();
 	
 	public ConnectionController(String host, int port) throws IOException {
+		super(8192, 8192);
 		this.start();
 		this.connect(5000, host, port);
 		
@@ -28,6 +31,12 @@ public class ConnectionController extends Client {
 				addObject(object);
 			}
 		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public Object sendRequest(Object request, Class responseClass) {
+		sendTCP(request);
+		return getObject(responseClass.getCanonicalName());
 	}
 	
 	public synchronized void addObject(Object object) {

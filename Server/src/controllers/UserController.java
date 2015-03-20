@@ -45,20 +45,6 @@ public class UserController {
 		return response;
 	}
 	
-	public static GetUsersResponse handleGetUsersResponse(GetUsersRequest request) {
-		GetUsersResponse response = new GetUsersResponse();
-		try {
-			response.setUserList(getUsers());
-			response.setSuccessful(true);
-		}
-		catch(SQLException e) {
-			Logger.logMsg(Logger.ERROR, e.getMessage());
-			response.setSuccessful(false);
-		}
-		
-		return response;
-	}
-	
 	public static CreateUserResponse handleCreateUserRequest(CreateUserRequest request) {
 		CreateUserResponse response = new CreateUserResponse();
 		try {
@@ -264,7 +250,8 @@ public class UserController {
 				+ "' OR a.end_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime() + "')";
 		ResultSet res = db.createStatement().executeQuery(query);
 		
-		return res.next(); //Returns false if there was no matching appointments
+		res.next();
+		return res.next();
 	}
 	
 	private static ArrayList<User> getUsers() throws SQLException {

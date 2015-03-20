@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.sun.media.jfxmedia.logging.Logger;
@@ -10,12 +11,14 @@ import com.sun.media.jfxmedia.logging.Logger;
 import communication.requests.AppointmentRequest;
 import communication.requests.AuthenticationRequest;
 import communication.requests.BusyCheckRequest;
+import communication.requests.ChangeAppointmentStatusRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.GetGroupsRequest;
 import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
+import communication.requests.GroupRequest;
 import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.requests.UpdateUserRequest;
@@ -24,6 +27,7 @@ import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
@@ -57,7 +61,7 @@ public class CalendarServer extends Server {
 	    				return;
 	    			}
 	    			AuthenticationRequest request = (AuthenticationRequest)object;
-	    			AuthenticationResponse response = UserController.handleAuthenticationResponse(request);
+	    			AuthenticationResponse response = UserController.handleAuthenticationRequest(request);
 	    			
 					clientConnection.isAuthenticated = response.wasSuccessful();
 					if (clientConnection.isAuthenticated) {
@@ -82,11 +86,8 @@ public class CalendarServer extends Server {
 	    		//--ALL OTHER METHODS SHOULD BE BEYOND THIS POINT--
 				else if(object instanceof NotificationRequest){
 					NotificationRequest req = (NotificationRequest)object;
-					if (req.getType().equals("read")) {
-						NotificationController.setReadNotification(req.getAppointmentId());
-					}
-					else if (req.getType().equals("status")) {
-						NotificationController.setStatus(req.getAppointmentId(), clientConnection.username, req.getStatus());
+					if (req.isRead()) {
+						NotificationController.setReadNotification(req.getNotificationId());
 					}
 					else {
 						String username = clientConnection.username;
@@ -115,12 +116,11 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetUsersRequest) {
 					GetUsersRequest request = (GetUsersRequest) object;
 				
-					BaseResponse response = UserController.handleGetUsersResponse(request);
+					GetUsersResponse response = UserController.handleGetUsersRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof BusyCheckRequest) {
 					BusyCheckRequest request = (BusyCheckRequest) object;
-					
 					BusyCheckResponse response = UserController.handleBusyCheck(request);
 					clientConnection.sendTCP(response);
 				}
@@ -135,7 +135,6 @@ public class CalendarServer extends Server {
 					clientConnection.sendTCP(response);
 				} 
 				else if(object instanceof UpdateUserRequest){
-					System.out.println("Got update user request.");
 					UpdateUserRequest request = (UpdateUserRequest) object;
 					BaseResponse response = UserController.handleUpdateUserRequest(request);
 					clientConnection.sendTCP(response);
@@ -145,6 +144,22 @@ public class CalendarServer extends Server {
 					RoomResponse response = RoomController.handleGetRoomsRequest(request);
 					clientConnection.sendTCP(response);
 				}
+				else if(object instanceof GroupRequest){
+					GroupRequest request = (GroupRequest) object;
+					GroupResponse response = GroupController.handleGroupRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof ChangeAppointmentStatusRequest) {
+					ChangeAppointmentStatusRequest request = (ChangeAppointmentStatusRequest) object;
+					BaseResponse response = AppointmentController.handleStatusChangeRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof FrameworkMessage) {}
+				//This must always come last!
+				else
+					Logger.logMsg(Logger.DEBUG, "Request of type: " +
+							object.getClass().getName() +
+							" was not handled by any controller and was dropped");
 			}
 			
 			public void connected(Connection connection) {
