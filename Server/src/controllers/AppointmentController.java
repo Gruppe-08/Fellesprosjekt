@@ -68,8 +68,8 @@ public class AppointmentController {
 						"WHERE appointment_id = " + request.getAppointmentID() + " AND username = '" + request.getUsername() + "'";
 			}
 			db.prepareStatement(query).execute();
+			NotificationController.createUpdateNotification(appointmentId, username, status);
 			
-			createUpdateNotification(appointmentId, username, statusString);
 		} catch (SQLException e) {
 			Logger.logMsg(Logger.ERROR, "Error when changing user appointment status: " + e);
 			response.setErrorMessage("Internal error: Failed to change your status");
