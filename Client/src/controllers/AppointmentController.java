@@ -29,6 +29,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -36,6 +37,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -64,6 +68,11 @@ public class AppointmentController implements Initializable {
 	boolean datesValid = false;
 	boolean titleValid = false;
 	boolean descriptionValid = true;
+	boolean selfAvailable = true;
+	Label unavailableLabel;
+	
+	@FXML
+	AnchorPane appointmentPane;
 	
 	@FXML
     TextField title;
@@ -413,10 +422,19 @@ public class AppointmentController implements Initializable {
     	} else {
         	for(Invitable item : invite_user_list.getItems()) {
         		if(response.getUsernames().contains(item.user.getUsername())) {
+        			if (item.user.getUsername().equals(State.getUser().getUsername())) {
+        				selfAvailable = false;
+        			}
         			item.available.setValue(false);
         		}
-        		else item.available.setValue(true);
+        		else {
+        			if (item.user.getUsername().equals(State.getUser().getUsername())) {
+        				selfAvailable = true;
+        			}
+        			item.available.setValue(true);
+        		}
         	}
+        	checkSelfAvailable();
     	}    	
     }
 
@@ -486,5 +504,24 @@ public class AppointmentController implements Initializable {
 		appointment.setRoomId(room.getRoomId());
 		appointment.setLocation(null);
 		location.setText(room.getName());
+	}
+	
+	public void checkSelfAvailable() {
+		if (! selfAvailable && this.unavailableLabel == null) {
+			System.out.println("added");
+			Label unavailableLabel = new Label("You are not available for this appointment");
+			unavailableLabel.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
+			unavailableLabel.setStyle("-fx-text-fill: #cd5e51");
+			AnchorPane.setLeftAnchor(unavailableLabel, 32.0);
+			AnchorPane.setTopAnchor(unavailableLabel, 350.0);
+			appointmentPane.getChildren().add(unavailableLabel);
+			this.unavailableLabel = unavailableLabel;
+		}
+		else {
+			if(this.unavailableLabel != null) {
+				appointmentPane.getChildren().remove(unavailableLabel);
+				this.unavailableLabel = null;
+			}
+		}
 	}
 }
