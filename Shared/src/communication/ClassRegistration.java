@@ -40,6 +40,7 @@ public abstract class ClassRegistration {
 		kryo.register(communication.responses.NotificationResponse.class);
 		kryo.register(communication.responses.GroupResponse.class);
 		kryo.register(communication.responses.RoomResponse.class);
+		kryo.register(communication.requests.GroupRequest.class);
 
 		kryo.register(models.User.class);
 		kryo.register(models.RepetitionType.class);

@@ -2,11 +2,18 @@ package calendar;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
+import com.sun.xml.internal.bind.v2.runtime.Location;
+
 import controllers.AppointmentController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,16 +23,18 @@ import models.Appointment;
 
 public class WeekAppointmentPane extends VBox {
 	
-	Appointment appointment;
+	private Appointment appointment;
+
 	
 	public WeekAppointmentPane(Appointment appointment) {
 		this.appointment = appointment;
-		this.setPadding(new Insets(5,5,5,5));
-		this.setStyle("-fx-background-color: #A7F0F0");
+		this.setPadding(new Insets(10,10,10,10));
+		this.setStyle("-fx-background-color: rgba(107, 211, 255, 0.3); -fx-background-radius: 13;");
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.web("#38597F", 0.2));
 		this.setEffect(dropShadow);
-		this.setPrefHeight(calculateHeight());
+		int height = calculateHeight();
+		this.setPrefHeight(height);
 		putText();
 		
 		this.setOnMouseClicked(new EventHandler<Event>() {
@@ -38,13 +47,12 @@ public class WeekAppointmentPane extends VBox {
 	//TODO: Find a way to format the text that allows for correct scaling of appointments
 	//Tempfix: small font size
 	private void putText() {
-		Text titleText = new Text(appointment.getTitle());
-		titleText.setFont(Font.font("Helvetica", FontWeight.THIN, 10));
+		Label titleText = new Label(appointment.getTitle());
+		titleText.setWrapText(true);
+		titleText.setStyle("-fx-text-fill: #1d93c6");
+		titleText.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 13));
 		this.getChildren().add(titleText);
-		
-		Text locationText = new Text(appointment.getLocation());
-		titleText.setFont(Font.font("Helvetica", FontWeight.THIN, 10));
-		this.getChildren().add(locationText);
+
 	}
 		
 	private int calculateHeight() {
@@ -54,10 +62,4 @@ public class WeekAppointmentPane extends VBox {
 		int height = (int)(0.85 * diff) + 1;
 		return height;
 	}
-	
-	public void onMouseClicked(){
-		System.out.println("Test");
-		
-	}
-
 }

@@ -49,7 +49,7 @@ public class WindowController implements Initializable {
     @FXML private Text username;
     
     @FXML private MenuItem notification;
-    @FXML private MenuItem logout;
+    @FXML private MenuItem exit;
     @FXML private MenuItem groups;
     
     private ArrayList<Notification> notifications = new ArrayList<Notification>();
@@ -70,13 +70,13 @@ public class WindowController implements Initializable {
 				groups.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						loadPage(Window.CREATE_GROUP);
+						loadPage(Window.GROUP);
 					}
 				});
-				logout.setOnAction(new EventHandler<ActionEvent>(){
+				exit.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent event) {
-						logout();
+						exit();
 					}
 				});
 				
@@ -106,7 +106,7 @@ public class WindowController implements Initializable {
 		});
 	}
 	
-	protected void logout() {
+	protected void exit() {
 		State.getConnectionController().close();
 		State.getStage().close();
 	}
@@ -129,7 +129,9 @@ public class WindowController implements Initializable {
 
 	private void insertAdminButton() {
 		admin = new MenuItem();
+		menu.getItems().remove(exit);
 		menu.getItems().add(admin);
+		menu.getItems().add(exit);
 		
 		admin.setText("Admin panel");
 		admin.setOnAction(new EventHandler<ActionEvent>() {
@@ -178,7 +180,6 @@ public class WindowController implements Initializable {
 	}
 	
 	private void enableAndShowButtons() {
-		profilepic.setVisible(true);
 		username.setVisible(true);
 		menu.setVisible(true);
 		dayToggle.setVisible(true);

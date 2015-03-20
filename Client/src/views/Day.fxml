@@ -139,9 +139,9 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Text fx:id="dayLabel" fill="#1d93c6" layoutX="253.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="517.5894470214844">
+      <Text fx:id="dayLabel" fill="#1d93c6" layoutX="253.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="517.5894470214844">
          <font>
-            <Font name="Helvetica Light" size="36.0" />
+            <Font name="Helvetica Neue Thin" size="36.0" />
          </font>
       </Text>
       <Button fx:id="nextDay" layoutX="771.0" layoutY="68.0" mnemonicParsing="false" style="-fx-background-color: white;" text="→" textAlignment="CENTER" textFill="#1d93c6">
@@ -154,5 +154,6 @@
             <Font name="Helvetica" size="30.0" />
          </font>
       </Button>
+      <Button fx:id="addButton" layoutX="940.0" layoutY="14.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-border-color: #1d93c6; -fx-background-radius: 35; -fx-background-color: #ffffff; -fx-border-radius: 35;" styleClass="-fx-bord" text="New" textFill="#1d93c6" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
 	</children>
 </AnchorPane>

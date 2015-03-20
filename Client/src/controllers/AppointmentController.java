@@ -63,6 +63,7 @@ public class AppointmentController implements Initializable {
 	Boolean isNew;
 	boolean datesValid = false;
 	boolean titleValid = false;
+	boolean descriptionValid = true;
 	
 	@FXML
     TextField title;
@@ -201,10 +202,8 @@ public class AppointmentController implements Initializable {
 
     @FXML
     void onOk(ActionEvent event) {
-    	if(titleValid && datesValid) {
+    	if(titleValid && datesValid && descriptionValid) {
 	    	PutAppointmentRequest request = new PutAppointmentRequest();
-	    	
-	    	appointment.setDescription(description.getText());
 	    	request.setAppointment(appointment);
 	    	for(Invitable user : invite_user_list.getItems()) {
 	    		if(user.selected.getValue())
@@ -241,13 +240,25 @@ public class AppointmentController implements Initializable {
     
     void validateTitleField() {
     	title.setStyle("");
-    	if(title.getText().equals("")) {
+    	if(title.getText().equals("") || (title.getText().length() > 20)) {
     		title.setStyle("-fx-border-color: red");
     		titleValid = false;
     	}
     	else {
         	appointment.setTitle(title.getText());
         	titleValid = true;
+    	}
+    }
+    
+    void validateDescriptionField() {
+    	description.setStyle("");
+    	if(description.getText().length() > 30) {
+    		description.setStyle("-fx-border-color: red");
+    		descriptionValid = false;
+    	}
+    	else {
+    		appointment.setDescription(description.getText());
+    		descriptionValid = true;
     	}
     }
     
@@ -417,8 +428,8 @@ public class AppointmentController implements Initializable {
     	if(!isNew)
     		fillAppointmentFields();
 	   	
-	   	
 	   	title.textProperty().addListener(f -> validateTitleField());
+	   	description.textProperty().addListener(f -> validateDescriptionField());
 	   	from_time.textProperty().addListener(f -> onChronoFieldChanged());
 	   	to_time.textProperty().addListener(f -> onChronoFieldChanged());
 	   	date.valueProperty().addListener(f -> onChronoFieldChanged());

@@ -39,20 +39,6 @@ public class UserController {
 		return response;
 	}
 	
-	public static GetUsersResponse handleGetUsersResponse(GetUsersRequest request) {
-		GetUsersResponse response = new GetUsersResponse();
-		try {
-			response.setUserList(getUsers());
-			response.setSuccessful(true);
-		}
-		catch(SQLException e) {
-			Logger.logMsg(Logger.ERROR, e.getMessage());
-			response.setSuccessful(false);
-		}
-		
-		return response;
-	}
-	
 	public static CreateUserResponse handleCreateUserRequest(CreateUserRequest request) {
 		CreateUserResponse response = new CreateUserResponse();
 		try {

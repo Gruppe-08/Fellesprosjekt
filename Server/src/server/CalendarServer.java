@@ -18,6 +18,7 @@ import communication.requests.GetGroupsRequest;
 import communication.requests.GetRoomsRequest;
 import communication.requests.GetUsersRequest;
 import communication.requests.CreateGroupRequest;
+import communication.requests.GroupRequest;
 import communication.requests.NotificationRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.requests.UpdateUserRequest;
@@ -26,6 +27,7 @@ import communication.responses.AuthenticationResponse;
 import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
+import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.NotificationResponse;
 import communication.responses.PutAppointmentResponse;
@@ -84,11 +86,8 @@ public class CalendarServer extends Server {
 	    		//--ALL OTHER METHODS SHOULD BE BEYOND THIS POINT--
 				else if(object instanceof NotificationRequest){
 					NotificationRequest req = (NotificationRequest)object;
-					if (req.getType().equals("read")) {
-						NotificationController.setReadNotification(req.getAppointmentId());
-					}
-					else if (req.getType().equals("status")) {
-						NotificationController.setStatus(req.getAppointmentId(), clientConnection.username, req.getStatus());
+					if (req.isRead()) {
+						NotificationController.setReadNotification(req.getNotificationId());
 					}
 					else {
 						String username = clientConnection.username;
@@ -117,7 +116,7 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetUsersRequest) {
 					GetUsersRequest request = (GetUsersRequest) object;
 				
-					BaseResponse response = UserController.handleGetUsersResponse(request);
+					GetUsersResponse response = UserController.handleGetUsersRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof BusyCheckRequest) {
@@ -137,7 +136,6 @@ public class CalendarServer extends Server {
 					clientConnection.sendTCP(response);
 				} 
 				else if(object instanceof UpdateUserRequest){
-					System.out.println("Got update user request.");
 					UpdateUserRequest request = (UpdateUserRequest) object;
 					BaseResponse response = UserController.handleUpdateUserRequest(request);
 					clientConnection.sendTCP(response);
@@ -145,6 +143,11 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetRoomsRequest) {
 					GetRoomsRequest request = (GetRoomsRequest) object;
 					RoomResponse response = RoomController.handleGetRoomsRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof GroupRequest){
+					GroupRequest request = (GroupRequest) object;
+					GroupResponse response = GroupController.handleGroupRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof ChangeAppointmentStatusRequest) {

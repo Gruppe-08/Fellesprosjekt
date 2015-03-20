@@ -59,7 +59,6 @@ public class Notification {
 	}
 
 	public void setNotificationType(String type) {
-		
 		if(type.equals("user")) {
 			notificationType = NotificationType.USER;
 		} else if(type.equals("group")){
@@ -67,8 +66,12 @@ public class Notification {
 		} else if(type.equals("appointment")){
 			notificationType = NotificationType.APPOINTMENT;
 		} else {
-			throw new IllegalArgumentException("Unvalid notification type: " + type);
+			throw new IllegalArgumentException("Invalid notification type: " + type);
 		}
+	}
+	
+	public void setNotificationType(NotificationType type){
+		this.type = type;
 	}
 
 	public boolean isAlarm() {
