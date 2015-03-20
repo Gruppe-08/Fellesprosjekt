@@ -243,7 +243,6 @@ public class UserController {
 				+ "a.start_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime()
 				+ "' OR a.end_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime() + "')";
 		ResultSet res = db.createStatement().executeQuery(query);
-		System.out.println(query);
 		
 		res.next();
 		return res.next();
