@@ -32,7 +32,7 @@ public class WindowController implements Initializable {
 	Calendar myCalendar = null;
 	AnchorPane myWindow = null;
 	MenuItem admin = null;
-	public static Window previous_window = null;
+	private Window currentPage, lastPage;
 	
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane main_window;
@@ -122,6 +122,7 @@ public class WindowController implements Initializable {
 		
 		
 		loadPage(Window.WEEK);
+		currentPage = Window.WEEK;
 		NotificationService service = new NotificationService(State.getConnectionController(), State.getWindowController());
 		service.start();
 		
@@ -143,6 +144,14 @@ public class WindowController implements Initializable {
 		});
 	}
 	
+	public Window getLastPage() {
+		return lastPage;
+	}
+	
+	public Window getCurrentPage() {
+		return currentPage;
+	}
+	
 	public Object loadPage(Window window) {
        return loadPage(window, null);
 	}
@@ -154,9 +163,12 @@ public class WindowController implements Initializable {
 			loader.setController(controller);
 		}
 		try {
+			lastPage = currentPage;
+			currentPage = window;
 			Pane root = loader.load();
 	        mainPane.getChildren().clear();
 	        mainPane.getChildren().add(root);
+	        
 	        return loader.getController();
 		} catch (IOException e){
 			e.printStackTrace();

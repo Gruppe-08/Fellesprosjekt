@@ -55,7 +55,7 @@ public class AgendaPane extends AnchorPane {
 		this.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				State.openAppointmentView(this, appointment);
+				State.openAppointmentView(getClass(), appointment);
 			}
 		});
 		
@@ -64,15 +64,6 @@ public class AgendaPane extends AnchorPane {
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.web("#38597F", 0.2));
 		this.setEffect(dropShadow);
-		
-		this.setOnMouseClicked(new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				AppointmentController controller = new AppointmentController(appointment);	
-				State.getWindowController().loadPage(Window.APPOINTMENT, controller);
-
-			}
-		});
 	}
 	
 	private void setTitle(String title){

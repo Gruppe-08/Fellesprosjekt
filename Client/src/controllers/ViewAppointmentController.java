@@ -80,6 +80,8 @@ public class ViewAppointmentController {
     @FXML
     void onOk(ActionEvent event) {
     	stage.close();
+		State.getWindowController().loadPage(State.getWindowController().getCurrentPage());
+
     }
 
     @FXML
