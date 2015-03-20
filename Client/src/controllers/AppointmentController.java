@@ -211,17 +211,21 @@ public class AppointmentController implements Initializable {
 
     @FXML
     void onOk(ActionEvent event) {
+    	boolean atLeastOneUserInvited = false;
     	if(titleValid && datesValid && descriptionValid) {
 	    	PutAppointmentRequest request = new PutAppointmentRequest();
 	    	request.setAppointment(appointment);
 	    	for(Invitable user : invite_user_list.getItems()) {
 	    		if(user.selected.getValue())
+	    			atLeastOneUserInvited = true;
 	    			request.getAppointment().getUserRelations().put(user.user.getUsername(), "pending");
 	    	}
 	    	for(InvitableGroup group : invite_group_list.getItems()) {
 	    		if(group.selected.getValue())
+	    			atLeastOneUserInvited = true; //May cause error if the chosen group is empty
 	    			request.getAppointment().getGroupRelations().put(group.group.getGroupID(), "pending");	
 	    	}
+	    	if (! atLeastOneUserInvited) return;
 	    	
 	    	if(use_location_check.isSelected()) {
 	    		appointment.setLocation(location.getText());
@@ -420,6 +424,7 @@ public class AppointmentController implements Initializable {
 					"Internal error");
 			loginAlert.showAndWait();
     	} else {
+    		selfAvailable = true;
         	for(Invitable item : invite_user_list.getItems()) {
         		if(response.getUsernames().contains(item.user.getUsername())) {
         			if (item.user.getUsername().equals(State.getUser().getUsername())) {
@@ -428,9 +433,6 @@ public class AppointmentController implements Initializable {
         			item.available.setValue(false);
         		}
         		else {
-        			if (item.user.getUsername().equals(State.getUser().getUsername())) {
-        				selfAvailable = true;
-        			}
         			item.available.setValue(true);
         		}
         	}
@@ -508,7 +510,6 @@ public class AppointmentController implements Initializable {
 	
 	public void checkSelfAvailable() {
 		if (! selfAvailable && this.unavailableLabel == null) {
-			System.out.println("added");
 			Label unavailableLabel = new Label("You are not available for this appointment");
 			unavailableLabel.setFont(Font.font("Helvetica Neue", FontWeight.THIN, 16));
 			unavailableLabel.setStyle("-fx-text-fill: #cd5e51");

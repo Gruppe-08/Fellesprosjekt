@@ -243,8 +243,10 @@ public class UserController {
 				+ "a.start_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime()
 				+ "' OR a.end_date BETWEEN '" + a.getStartTime() + "' AND '"+ a.getEndTime() + "')";
 		ResultSet res = db.createStatement().executeQuery(query);
+		System.out.println(query);
 		
-		return res.next(); //Returns false if there was no matching appointments
+		res.next();
+		return res.next();
 	}
 	
 	private static ArrayList<User> getUsers() throws SQLException {
