@@ -148,6 +148,10 @@ public class WindowController implements Initializable {
 		return lastPage;
 	}
 	
+	public Window getCurrentPage() {
+		return currentPage;
+	}
+	
 	public Object loadPage(Window window) {
        return loadPage(window, null);
 	}
