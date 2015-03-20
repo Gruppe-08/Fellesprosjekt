@@ -85,7 +85,7 @@ public class CreateUserController {
 				}
 				else {
 					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setContentText("Could not log in. Contact your system administrator.");
+					alert.setContentText("Could not create user.");
 					alert.showAndWait();
 				}
 			}
