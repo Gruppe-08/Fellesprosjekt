@@ -1,7 +1,10 @@
 package models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import util.DateUtil;
 
 public class Appointment {
 	private Integer id;
@@ -101,6 +104,11 @@ public class Appointment {
 	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
+	
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = DateUtil.serializeDateTime(startTime);
+		System.out.println("Setting startTime");
+	}
 
 	public String getEndTime() {
 		return endTime;
@@ -108,6 +116,11 @@ public class Appointment {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+	
+	public void setEndTime(LocalDateTime date) {
+		this.startTime = DateUtil.serializeDateTime(date);
+		
 	}
 
 	public Integer getRoomId() {

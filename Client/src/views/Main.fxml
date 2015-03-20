@@ -46,6 +46,6 @@
             <ToggleButton fx:id="agendaToggle" layoutX="378.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: white;" text="Agenda" toggleGroup="$viewToggle" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="378.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="mainPane" layoutX="27.0" layoutY="116.0" maxHeight="668.0" maxWidth="1006.0" prefHeight="668.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
+      <AnchorPane fx:id="mainPane" layoutX="27.0" layoutY="116.0" prefHeight="668.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
    </children>
 </AnchorPane>
