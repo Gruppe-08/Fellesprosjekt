@@ -154,9 +154,9 @@ public class ViewAppointmentController {
 		//Load data from appointment into view
 		title.setText(appointment.getTitle());
 		description.setText(appointment.getDescription());
-		from_time.setText(DateUtil.deserializeTime(appointment.getStartTime()).toString());
-		to_time.setText(DateUtil.deserializeTime(appointment.getEndTime()).toString());
-		date.setText(DateUtil.deserializeDate(appointment.getStartTime()).toString());
+		from_time.setText(DateUtil.getTime(appointment.getStartTime()));
+		to_time.setText(DateUtil.getTime(appointment.getEndTime()));
+		date.setText(DateUtil.getDate(appointment.getStartTime()));
 		location1.setText(appointment.getLocation());
 		
 		String status = appointment.getUserRelations().get(State.getUser().getUsername());
