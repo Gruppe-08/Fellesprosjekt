@@ -5,7 +5,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAppointmentController">
    <children>
       <Label fx:id="title" layoutX="14.0" layoutY="7.0" text="Title">
@@ -21,8 +20,8 @@
       <Label layoutX="320.0" layoutY="93.0" text="participants" />
       <TableView fx:id="member_table" layoutX="320.0" layoutY="108.0" prefHeight="200.0" prefWidth="266.0">
         <columns>
-          <TableColumn fx:id="name_column" prefWidth="189.0" text="Name" />
-          <TableColumn fx:id="status_column" prefWidth="76.0" text="Status" />
+          <TableColumn fx:id="name_column" prefWidth="175.0" text="Name" />
+          <TableColumn fx:id="status_column" prefWidth="90.0" text="Status" />
         </columns>
       </TableView>
       <Button layoutX="549.0" layoutY="361.0" mnemonicParsing="false" onAction="#onOk" text="OK" />
@@ -51,7 +50,7 @@
          </font>
       </Label>
       <Label layoutX="12.0" layoutY="246.0" text="You are " />
-      <Label layoutX="71.0" layoutY="242.0" text="pending response">
+      <Label fx:id="status" layoutX="64.0" layoutY="240.0" text="pending response">
          <font>
             <Font size="20.0" />
          </font>

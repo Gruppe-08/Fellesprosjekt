@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import communication.requests.AppointmentRequest;
+import communication.requests.ChangeAppointmentStatusRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.PutAppointmentRequest;
 import communication.responses.AppointmentResponse;
@@ -48,6 +49,29 @@ public class AppointmentController {
 		
 		return response;
 	}
+
+	public static BaseResponse handleStatusChangeRequest(ChangeAppointmentStatusRequest request) {
+		BaseResponse response = new BaseResponse();
+		
+		try {
+			String query;
+			if(request.isGroup()) {
+				query = "UPDATE AppointmentGroupRelation SET status = '" + request.getStatus() + "' " + 
+						"WHERE appointment_id = " + request.getAppointmentID() + " AND group_id = " + request.getUsername();
+			}
+			else {
+				query = "UPDATE UserAppointmentRelation SET status = '" + request.getStatus() + "' " + 
+						"WHERE appointment_id = " + request.getAppointmentID() + " AND username = '" + request.getUsername() + "'";
+			}
+			db.prepareStatement(query).execute();
+		} catch (SQLException e) {
+			Logger.logMsg(Logger.ERROR, "Error when changing user appointment status: " + e);
+			response.setErrorMessage("Internal error: Failed to change your status");
+			response.setSuccessful(false);
+		}
+		
+		return response;
+	}
 	
 	public static BaseResponse handleDeleteAppointment(DeleteAppointmentRequest request){
 		BaseResponse res = new BaseResponse();
@@ -59,7 +83,7 @@ public class AppointmentController {
 		} catch(SQLException e){
 			res.setErrorMessage("Could not delete this appointment.");
 			res.setSuccessful(false);
-			Logger.logMsg(Logger.WARNING, "Error when deleting an appointment: " + e);
+			Logger.logMsg(Logger.ERROR, "Error when deleting an appointment: " + e);
 		}
 		
 		return res;

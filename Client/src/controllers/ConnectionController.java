@@ -15,6 +15,7 @@ public class ConnectionController extends Client {
 	ArrayList<Object> messageStack = new ArrayList<Object>();
 	
 	public ConnectionController(String host, int port) throws IOException {
+		super(8192, 8192);
 		this.start();
 		this.connect(5000, host, port);
 		
@@ -35,7 +36,6 @@ public class ConnectionController extends Client {
 	@SuppressWarnings("rawtypes")
 	public Object sendRequest(Object request, Class responseClass) {
 		sendTCP(request);
-		System.out.println(responseClass.getCanonicalName());
 		return getObject(responseClass.getCanonicalName());
 	}
 	

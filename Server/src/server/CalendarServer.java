@@ -11,6 +11,7 @@ import com.sun.media.jfxmedia.logging.Logger;
 import communication.requests.AppointmentRequest;
 import communication.requests.AuthenticationRequest;
 import communication.requests.BusyCheckRequest;
+import communication.requests.ChangeAppointmentStatusRequest;
 import communication.requests.CreateUserRequest;
 import communication.requests.DeleteAppointmentRequest;
 import communication.requests.GetGroupsRequest;
@@ -144,6 +145,11 @@ public class CalendarServer extends Server {
 				else if(object instanceof GetRoomsRequest) {
 					GetRoomsRequest request = (GetRoomsRequest) object;
 					RoomResponse response = RoomController.handleGetRoomsRequest(request);
+					clientConnection.sendTCP(response);
+				}
+				else if(object instanceof ChangeAppointmentStatusRequest) {
+					ChangeAppointmentStatusRequest request = (ChangeAppointmentStatusRequest) object;
+					BaseResponse response = AppointmentController.handleStatusChangeRequest(request);
 					clientConnection.sendTCP(response);
 				}
 				else if(object instanceof FrameworkMessage) {}

@@ -5,6 +5,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
@@ -166,15 +168,23 @@ public class AppointmentController implements Initializable {
         		use_location_check.setSelected(true);
         	
         	//Clear users that have been invited from invite list
-        	for(Entry<String, String> userRelation : appointment.getUserRelations().entrySet())
-        		for(Invitable user : invite_user_list.getItems())
-        			if(userRelation.getKey() == user.user.getUsername())
-        				invite_user_list.getItems().remove(user);
+        	for(Entry<String, String> userRelation : appointment.getUserRelations().entrySet()) {
+        		ListIterator<Invitable> iter = invite_user_list.getItems().listIterator();
+        		while(iter.hasNext()) {
+        			Invitable user = iter.next();
+        			if(userRelation.getKey().equals(user.user.getUsername()))
+        				iter.remove();
+        		}
+        	}
         	//Clear groups that have been invited from invite list
-        	for(Entry<Integer, String> groupRelation : appointment.getGroupRelations().entrySet())
-        		for(InvitableGroup group : invite_group_list.getItems())
-        			if(groupRelation.getKey() == group.group.getGroupID())
-        				invite_user_list.getItems().remove(group);
+        	for(Entry<Integer, String> groupRelation : appointment.getGroupRelations().entrySet()) {
+        		ListIterator<InvitableGroup> iter = invite_group_list.getItems().listIterator();
+        		while(iter.hasNext()) {
+        			InvitableGroup group = iter.next();
+        			if(groupRelation.getKey().equals(group.group.getGroupID()))
+        				iter.remove();
+        		}
+        	}
         	
     	} else {
     		appointment = new Appointment();
@@ -402,6 +412,8 @@ public class AppointmentController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	   	appointment.setOwnerUsername(State.getUser().getUsername());
+	   	
+    	initalizeInviteTable();
     	if(!isNew)
     		fillAppointmentFields();
 	   	
@@ -429,8 +441,6 @@ public class AppointmentController implements Initializable {
 				}
 			}
 		});
-	   	
-    	initalizeInviteTable();
     	validateTitleField();
     	onChronoFieldChanged();
 	}

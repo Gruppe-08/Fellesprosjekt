@@ -2,9 +2,12 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 
+import communication.requests.ChangeAppointmentStatusRequest;
 import communication.requests.GetGroupsRequest;
 import communication.requests.GetUsersRequest;
+import communication.responses.BaseResponse;
 import communication.responses.GetUsersResponse;
 import communication.responses.GroupResponse;
 import communication.responses.UserResponse;
@@ -14,7 +17,10 @@ import util.DateUtil;
 import models.Appointment;
 import models.Group;
 import models.User;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +36,7 @@ public class ViewAppointmentController {
 	
 	private Stage stage;
 	private Appointment appointment;
+	private NameStatusPair currentUserPair;
 
     @FXML
     private Label date;
@@ -57,6 +64,9 @@ public class ViewAppointmentController {
 
     @FXML
     private Label location1;	
+    
+    @FXML
+    private Label status;
 
     @FXML
     private Label title;
@@ -81,12 +91,21 @@ public class ViewAppointmentController {
 
     @FXML
     void onAccept(ActionEvent event) {
+    	ChangeAppointmentStatusRequest request = new ChangeAppointmentStatusRequest(
+    			appointment.getId(), "attending", State.getUser().getUsername());
+    	State.getConnectionController().sendRequest(request, BaseResponse.class);
+    	currentUserPair.status.set("attending");
+    	displayAccepted();
 
     }
 
     @FXML
     void onDecline(ActionEvent event) {
-
+    	ChangeAppointmentStatusRequest request = new ChangeAppointmentStatusRequest(
+    			appointment.getId(), "not_attending", State.getUser().getUsername());
+    	State.getConnectionController().sendRequest(request, BaseResponse.class);
+    	currentUserPair.status.set("not_attending");
+		displayDeclined();
     }
 
 	public void initialize(Stage stage, Appointment appointment) {
@@ -107,14 +126,18 @@ public class ViewAppointmentController {
 			@Override
 			public ObservableValue<String> call(
 					CellDataFeatures<NameStatusPair, String> param) {
-				String status = param.getValue().status;
-				if(status.equals("pending"))
-					return new ReadOnlyStringWrapper("Pending");
-				else if(status.equals("attending"))
-					return new ReadOnlyStringWrapper("Attending");
-				else if(status.equals("not_attending"))
-					return new ReadOnlyStringWrapper("Declined");
-				return null;
+				return Bindings.createStringBinding(new Callable<String>() {
+					@Override
+					public String call() {
+						if(param.getValue().status.getValue().equals("pending"))
+							return "pending";
+						else if(param.getValue().status.getValue().equals("attending"))
+							return "Attending";
+						else if(param.getValue().status.getValue().equals("not_attending"))
+							return "Not attending";
+						return "unknown";
+					}
+				}, param.getValue().status);
 			}
 		});
 		
@@ -125,6 +148,14 @@ public class ViewAppointmentController {
 		to_time.setText(DateUtil.deserializeTime(appointment.getEndTime()).toString());
 		date.setText(DateUtil.deserializeDate(appointment.getStartTime()).toString());
 		location1.setText(appointment.getLocation());
+		
+		String status = appointment.getUserRelations().get(State.getUser().getUsername());
+		if(status != null) {
+			if(status.equals("attending"))
+				displayAccepted();
+			else if(status.equals("not_attending"))
+				displayDeclined();
+		}
 		
 		putRelationsInTable();
 	}
@@ -137,10 +168,14 @@ public class ViewAppointmentController {
 			String status = appointment.getUserRelations().get(user.getUsername());
 			if(status != null) {
 				String name = user.getFirstname() + " " + user.getLastname();
-				member_table.getItems().add(new NameStatusPair(name, status));
+				String myName = State.getUser().getFirstname() + " " + State.getUser().getLastname();
+				NameStatusPair toAdd = new NameStatusPair(name, status);
+				if(toAdd.name.equals(myName))
+					currentUserPair = toAdd;
+					
+				member_table.getItems().add(toAdd);
 			}
 		}
-		System.out.println("got users");
 		GroupResponse groupResponse = 
 				(GroupResponse) State.getConnectionController().sendRequest(new GetGroupsRequest(), 
 						GroupResponse.class);
@@ -151,17 +186,30 @@ public class ViewAppointmentController {
 				
 			}
 		}
-		System.out.println("got groups");
-
+		
+		if(!appointment.getOwnerUsername().equals(State.getUser().getUsername()))
+			edit_button.setVisible(false);
+	}
+	
+	private void displayAccepted() {
+    	status.setText("attending");
+    	accept_button.setVisible(false);
+    	decline_button.setVisible(true);
+	}
+	
+	private void displayDeclined() {
+    	status.setText("not attending");
+    	accept_button.setVisible(true);
+    	decline_button.setVisible(false);
 	}
 
 	class NameStatusPair {
-		String name;
-		String status;
+		String username, name;
+		StringProperty status;
 		
 		NameStatusPair(String name, String status) {
 			this.name = name;
-			this.status = status;
+			this.status = new SimpleStringProperty(status);
 		}
 	};
 }
