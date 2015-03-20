@@ -30,6 +30,7 @@ import javafx.scene.control.Alert.AlertType;
 public class AdminController implements Initializable {
 	User user;
 	ObservableList<User> users;
+	ConnectionController connection;
 	
 	@FXML 
 	ListView<User> user_list;
@@ -55,10 +56,23 @@ public class AdminController implements Initializable {
 	@FXML
 	Button create_user;
 	
+	public AdminController() {
+		this(State.getConnectionController());
+		System.out.println(1);
+	}
+	
+	public AdminController(ConnectionController connection){
+		this.connection = connection;
+		System.out.println(2);
+	}
+
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		System.out.println(3);
 		initializeList();
+		System.out.println(4);
 		
 		firstname.textProperty().addListener(f -> submit.setDisable(false));
 		lastname.textProperty().addListener(f -> submit.setDisable(false));
@@ -75,14 +89,16 @@ public class AdminController implements Initializable {
             }	
         });
 		
+		
+		
 	}
 	
 	public void initializeList(){
 		disableAll();
 		
 		GetUsersRequest req = new GetUsersRequest();
-		State.getConnectionController().sendTCP(req);
-		GetUsersResponse res = (GetUsersResponse) State.getConnectionController().getObject("communication.responses.GetUsersResponse");
+		connection.sendTCP(req);
+		GetUsersResponse res = (GetUsersResponse) connection.getObject("communication.responses.GetUsersResponse");
 		
 		users = FXCollections.observableArrayList(res.getUserList());
 		user_list.setItems(users);
@@ -115,8 +131,8 @@ public class AdminController implements Initializable {
 		updateUser();
 		req.setUser(user);
 		req.setDelete(false);
-		State.getConnectionController().sendTCP(req);
-		BaseResponse res = (BaseResponse) State.getConnectionController().getObject("communication.responses.BaseResponse");
+		connection.sendTCP(req);
+		BaseResponse res = (BaseResponse) connection.getObject("communication.responses.BaseResponse");
 
 		Alert editAlert;
 		if(!res.wasSuccessful()){
@@ -133,8 +149,8 @@ public class AdminController implements Initializable {
 		req.setUser(user);
 		req.setDelete(true);
 		
-		State.getConnectionController().sendTCP(req);
-		BaseResponse res = (BaseResponse) State.getConnectionController().getObject("communication.responses.BaseResponse");
+		connection.sendTCP(req);
+		BaseResponse res = (BaseResponse) connection.getObject("communication.responses.BaseResponse");
 		Alert deleteAlert;
 		if(!res.wasSuccessful()){
 			 deleteAlert = new Alert(AlertType.ERROR, 

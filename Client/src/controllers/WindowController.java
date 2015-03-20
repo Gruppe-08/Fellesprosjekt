@@ -160,10 +160,14 @@ public class WindowController implements Initializable {
 	}
 	
 	public Object loadPage(Window window) {
-       return loadPage(window, null);
+       return loadPage(window, null, mainPane);
 	}
 	
-	public Object loadPage(Window window, Object controller){				
+	public Object loadPage(Window window, Object controller) {
+	       return loadPage(window, controller, mainPane);
+		}
+	
+	public Object loadPage(Window window, Object controller, Pane destination){				
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + window));
 		
 		if(controller != null) {
@@ -173,9 +177,10 @@ public class WindowController implements Initializable {
 			lastPage = currentPage;
 			currentPage = window;
 			Pane root = loader.load();
-	        mainPane.getChildren().clear();
-	        mainPane.getChildren().add(root);
-	        
+
+	        destination.getChildren().clear();
+	        destination.getChildren().add(root);
+
 	        return loader.getController();
 		} catch (IOException e){
 			e.printStackTrace();

@@ -24,18 +24,24 @@ import communication.responses.BaseResponse;
 import communication.responses.BusyCheckResponse;
 import communication.responses.CreateUserResponse;
 import communication.responses.GetUsersResponse;
-import communication.responses.UserResponse;
 import server.DatabaseConnector;
-import util.DateUtil;
 
 public class UserController {
 	
-	public static AuthenticationResponse handleAuthenticationResponse(AuthenticationRequest request) {
+	public static AuthenticationResponse handleAuthenticationRequest(AuthenticationRequest request) {
 		AuthenticationResponse response = new AuthenticationResponse();
 		String hash = getHashForUser(request.getUsername());
-		Boolean status = compareHashes(request.getPassword(), hash);
-		response.setSuccessful(status);
-		response.setUser(getUser(request.getUsername()));
+		Boolean success = compareHashes(request.getPassword(), hash);
+		
+		if(success) {
+			response.setUser(getUser(request.getUsername()));
+			response.setSuccessful(true);
+		} else {
+			response.setSuccessful(false);
+			response.setErrorMessage("User does not exist, or password is wrong.");
+			response.setUser(null);
+		}
+		
 		return response;
 	}
 	

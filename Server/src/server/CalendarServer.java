@@ -61,7 +61,7 @@ public class CalendarServer extends Server {
 	    				return;
 	    			}
 	    			AuthenticationRequest request = (AuthenticationRequest)object;
-	    			AuthenticationResponse response = UserController.handleAuthenticationResponse(request);
+	    			AuthenticationResponse response = UserController.handleAuthenticationRequest(request);
 	    			
 					clientConnection.isAuthenticated = response.wasSuccessful();
 					if (clientConnection.isAuthenticated) {
