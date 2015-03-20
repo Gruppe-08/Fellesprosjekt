@@ -91,22 +91,30 @@ public class ViewAppointmentController {
 
     @FXML
     void onAccept(ActionEvent event) {
+    	String username = State.getUser().getUsername();
+    	String status = "attending";
+    	
     	ChangeAppointmentStatusRequest request = new ChangeAppointmentStatusRequest(
-    			appointment.getId(), "attending", State.getUser().getUsername());
+    			appointment.getId(), status, username);
     	State.getConnectionController().sendRequest(request, BaseResponse.class);
-    	currentUserPair.status.set("attending");
+    	
+    	currentUserPair = new NameStatusPair(username, status);
     	displayAccepted();
 
     }
 
     @FXML
     void onDecline(ActionEvent event) {
+    	String username = State.getUser().getUsername();
+    	String status = "not_attending";
+    	
     	ChangeAppointmentStatusRequest request = new ChangeAppointmentStatusRequest(
-    			appointment.getId(), "not_attending", State.getUser().getUsername());
+    			appointment.getId(), status, username);
     	State.getConnectionController().sendRequest(request, BaseResponse.class);
-    	currentUserPair.status.set("not_attending");
+    	
+    	currentUserPair = new NameStatusPair(username, status);
 		displayDeclined();
-    }
+    }	
 
 	public void initialize(Stage stage, Appointment appointment) {
 		this.stage = stage;

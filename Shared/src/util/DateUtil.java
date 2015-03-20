@@ -38,7 +38,7 @@ public class DateUtil {
 	}
 
 	public static LocalTime deserializeTime(String str) {
-		return LocalTime.parse(str.substring(TIME_START), defaultTimeFormatter);
+		return LocalTime.parse(str, defaultTimeFormatter);
 	}
 	
 	public static String serializeTime(LocalTime localTime)  throws DateTimeParseException {
