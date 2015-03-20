@@ -16,6 +16,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 
 public class LoginController implements Initializable {
 	ConnectionController connection = State.getConnectionController();
@@ -34,6 +36,9 @@ public class LoginController implements Initializable {
 	
 	@FXML
 	PasswordField login_password;
+	
+	@FXML
+	AnchorPane pane;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +61,8 @@ public class LoginController implements Initializable {
 				}
 			}
 		});
+		
+		login_submit.setDefaultButton(true);
 	}
 	
 	public AuthenticationResponse loginUser(String username, String password, ConnectionController connection) {
