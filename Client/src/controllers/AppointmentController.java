@@ -140,9 +140,16 @@ public class AppointmentController implements Initializable {
     	this.appointment = new Appointment();
     }
     
-    public AppointmentController(Appointment appointment){    	
-    	this.appointment = appointment;
-    	this.isNew = (appointment == null);
+    public AppointmentController(Appointment appointment){ 
+    	if(appointment != null) {
+    		this.appointment = appointment;
+    		this.isNew = false;
+    		dateValid = true;
+        	timeFromValid = true;
+        	timeToValid = true;
+        	titleValid = true;
+        	descriptionValid = true;
+    	}
     }
     
     @FXML
@@ -178,8 +185,8 @@ public class AppointmentController implements Initializable {
         	
         	date.setValue(DateUtil.deserializeDate(appointment.getStartTime()) );
         	
-        	from_time.setText( DateUtil.deserializeTime(appointment.getStartTime()).toString() );
-        	to_time.setText( DateUtil.deserializeTime(appointment.getEndTime()).toString() );
+        	from_time.setText( DateUtil.getTime(appointment.getStartTime()).toString() );
+        	to_time.setText( DateUtil.getTime(appointment.getEndTime()).toString() );
         	
         	location.setText(appointment.getLocation());
         	if(appointment.getLocation() != null)
