@@ -232,14 +232,16 @@ public class AppointmentController implements Initializable {
 	    	setAppointmentProperties();
 	    	request.setAppointment(appointment);
 	    	for(Invitable user : invite_user_list.getItems()) {
-	    		if(user.selected.getValue())
+	    		if(user.selected.getValue()) {
 	    			atLeastOneUserInvited = true;
 	    			request.getAppointment().getUserRelations().put(user.user.getUsername(), "pending");
+	    		}
 	    	}
 	    	for(InvitableGroup group : invite_group_list.getItems()) {
-	    		if(group.selected.getValue())
+	    		if(group.selected.getValue()) {
 	    			atLeastOneUserInvited = true; //May cause error if the chosen group is empty
-	    			request.getAppointment().getGroupRelations().put(group.group.getGroupID(), "pending");	
+	    			request.getAppointment().getGroupRelations().put(group.group.getGroupID(), "pending");
+	    		}
 	    	}
 	    	if (! atLeastOneUserInvited) return;
 	    	
