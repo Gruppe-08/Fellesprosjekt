@@ -243,7 +243,11 @@ public class AppointmentController implements Initializable {
 	    			request.getAppointment().getGroupRelations().put(group.group.getGroupID(), "pending");
 	    		}
 	    	}
-	    	if (! atLeastOneUserInvited) return;
+	    	if (isNew &&  !atLeastOneUserInvited)  {
+	    		Alert alert = new Alert(AlertType.WARNING, "Please invite at least one user.");
+	    		alert.showAndWait();
+	    		return;
+	    	}
 	    	
 	    	if(use_location_check.isSelected()) {
 	    		appointment.setLocation(location.getText());
