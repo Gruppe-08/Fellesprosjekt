@@ -144,7 +144,7 @@ public class WeekViewController implements Initializable {
 		thursdayLabel.setText("Thu " + String.valueOf(DateUtil.getDateOfDayInWeek(currentYear, currentWeek, 5).getDayOfMonth()));
 		fridayLabel.setText("Fri " + String.valueOf(DateUtil.getDateOfDayInWeek(currentYear, currentWeek, 6).getDayOfMonth()));
 		saturdayLabel.setText("Sat " + String.valueOf(DateUtil.getDateOfDayInWeek(currentYear, currentWeek, 7).getDayOfMonth()));
-		sundayLabel.setText("Sun " + String.valueOf(DateUtil.getDateOfDayInWeek(currentYear, currentWeek, 1).getDayOfMonth()));		
+		sundayLabel.setText("Sun " + String.valueOf(DateUtil.getDateOfDayInWeek(currentYear, currentWeek + 1, 1).getDayOfMonth()));		
 	}
 	
 	//Problematic with multiple years, will have to change later
